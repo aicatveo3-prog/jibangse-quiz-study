@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="quizdata.js"></script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; }
+  @keyframes popIn { 0% { transform: scale(.8); opacity: 0; } 60% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; background: #EEF1F6; display: flex; justify-content: center; font-family: Pretendard, -apple-system, sans-serif; color: #1A1D24;">
+<div style="width: 100%; max-width: 460px; min-height: 100vh; background: #F7F8FB; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(20,25,40,.08);">
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; min-height: 100vh;">
+      <div style="padding: 56px 24px 28px;">
+        <div style="font-size: 13px; font-weight: 600; letter-spacing: .04em; color: #5C6473;">학습 퀴즈</div>
+        <div style="font-size: 22px; font-weight: 800; margin-top: 8px; line-height: 1.3;">지방세법</div>
+        <div style="font-size: 14px; color: #434A59; margin-top: 6px;">O/X 문제로 핵심 개념을 빠르게 점검해요</div>
+      </div>
+
+      <div style="padding: 0 16px 24px;">
+        <div style="font-size: 12px; font-weight: 700; color: #6E7585; letter-spacing: .03em; padding: 0 8px 10px;">목록</div>
+
+        <button onclick="{{ enterChapter }}" style="width: 100%; text-align: left; border: none; cursor: pointer; background: #FFFFFF; border-radius: 20px; padding: 20px; box-shadow: 0 6px 20px rgba(30,40,70,.06); display: flex; flex-direction: column; gap: 16px; font-family: inherit;" style-active="transform: scale(.985)">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="width: 46px; height: 46px; border-radius: 14px; background: #4F46E5; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; color: #fff;">1</div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 15.5px; font-weight: 700; line-height: 1.35; color: #1A1D24;">지방세기본법 제1장 (총칙)</div>
+              <div style="font-size: 13px; color: #5C6473; margin-top: 4px;">{{ partCount }}개 파트 · {{ totalCount }}문제 · O/X</div>
+            </div>
+            <div style="color: #C2C8D4; font-size: 22px; align-self: center;">›</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="flex: 1; height: 6px; background: #ECEFF4; border-radius: 99px; overflow: hidden;">
+              <div style="height: 100%; background: #4F46E5; border-radius: 99px; width: {{ overallPct }}%;"></div>
+            </div>
+            <div style="font-size: 12px; font-weight: 700; color: #AEB5C4; flex-shrink: 0;">{{ overallAnsweredText }}</div>
+          </div>
+        </button>
+      </div>
+
+      <div style="margin-top: auto; padding: 16px 24px 28px; text-align: center; font-size: 12px; color: #B4BAC8;">탭하여 문제 풀기를 시작하세요</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isToc }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; min-height: 100vh;">
+      <div style="padding: 20px 20px 14px; flex-shrink: 0; position: sticky; top: 0; background: #F7F8FB; z-index: 5;">
+        <button onclick="{{ goHome }}" style="border: none; background: transparent; padding: 0; display: flex; align-items: center; gap: 6px; color: #5C6473; font-size: 12.5px; cursor: pointer; font-family: inherit;">‹ 목록</button>
+        <div style="font-size: 18px; font-weight: 800; margin-top: 12px; color: #1A1D24;">지방세기본법 제1장 (총칙)</div>
+        <div style="font-size: 12.5px; color: #5C6473; margin-top: 4px;">총 {{ partCount }}개 파트 · {{ totalCount }}문제 · {{ chapterDoneText }}</div>
+      </div>
+
+      <div style="flex: 1; padding: 2px 14px 14px;">
+        <sc-for list="{{ tocParts }}" as="p" hint-placeholder-count="10">
+          <button onclick="{{ p.open }}" style="width: 100%; text-align: left; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 14px; padding: 13px 14px; margin-bottom: 8px; box-shadow: 0 2px 8px rgba(30,40,70,.04); font-family: inherit;" style-active="transform: scale(.99)">
+            <sc-if value="{{ p.isDone }}" hint-placeholder-val="{{ false }}">
+              <div style="width: 30px; height: 30px; border-radius: 9px; background: #E8F8EF; color: #15803D; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ p.num }}</div>
+            </sc-if>
+            <sc-if value="{{ p.isActive }}" hint-placeholder-val="{{ false }}">
+              <div style="width: 30px; height: 30px; border-radius: 9px; background: #4F46E5; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ p.num }}</div>
+            </sc-if>
+            <sc-if value="{{ p.isTodo }}" hint-placeholder-val="{{ true }}">
+              <div style="width: 30px; height: 30px; border-radius: 9px; background: #EEF1F6; color: #5A6172; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{ p.num }}</div>
+            </sc-if>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 13.5px; font-weight: 700; color: #1A1D24; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ p.title }}</div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+                <div style="flex: 1; height: 4px; background: #ECEFF4; border-radius: 99px; overflow: hidden;"><div style="height: 100%; background: #4F46E5; border-radius: 99px; width: {{ p.pct }}%;"></div></div>
+                <div style="font-size: 10.5px; font-weight: 700; color: #AEB5C4; flex-shrink: 0;">{{ p.progressText }}</div>
+              </div>
+            </div>
+            <sc-if value="{{ p.isDone }}" hint-placeholder-val="{{ false }}">
+              <span style="color: #15803D; font-size: 14px; flex-shrink: 0;">✓</span>
+            </sc-if>
+            <sc-if value="{{ p.isActive }}" hint-placeholder-val="{{ false }}">
+              <span style="color: #4F46E5; font-size: 18px; flex-shrink: 0;">›</span>
+            </sc-if>
+            <sc-if value="{{ p.isTodo }}" hint-placeholder-val="{{ true }}">
+              <span style="color: #C2C8D4; font-size: 18px; flex-shrink: 0;">›</span>
+            </sc-if>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="padding: 12px 18px 22px; position: sticky; bottom: 0; background: linear-gradient(to top, #F7F8FB 72%, transparent);">
+        <button onclick="{{ showResult }}" style="width: 100%; border: 1.5px solid #DDE3EF; background: #fff; color: #5A6172; font-size: 14.5px; font-weight: 700; padding: 14px; border-radius: 12px; cursor: pointer; font-family: inherit;" style-active="transform: scale(.99)">전체 결과 보기</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; min-height: 100vh;">
+      <div style="padding: 14px 18px 12px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #ECEFF4; position: sticky; top: 0; background: #F7F8FB; z-index: 5;">
+        <button onclick="{{ goToc }}" style="border: none; background: #EAEDF3; width: 32px; height: 32px; border-radius: 9px; font-size: 15px; color: #5A6172; cursor: pointer; flex-shrink: 0; font-family: inherit;">‹</button>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 12.5px; font-weight: 700; color: #1A1D24; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">지방세기본법 제1장 (총칙)</div>
+          <div style="font-size: 10.5px; color: #6E7585; margin-top: 1px;">{{ partProgress }}</div>
+        </div>
+        <div style="font-size: 11px; font-weight: 700; color: #5C6473; flex-shrink: 0;">{{ answeredText }}</div>
+      </div>
+
+      <div style="height: 4px; background: #E4E8F0; flex-shrink: 0;">
+        <div style="height: 100%; background: #4F46E5; width: {{ progressPercent }}%; transition: width .35s cubic-bezier(.4,0,.2,1);"></div>
+      </div>
+
+      <div style="padding: 20px 18px 6px;">
+        <div style="font-size: 11px; font-weight: 700; color: #6E7585; letter-spacing: .03em;">{{ partLabel }}</div>
+        <div style="font-size: 16px; font-weight: 800; margin-top: 4px; color: #1A1D24; word-break: keep-all;">{{ partTitle }}</div>
+      </div>
+
+      <div style="padding: 8px 18px 0;">
+        <div style="background: #fff; border: 1.5px solid #DDD7F7; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(79,70,229,.06);">
+          <button onclick="{{ toggleTheory }}" style="width: 100%; border: none; cursor: pointer; display: flex; align-items: center; gap: 9px; padding: 12px 14px; background: #F3F1FE; font-family: inherit;" style-active="background: #ECE9FC">
+            <div style="width: 24px; height: 24px; border-radius: 7px; background: #4F46E5; color: #fff; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">📖</div>
+            <div style="flex: 1; text-align: left; font-size: 13px; font-weight: 800; color: #312A6B;">이론 정리</div>
+            <sc-if value="{{ theoryOn }}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 11px; font-weight: 800; color: #4F46E5; letter-spacing: .04em;">ON</span>
+                <div style="width: 38px; height: 22px; border-radius: 99px; background: #4F46E5; position: relative; flex-shrink: 0;"><div style="position: absolute; top: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff;"></div></div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ theoryOff }}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 11px; font-weight: 800; color: #A4ABBA; letter-spacing: .04em;">OFF</span>
+                <div style="width: 38px; height: 22px; border-radius: 99px; background: #D6DAE2; position: relative; flex-shrink: 0;"><div style="position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff;"></div></div>
+              </div>
+            </sc-if>
+          </button>
+          <sc-if value="{{ theoryOn }}" hint-placeholder-val="{{ true }}">
+            <div style="padding: 12px 14px 14px;">
+              <sc-if value="{{ hasBlocks }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; flex-direction: column; gap: 11px;">
+                  <sc-for list="{{ theoryBlocks }}" as="b" hint-placeholder-count="6">
+                    <sc-if value="{{ b.isSec }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size: 14.5px; font-weight: 800; color: #312A6B; margin-top: 5px; padding-bottom: 4px; border-bottom: 2px solid #E7E3F3; word-break: keep-all;">{{ b.text }}</div>
+                    </sc-if>
+                    <sc-if value="{{ b.isSub }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size: 13px; font-weight: 800; color: #4F46E5; margin-top: 3px; word-break: keep-all;">{{ b.text }}</div>
+                    </sc-if>
+                    <sc-if value="{{ b.isLead }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size: 13.5px; font-weight: 700; color: #312A6B; background: #F1EFFE; border: 1px solid #DDD7F7; border-radius: 10px; padding: 11px 13px; line-height: 1.6; word-break: keep-all; text-wrap: pretty;">{{ b.text }}</div>
+                    </sc-if>
+                    <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ true }}">
+                      <div style="font-size: 13px; color: #353B47; line-height: 1.68; word-break: keep-all; text-wrap: pretty;">{{ b.text }}</div>
+                    </sc-if>
+                    <sc-if value="{{ b.isTree }}" hint-placeholder-val="{{ false }}">
+                      <div style="background: #F3F2FA; border: 1px solid #E3E0F2; border-radius: 10px; padding: 11px 12px; overflow-x: auto;">
+                        <pre style="margin: 0; font-family: 'D2Coding', 'Menlo', 'Consolas', monospace; font-size: 11.5px; line-height: 1.75; color: #2C3140; white-space: pre;">{{ b.text }}</pre>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isTable }}" hint-placeholder-val="{{ false }}">
+                      <div style="border: 1px solid #E7E3F3; border-radius: 11px; overflow: hidden; background: #fff;">
+                        <sc-for list="{{ b.rows }}" as="r" hint-placeholder-count="3">
+                          <div style="{{ r.style }}">
+                            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="2">
+                              <div style="{{ c.style }}">{{ c.text }}</div>
+                            </sc-for>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isNote }}" hint-placeholder-val="{{ false }}">
+                      <div style="{{ b.noteContainerStyle }}">
+                        <sc-if value="{{ b.hasTitle }}" hint-placeholder-val="{{ false }}">
+                          <div style="{{ b.noteTitleStyle }}">{{ b.noteTitle }}</div>
+                        </sc-if>
+                        <sc-if value="{{ b.hasText }}" hint-placeholder-val="{{ true }}">
+                          <div style="{{ b.noteTextStyle }}">{{ b.noteText }}</div>
+                        </sc-if>
+                        <sc-if value="{{ b.hasList }}" hint-placeholder-val="{{ false }}">
+                          <div style="{{ b.noteListStyle }}">
+                            <sc-for list="{{ b.noteList }}" as="li" hint-placeholder-count="2">
+                              <div style="{{ b.noteItemStyle }}">
+                                <span style="{{ b.noteBulletStyle }}">•</span>
+                                <span style="flex: 1; min-width: 0;">{{ li }}</span>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-if>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ noBlocks }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size: 14px; color: #4A4170; background: #F7F6FD; border-radius: 10px; padding: 11px 13px; line-height: 1.6; font-weight: 600; margin-bottom: 12px; word-break: keep-all; text-wrap: pretty; white-space: pre-line;">{{ theorySummary }}</div>
+                <div style="display: flex; flex-direction: column; gap: 9px;">
+                  <sc-for list="{{ theoryPoints }}" as="pt" hint-placeholder-count="3">
+                    <div style="display: flex; gap: 9px;">
+                      <div style="flex-shrink: 0; width: 19px; height: 19px; border-radius: 6px; background: #EDEAFB; color: #4F46E5; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px;">{{ pt.n }}</div>
+                      <div style="font-size: 14px; color: #2C3140; line-height: 1.55; word-break: keep-all; text-wrap: pretty; white-space: pre-line;"><b style="color: #1A1D24;">{{ pt.term }}</b> · {{ pt.text }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ hasEasy }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top: 12px; background: #FFF7EA; border: 1px solid #F4E2C2; border-radius: 10px; padding: 11px 13px;">
+                    <div style="font-size: 13px; font-weight: 800; color: #B45309; margin-bottom: 6px;">💡 쉬운 설명</div>
+                    <div style="font-size: 14px; color: #4A4032; line-height: 1.65; word-break: keep-all; text-wrap: pretty; white-space: pre-line;">{{ theoryEasy }}</div>
+                  </div>
+                </sc-if>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="padding: 4px 18px 12px; flex: 1;">
+        <sc-for list="{{ partQuestions }}" as="q" hint-placeholder-count="5">
+          <div style="border-bottom: 1px solid #ECEFF4; padding: 13px 0;">
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+              <div style="font-size: 11px; font-weight: 800; color: #C2C8D4; flex-shrink: 0; width: 18px; padding-top: 2px;">{{ q.gLabel }}</div>
+              <div style="flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.55; color: #14171D; word-break: keep-all; text-wrap: pretty;">{{ q.text }}</div>
+              <div style="flex-shrink: 0; display: flex; gap: 6px; align-items: center; padding-top: 1px;">
+                <sc-if value="{{ q.notAnswered }}" hint-placeholder-val="{{ true }}">
+                  <button onclick="{{ q.answerO }}" style="width: 34px; height: 32px; border: 1.5px solid #DDE3EF; background: #fff; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit;" style-active="border-color: #2563EB; background: #F4F8FF">
+                    <span style="width: 13px; height: 13px; border-radius: 50%; border: 2.5px solid #2563EB; display: block;"></span>
+                  </button>
+                  <button onclick="{{ q.answerX }}" style="width: 34px; height: 32px; border: 1.5px solid #DDE3EF; background: #fff; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: inherit; font-size: 15px; color: #EF4444; line-height: 1;" style-active="border-color: #EF4444; background: #FEF4F4">✕</button>
+                </sc-if>
+                <sc-if value="{{ q.isCorrect }}" hint-placeholder-val="{{ false }}">
+                  <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #E8F8EF; color: #15803D; font-size: 14px; font-weight: 800;">✓</span>
+                </sc-if>
+                <sc-if value="{{ q.isWrong }}" hint-placeholder-val="{{ false }}">
+                  <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #FDECEC; color: #DC2626; font-size: 13px; font-weight: 800;">✕</span>
+                </sc-if>
+              </div>
+            </div>
+            <sc-if value="{{ q.answered }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-left: 28px; margin-top: 8px; animation: slideUp .2s ease;">
+                <sc-if value="{{ q.isCorrect }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size: 11.5px; font-weight: 700; color: #15803D;">정답입니다 · 정답 {{ q.correctLabel }}</div>
+                </sc-if>
+                <sc-if value="{{ q.isWrong }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size: 11.5px; font-weight: 700; color: #DC2626;">오답 · 내 답 {{ q.userLabel }} · 정답 {{ q.correctLabel }}</div>
+                </sc-if>
+                <div style="font-size: 12.5px; line-height: 1.65; color: #353B47; margin-top: 5px; word-break: keep-all; text-wrap: pretty; white-space: pre-line;">{{ q.explanation }}</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="padding: 12px 18px 22px; position: sticky; bottom: 0; background: linear-gradient(to top, #F7F8FB 72%, transparent); display: flex; gap: 10px;">
+        <sc-if value="{{ hasPrevPart }}" hint-placeholder-val="{{ false }}">
+          <button onclick="{{ prevPart }}" style="flex-shrink: 0; border: 1.5px solid #DDE3EF; background: #fff; color: #5A6172; font-size: 14px; font-weight: 700; padding: 13px 18px; border-radius: 12px; cursor: pointer; font-family: inherit;" style-active="transform: scale(.98)">이전</button>
+        </sc-if>
+        <button onclick="{{ nextPart }}" style="flex: 1; border: none; background: #1A1D24; color: #fff; font-size: 15px; font-weight: 700; padding: 14px; border-radius: 12px; cursor: pointer; font-family: inherit;" style-active="transform: scale(.99)">{{ nextLabel }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; min-height: 100vh;">
+      <div style="padding: 48px 24px 20px;">
+        <div style="font-size: 13px; font-weight: 600; color: #5C6473;">학습 완료</div>
+        <div style="font-size: 24px; font-weight: 800; margin-top: 8px;">{{ resultTitle }}</div>
+        <div style="font-size: 14px; color: #5C6473; margin-top: 6px;">지방세기본법 제1장 (총칙)</div>
+        <div style="display: flex; align-items: baseline; gap: 6px; margin-top: 22px;">
+          <span style="font-size: 40px; font-weight: 800; color: #1A1D24;">{{ score }}</span>
+          <span style="font-size: 18px; font-weight: 700; color: #B0B6C5;">/ {{ totalCount }}점</span>
+        </div>
+      </div>
+
+      <div style="padding: 8px 16px 16px; flex: 1;">
+        <div style="font-size: 12px; font-weight: 700; color: #6E7585; letter-spacing: .03em; padding: 8px;">다시 보기</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <sc-for list="{{ reviewList }}" as="r" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 14px; padding: 13px 15px; box-shadow: 0 2px 8px rgba(30,40,70,.04);">
+              <span style="font-size: 18px; flex-shrink: 0;">{{ r.resultMark }}</span>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 13.5px; line-height: 1.45; color: #14171D; word-break: keep-all;">{{ r.text }}</div>
+                <div style="font-size: 11.5px; color: #727A8A; margin-top: 3px;">Q{{ r.number }} · 정답 {{ r.correctLabel }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding: 12px 20px 28px; display: flex; gap: 12px; position: sticky; bottom: 0; background: linear-gradient(to top, #F7F8FB 70%, transparent);">
+        <button onclick="{{ goHome }}" style="flex: 1; border: 2px solid #DDE3EF; background: #fff; color: #5A6172; font-size: 15px; font-weight: 700; padding: 15px; border-radius: 16px; cursor: pointer; font-family: inherit;" style-active="transform: scale(.98)">목록으로</button>
+        <button onclick="{{ retry }}" style="flex: 1.4; border: none; background: #4F46E5; color: #fff; font-size: 15px; font-weight: 700; padding: 15px; border-radius: 16px; cursor: pointer; font-family: inherit;" style-active="transform: scale(.98)">다시 풀기</button>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = (() => {
+    let t = true;
+    try { const v = localStorage.getItem('jibangse_theoryOn'); if (v != null) t = v === '1'; } catch (e) {}
+    return { screen: 'home', partIndex: 0, answers: [], theoryOn: t };
+  })();
+
+  componentDidMount() {
+    if (!window.QUIZ_DATA) {
+      const t = setInterval(() => {
+        if (window.QUIZ_DATA) { clearInterval(t); this.forceUpdate(); }
+      }, 30);
+      this._dataTimer = t;
+    }
+  }
+
+  componentWillUnmount() { if (this._dataTimer) clearInterval(this._dataTimer); }
+
+  get data() { return window.QUIZ_DATA || []; }
+  get theoryList() { return window.QUIZ_THEORY || []; }
+
+  toggleTheory() {
+    const v = !this.state.theoryOn;
+    try { localStorage.setItem('jibangse_theoryOn', v ? '1' : '0'); } catch (e) {}
+    this.setState({ theoryOn: v });
+  }
+
+  label(a) { return a === "O" ? "O" : "X"; }
+
+  breakSentences(text) {
+    if (!text) return text;
+    return text.replace(/([.!?✓])\s+/g, "$1\n");
+  }
+
+  processBlocks(blocks) {
+    const noteMap = {
+      ex:   { bg: "#F4F5F8", bd: "#E4E7EE", tc: "#454B59", ttc: "#454B59" },
+      box:  { bg: "#F1EFFE", bd: "#D9D2F7", tc: "#3A3170", ttc: "#4F46E5" },
+      warn: { bg: "#FEF3F0", bd: "#F6D6C9", tc: "#9A3412", ttc: "#9A3412" },
+      tip:  { bg: "#FFF7EA", bd: "#F4E2C2", tc: "#7A4E08", ttc: "#92500A" }
+    };
+    const syms = ["\u2b55", "\u274c", "\u2705", "\u2b06\ufe0f", "\u2b07\ufe0f", ""];
+    return (blocks || []).map((b, bi) => {
+      const o = { key: bi, isSec: false, isSub: false, isLead: false, isP: false, isTable: false, isNote: false, isTree: false };
+      if (b.k === "sec") { o.isSec = true; o.text = b.t; }
+      else if (b.k === "sub") { o.isSub = true; o.text = b.t; }
+      else if (b.k === "lead") { o.isLead = true; o.text = b.t; }
+      else if (b.k === "tree") { o.isTree = true; o.text = b.t; }
+      else if (b.k === "note") {
+        o.isNote = true;
+        const m = noteMap[b.v] || noteMap.ex;
+        o.noteText = b.t || "";
+        o.hasText = !!b.t;
+        o.noteTitle = b.title || "";
+        o.hasTitle = !!b.title;
+        o.noteList = b.list || [];
+        o.hasList = !!(b.list && b.list.length);
+        o.noteContainerStyle = "background:" + m.bg + "; border:1px solid " + m.bd + "; border-radius:10px; padding:10px 12px;";
+        o.noteTitleStyle = "font-size:12.5px; font-weight:800; color:" + m.ttc + "; margin-bottom:6px; word-break:keep-all; text-wrap:pretty;";
+        o.noteTextStyle = "font-size:12.5px; font-weight:600; color:" + m.tc + "; line-height:1.6; word-break:keep-all; text-wrap:pretty; white-space:pre-line;";
+        o.noteListStyle = "display:flex; flex-direction:column; gap:6px;" + (b.title || b.t ? " margin-top:6px;" : "");
+        o.noteItemStyle = "display:flex; gap:7px; font-size:12.5px; font-weight:600; color:" + m.tc + "; line-height:1.55; word-break:keep-all; text-wrap:pretty;";
+        o.noteBulletStyle = "flex-shrink:0; color:" + m.ttc + "; font-weight:800;";
+      }
+      else if (b.k === "table") {
+        o.isTable = true;
+        const firstRow = (b.rows && b.rows[0]) || [];
+        const nc = (b.head && b.head.length) || firstRow.length;
+        let gridCols;
+        if (nc <= 1) {
+          gridCols = "minmax(0,1fr)";
+        } else if (nc === 2) {
+          gridCols = "minmax(0,0.92fr) minmax(0,1.55fr)";
+        } else {
+          gridCols = "minmax(0,0.8fr)";
+          for (let i = 1; i < nc; i++) gridCols += " minmax(0,1fr)";
+        }
+        const cellBase = "padding:9px 11px; font-size:12px; line-height:1.5; word-break:keep-all; text-wrap:pretty; display:flex; align-items:center;";
+        const allRows = [];
+        if (b.head && b.head.length) allRows.push({ head: true, cells: b.head });
+        (b.rows || []).forEach(r => allRows.push({ head: false, cells: r }));
+        o.rows = allRows.map((r, ri) => {
+          const isLastRow = ri === allRows.length - 1;
+          const cells = r.cells.map((c, ci) => {
+            const isLastCol = ci === r.cells.length - 1;
+            const isSym = syms.indexOf(c) !== -1;
+            let s = cellBase;
+            if (r.head) s += " background:#EEEAFB; font-weight:800; color:#312A6B;";
+            else if (ci === 0) s += " background:#FAF9FE; font-weight:700; color:#1F2430;";
+            else s += " color:#3A4150;";
+            if (!isLastCol) s += " border-right:1px solid #EFECF8;";
+            if (isSym) s += " justify-content:center; font-size:14px;";
+            return { text: c, style: s };
+          });
+          let rs = "display:grid; grid-template-columns:" + gridCols + ";";
+          if (!isLastRow) rs += " border-bottom:1px solid #ECE9F6;";
+          return { style: rs, cells: cells };
+        });
+      }
+      else { o.isP = true; o.text = b.t; }
+      return o;
+    });
+  }
+
+  get parts() {
+    const groups = [];
+    this.data.forEach((q, i) => {
+      let g = groups.find(x => x.name === q.part);
+      if (!g) { g = { name: q.part, items: [] }; groups.push(g); }
+      g.items.push(Object.assign({ gi: i }, q));
+    });
+    return groups;
+  }
+
+  freshAnswers() { return new Array(this.data.length).fill(null); }
+
+  enterChapter() {
+    const a = this.state.answers.length === this.data.length ? this.state.answers : this.freshAnswers();
+    this.setState({ screen: 'toc', answers: a });
+  }
+
+  openPart(i) { this.setState({ screen: 'quiz', partIndex: i }); }
+
+  goToc() { this.setState({ screen: 'toc' }); }
+
+  showResult() { this.setState({ screen: 'result' }); }
+
+  retry() { this.setState({ screen: 'toc', partIndex: 0, answers: this.freshAnswers() }); }
+
+  pick(gi, choice) {
+    if (this.state.answers[gi] != null) return;
+    const answers = this.state.answers.slice();
+    answers[gi] = choice;
+    this.setState({ answers });
+  }
+
+  prevPart() {
+    if (this.state.partIndex > 0) this.setState({ partIndex: this.state.partIndex - 1 });
+  }
+
+  nextPart() {
+    if (this.state.partIndex >= this.parts.length - 1) {
+      this.setState({ screen: 'result' });
+    } else {
+      this.setState({ partIndex: this.state.partIndex + 1 });
+    }
+  }
+
+  splitPartName(name) {
+    const m = name.match(/^(PART\s*\d+)\.\s*(.*)$/);
+    if (m) return { label: m[1], title: m[2] };
+    return { label: "", title: name };
+  }
+
+  renderVals() {
+    const d = this.data;
+    const total = d.length;
+    const screen = this.state.screen;
+    const parts = this.parts;
+
+    const totalAnswered = this.state.answers.filter(a => a != null).length;
+    const tocParts = parts.map((p, i) => {
+      const count = p.items.length;
+      const done = p.items.filter(it => this.state.answers[it.gi] != null).length;
+      const split = this.splitPartName(p.name);
+      const status = done >= count ? 'done' : (done > 0 ? 'active' : 'todo');
+      return {
+        num: i + 1,
+        title: split.title,
+        count,
+        done,
+        pct: count ? Math.round((done / count) * 100) : 0,
+        progressText: done + " / " + count,
+        isDone: status === 'done',
+        isActive: status === 'active',
+        isTodo: status === 'todo',
+        open: () => this.openPart(i)
+      };
+    });
+
+    // Base object works even before data loads (home screen).
+    const base = {
+      isHome: screen === 'home',
+      isToc: screen === 'toc',
+      isQuiz: screen === 'quiz',
+      isResult: screen === 'result',
+      totalCount: total,
+      partCount: parts.length,
+      tocParts,
+      chapterDoneText: totalAnswered + "문제 완료",
+      overallPct: total ? Math.round((totalAnswered / total) * 100) : 0,
+      overallAnsweredText: totalAnswered + " / " + total,
+      enterChapter: () => this.enterChapter(),
+      goToc: () => this.goToc(),
+      showResult: () => this.showResult(),
+      goHome: () => this.setState({ screen: 'home' })
+    };
+
+    if (parts.length === 0) {
+      return Object.assign(base, {
+        partLabel: "", partTitle: "", partProgress: "", answeredText: "0 / 0",
+        partQuestions: [], progressPercent: 0, hasPrevPart: false,
+        prevPart: () => {}, nextPart: () => {}, nextLabel: "다음 파트 →",
+        theoryOn: this.state.theoryOn, theoryOff: !this.state.theoryOn,
+        toggleTheory: () => this.toggleTheory(), theorySummary: "", theoryPoints: [],
+        theoryEasy: "", hasEasy: false, hasBlocks: false, noBlocks: true, theoryBlocks: [],
+        score: 0, resultTitle: "", reviewList: [],
+        retry: () => this.retry()
+      });
+    }
+
+    const pIdx = Math.min(this.state.partIndex, parts.length - 1);
+    const curPart = parts[pIdx] || parts[0];
+    const split = this.splitPartName(curPart.name);
+    const theory = this.theoryList[pIdx] || { summary: "", points: [] };
+    const theoryPoints = (theory.points || []).map((p, i) => ({ n: i + 1, term: p.term, text: this.breakSentences(p.text) }));
+    const hasBlocks = !!(theory.blocks && theory.blocks.length);
+    const theoryBlocks = this.processBlocks(theory.blocks);
+
+    const partQuestions = curPart.items.map(it => {
+      const sel = this.state.answers[it.gi] != null ? this.state.answers[it.gi] : null;
+      const answered = sel != null;
+      const isCorrect = answered && sel === it.answer;
+      return {
+        gLabel: String(it.gi + 1).padStart(2, '0'),
+        text: it.text,
+        notAnswered: !answered,
+        answered,
+        isCorrect,
+        isWrong: answered && !isCorrect,
+        userLabel: answered ? this.label(sel) : "",
+        correctLabel: this.label(it.answer),
+        explanation: this.breakSentences(it.exp),
+        answerO: () => this.pick(it.gi, "O"),
+        answerX: () => this.pick(it.gi, "X")
+      };
+    });
+
+    const partAnswered = curPart.items.filter(it => this.state.answers[it.gi] != null).length;
+    const isLastPart = pIdx >= parts.length - 1;
+
+    const score = this.state.answers.reduce((acc, a, i) => acc + (a === d[i].answer ? 1 : 0), 0);
+    const pct = total ? Math.round((score / total) * 100) : 0;
+    let resultTitle;
+    if (pct >= 90) resultTitle = "완벽해요!";
+    else if (pct >= 70) resultTitle = "잘했어요!";
+    else if (pct >= 50) resultTitle = "조금만 더!";
+    else resultTitle = "다시 복습해요";
+
+    const reviewList = d.map((q, i) => {
+      const a = this.state.answers[i];
+      const ok = a === q.answer;
+      return {
+        number: String(i + 1).padStart(2, '0'),
+        text: q.text,
+        correctLabel: this.label(q.answer),
+        resultMark: ok ? "\u2705" : "\u274C"
+      };
+    });
+
+    return Object.assign(base, {
+      partLabel: split.label,
+      partTitle: split.title,
+      partProgress: "PART " + (pIdx + 1) + " / " + parts.length,
+      answeredText: partAnswered + " / " + curPart.items.length,
+      partQuestions,
+      progressPercent: total ? Math.round((totalAnswered / total) * 100) : 0,
+      hasPrevPart: pIdx > 0,
+      prevPart: () => this.prevPart(),
+      nextPart: () => this.nextPart(),
+      nextLabel: isLastPart ? "결과 보기" : "다음 파트 →",
+
+      theoryOn: this.state.theoryOn,
+      theoryOff: !this.state.theoryOn,
+      toggleTheory: () => this.toggleTheory(),
+      theorySummary: this.breakSentences(theory.summary),
+      theoryPoints,
+      theoryEasy: this.breakSentences(theory.easy || ""),
+      hasEasy: !!theory.easy,
+      hasBlocks,
+      noBlocks: !hasBlocks,
+      theoryBlocks,
+
+      score,
+      resultTitle,
+      reviewList,
+      retry: () => this.retry()
+    });
+  }
+}
+</script>
+</body>
+</html>
