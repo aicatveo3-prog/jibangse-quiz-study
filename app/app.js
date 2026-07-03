@@ -147,7 +147,12 @@
           else s += " color:#3A4150;";
           if (!isLastCol) s += " border-right:1px solid #EFECF8;";
           if (isSym) s += " justify-content:center;font-size:14px;";
-          out += '<div style="' + s + '">' + esc(c) + '</div>';
+          // 방향 화살표(⬆️/⬇️)는 이모지가 모두 같은 파란색이라 구분이 어렵다.
+          // 색상 글리프로 치환: 위=파랑 ▲, 아래=빨강 ▼ (아래가 눈에 띄게).
+          var glyph = null;
+          if (c && c.charCodeAt(0) === 0x2b06) glyph = '<span style="color:#2563EB;font-size:15px;font-weight:700;line-height:1;">▲</span>';
+          else if (c && c.charCodeAt(0) === 0x2b07) glyph = '<span style="color:#DC2626;font-size:15px;font-weight:700;line-height:1;">▼</span>';
+          out += '<div style="' + s + '">' + (glyph || esc(c)) + '</div>';
         });
         out += '</div>';
       });
