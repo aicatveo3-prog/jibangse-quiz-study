@@ -148,10 +148,11 @@
           if (!isLastCol) s += " border-right:1px solid #EFECF8;";
           if (isSym) s += " justify-content:center;font-size:14px;";
           // 방향 화살표(⬆️/⬇️)는 이모지가 모두 같은 파란색이라 구분이 어렵다.
-          // 색상 글리프로 치환: 위=파랑 ▲, 아래=빨강 ▼ (아래가 눈에 띄게).
+          // 색상 글리프로 치환: 위=파랑 ▲, 아래=빨강 ▼. 특히 아래 화살표는
+          // 빨간 배지로 감싸 한눈에 구분되도록 강조한다.
           var glyph = null;
-          if (c && c.charCodeAt(0) === 0x2b06) glyph = '<span style="color:#2563EB;font-size:15px;font-weight:700;line-height:1;">▲</span>';
-          else if (c && c.charCodeAt(0) === 0x2b07) glyph = '<span style="color:#DC2626;font-size:15px;font-weight:700;line-height:1;">▼</span>';
+          if (c && c.charCodeAt(0) === 0x2b06) glyph = '<span style="color:#2563EB;font-size:15px;font-weight:800;line-height:1;">▲</span>';
+          else if (c && c.charCodeAt(0) === 0x2b07) glyph = '<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:#FDE8E8;color:#DC2626;font-size:15px;font-weight:800;line-height:1;">▼</span>';
           out += '<div style="' + s + '">' + (glyph || esc(c)) + '</div>';
         });
         out += '</div>';
