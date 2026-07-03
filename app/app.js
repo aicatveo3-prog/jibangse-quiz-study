@@ -5,6 +5,7 @@
   "use strict";
 
   var STORAGE_KEY = "jibangse_theoryOn";
+  var SESSION_KEY = "jibangse_session_v1"; // 진행 상태(화면/파트/답) 저장 키
 
   // ---- state ---------------------------------------------------------------
   var state = {
@@ -68,6 +69,39 @@
     var a = new Array(data().length);
     for (var i = 0; i < a.length; i++) a[i] = null;
     return a;
+  }
+
+  // ---- 진행 상태 저장/복원 -------------------------------------------------
+  // 모바일에서 앱을 껐다 켜면(페이지 새로고침) 초기화되던 문제 해결:
+  // 화면·파트·푼 답을 localStorage 에 저장하고 재실행 시 그대로 복원한다.
+  function saveSession() {
+    if (!data().length) return; // 데이터 로딩 전(초기 렌더)에는 저장하지 않는다
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify({
+        screen: state.screen,
+        partIndex: state.partIndex,
+        answers: state.answers
+      }));
+    } catch (e) {}
+  }
+
+  // 저장본을 검증해 복원 가능한 값이면 반환, 아니면 null.
+  // (문항 수가 바뀐 옛 저장본 등은 폐기하여 불일치를 방지한다.)
+  function loadSession() {
+    try {
+      var raw = localStorage.getItem(SESSION_KEY);
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (!s || typeof s !== "object") return null;
+      var validScreens = { home: 1, toc: 1, quiz: 1, result: 1 };
+      if (!validScreens[s.screen]) return null;
+      if (!Array.isArray(s.answers) || s.answers.length !== data().length) return null;
+      var pCount = parts().length;
+      var pIdx = typeof s.partIndex === "number" ? s.partIndex : 0;
+      if (pIdx < 0 || pIdx >= pCount) pIdx = 0;
+      var ans = s.answers.map(function (a) { return a === "O" || a === "X" ? a : null; });
+      return { screen: s.screen, partIndex: pIdx, answers: ans };
+    } catch (e) { return null; }
   }
 
   // ---- theory block renderer (port of processBlocks) -----------------------
@@ -459,6 +493,8 @@
       lastNavKey = navKey;
       window.scrollTo(0, 0);
     }
+
+    saveSession();
   }
 
   // ---- actions -------------------------------------------------------------
@@ -489,6 +525,7 @@
     var it = Object.assign({ gi: gi }, data()[gi]);
     row.outerHTML = questionRowHTML(it);
     updateQuizProgress();
+    saveSession(); // 답 선택도 저장 (pick 은 부분 갱신이라 render 를 거치지 않음)
   }
 
   // 상단 진행바 + "n / m" 카운터만 갱신 (현재 파트 기준)
@@ -539,15 +576,26 @@
   });
 
   // ---- boot ----------------------------------------------------------------
-  function boot() {
-    if (!window.QUIZ_DATA) {
-      // quizdata.js may still be parsing on very slow loads; retry briefly.
-      var t = setInterval(function () {
-        if (window.QUIZ_DATA) { clearInterval(t); state.answers = freshAnswers(); render(); }
-      }, 30);
+  // 데이터가 준비되면 저장된 진행 상태를 복원하고, 없으면 초기 상태로 시작한다.
+  function start() {
+    var saved = loadSession();
+    if (saved) {
+      state.screen = saved.screen;
+      state.partIndex = saved.partIndex;
+      state.answers = saved.answers;
+    } else {
+      state.answers = freshAnswers();
     }
-    state.answers = freshAnswers();
     render();
+  }
+
+  function boot() {
+    if (window.QUIZ_DATA) { start(); return; }
+    // quizdata.js may still be parsing on very slow loads; show loading, then retry.
+    render();
+    var t = setInterval(function () {
+      if (window.QUIZ_DATA) { clearInterval(t); start(); }
+    }, 30);
   }
 
   boot();
