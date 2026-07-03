@@ -268,6 +268,48 @@
     '</div>';
   }
 
+  // 한 문제 줄 HTML — 답 선택 시 이 줄만 교체해 전체 리렌더(깜빡임)를 피한다.
+  function questionRowHTML(it) {
+    var sel = state.answers[it.gi] != null ? state.answers[it.gi] : null;
+    var answered = sel != null;
+    var isCorrect = answered && sel === it.answer;
+    var gLabel = String(it.gi + 1).padStart(2, "0");
+
+    var controls;
+    if (!answered) {
+      controls =
+        '<button data-action="answer" data-arg="' + it.gi + '|O" class="a-ox-o" style="width:34px;height:32px;border:1.5px solid #DDE3EF;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;">' +
+          '<span style="width:13px;height:13px;border-radius:50%;border:2.5px solid #2563EB;display:block;"></span>' +
+        '</button>' +
+        '<button data-action="answer" data-arg="' + it.gi + '|X" class="a-ox-x" style="width:34px;height:32px;border:1.5px solid #DDE3EF;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:15px;color:#EF4444;line-height:1;">✕</button>';
+    } else if (isCorrect) {
+      controls = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#E8F8EF;color:#15803D;font-size:14px;font-weight:800;">✓</span>';
+    } else {
+      controls = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#FDECEC;color:#DC2626;font-size:13px;font-weight:800;">✕</span>';
+    }
+
+    var detail = "";
+    if (answered) {
+      var head = isCorrect
+        ? '<div style="font-size:11.5px;font-weight:700;color:#15803D;">정답입니다 · 정답 ' + label(it.answer) + '</div>'
+        : '<div style="font-size:11.5px;font-weight:700;color:#DC2626;">오답 · 내 답 ' + label(sel) + ' · 정답 ' + label(it.answer) + '</div>';
+      detail =
+        '<div style="margin-left:28px;margin-top:8px;animation:slideUp .2s ease;">' +
+          head +
+          '<div style="font-size:12.5px;line-height:1.65;color:#353B47;margin-top:5px;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(breakSentences(it.exp)) + '</div>' +
+        '</div>';
+    }
+
+    return '<div id="q-' + it.gi + '" style="border-bottom:1px solid #ECEFF4;padding:13px 0;">' +
+      '<div style="display:flex;gap:10px;align-items:flex-start;">' +
+        '<div style="font-size:11px;font-weight:800;color:#C2C8D4;flex-shrink:0;width:18px;padding-top:2px;">' + gLabel + '</div>' +
+        '<div style="flex:1;min-width:0;font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
+        '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + controls + '</div>' +
+      '</div>' +
+      detail +
+    '</div>';
+  }
+
   function renderQuiz() {
     var ps = parts();
     var total = data().length;
@@ -296,47 +338,7 @@
       ? '<div style="padding:12px 14px 14px;">' + renderTheoryBody(theory) + '</div>'
       : '';
 
-    var questions = curPart.items.map(function (it) {
-      var sel = state.answers[it.gi] != null ? state.answers[it.gi] : null;
-      var answered = sel != null;
-      var isCorrect = answered && sel === it.answer;
-      var isWrong = answered && !isCorrect;
-      var gLabel = String(it.gi + 1).padStart(2, "0");
-
-      var controls;
-      if (!answered) {
-        controls =
-          '<button data-action="answer" data-arg="' + it.gi + '|O" class="a-ox-o" style="width:34px;height:32px;border:1.5px solid #DDE3EF;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;">' +
-            '<span style="width:13px;height:13px;border-radius:50%;border:2.5px solid #2563EB;display:block;"></span>' +
-          '</button>' +
-          '<button data-action="answer" data-arg="' + it.gi + '|X" class="a-ox-x" style="width:34px;height:32px;border:1.5px solid #DDE3EF;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:15px;color:#EF4444;line-height:1;">✕</button>';
-      } else if (isCorrect) {
-        controls = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#E8F8EF;color:#15803D;font-size:14px;font-weight:800;">✓</span>';
-      } else {
-        controls = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#FDECEC;color:#DC2626;font-size:13px;font-weight:800;">✕</span>';
-      }
-
-      var detail = "";
-      if (answered) {
-        var head = isCorrect
-          ? '<div style="font-size:11.5px;font-weight:700;color:#15803D;">정답입니다 · 정답 ' + label(it.answer) + '</div>'
-          : '<div style="font-size:11.5px;font-weight:700;color:#DC2626;">오답 · 내 답 ' + label(sel) + ' · 정답 ' + label(it.answer) + '</div>';
-        detail =
-          '<div style="margin-left:28px;margin-top:8px;animation:slideUp .2s ease;">' +
-            head +
-            '<div style="font-size:12.5px;line-height:1.65;color:#353B47;margin-top:5px;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(breakSentences(it.exp)) + '</div>' +
-          '</div>';
-      }
-
-      return '<div style="border-bottom:1px solid #ECEFF4;padding:13px 0;">' +
-        '<div style="display:flex;gap:10px;align-items:flex-start;">' +
-          '<div style="font-size:11px;font-weight:800;color:#C2C8D4;flex-shrink:0;width:18px;padding-top:2px;">' + gLabel + '</div>' +
-          '<div style="flex:1;min-width:0;font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
-          '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + controls + '</div>' +
-        '</div>' +
-        detail +
-      '</div>';
-    }).join("");
+    var questions = curPart.items.map(questionRowHTML).join("");
 
     var prevBtn = pIdx > 0
       ? '<button data-action="prevPart" class="a-scale98" style="flex-shrink:0;border:1.5px solid #DDE3EF;background:#fff;color:#5A6172;font-size:14px;font-weight:700;padding:13px 18px;border-radius:12px;cursor:pointer;font-family:inherit;">이전</button>'
@@ -350,10 +352,10 @@
           '<div style="font-size:12.5px;font-weight:700;color:#1A1D24;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">지방세기본법 제1장 (총칙)</div>' +
           '<div style="font-size:10.5px;color:#6E7585;margin-top:1px;">PART ' + (pIdx + 1) + ' / ' + ps.length + '</div>' +
         '</div>' +
-        '<div style="font-size:11px;font-weight:700;color:#5C6473;flex-shrink:0;">' + partAnswered + ' / ' + curPart.items.length + '</div>' +
+        '<div id="quiz-anstext" style="font-size:11px;font-weight:700;color:#5C6473;flex-shrink:0;">' + partAnswered + ' / ' + curPart.items.length + '</div>' +
       '</div>' +
       '<div style="height:4px;background:#E4E8F0;flex-shrink:0;">' +
-        '<div style="height:100%;background:#4F46E5;width:' + progressPercent + '%;transition:width .35s cubic-bezier(.4,0,.2,1);"></div>' +
+        '<div id="quiz-pbar" style="height:100%;background:#4F46E5;width:' + progressPercent + '%;transition:width .35s cubic-bezier(.4,0,.2,1);"></div>' +
       '</div>' +
       '<div style="padding:20px 18px 6px;">' +
         '<div style="font-size:11px;font-weight:700;color:#6E7585;letter-spacing:.03em;">' + esc(split.label) + '</div>' +
@@ -474,7 +476,28 @@
   function pick(gi, choice) {
     if (state.answers[gi] != null) return;
     state.answers[gi] = choice;
-    render();
+
+    // 전체 리렌더 대신 해당 문제 줄 + 진행률만 갱신 → 깜빡임 없음
+    var row = document.getElementById("q-" + gi);
+    if (!row) { render(); return; }
+    var it = Object.assign({ gi: gi }, data()[gi]);
+    row.outerHTML = questionRowHTML(it);
+    updateQuizProgress();
+  }
+
+  // 상단 진행바 + "n / m" 카운터만 갱신 (현재 파트 기준)
+  function updateQuizProgress() {
+    var ps = parts();
+    var total = data().length;
+    var pIdx = Math.min(state.partIndex, ps.length - 1);
+    var curPart = ps[pIdx] || ps[0];
+    var totalAnswered = state.answers.filter(function (a) { return a != null; }).length;
+    var partAnswered = curPart.items.filter(function (it) { return state.answers[it.gi] != null; }).length;
+
+    var bar = document.getElementById("quiz-pbar");
+    if (bar) bar.style.width = (total ? Math.round((totalAnswered / total) * 100) : 0) + "%";
+    var ans = document.getElementById("quiz-anstext");
+    if (ans) ans.textContent = partAnswered + " / " + curPart.items.length;
   }
 
   function prevPart() {
