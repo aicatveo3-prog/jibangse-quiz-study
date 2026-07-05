@@ -309,30 +309,125 @@
   }
 
   // ⭐ 최종 암기 체크리스트 — 파트 목록 상단 카드 + 전용 화면
+  // 항목을 탭하면 "암기 완료" 체크되고 localStorage 에 저장된다.
+  var CHECK_KEY = "jibangse_checklist_v1";
+
+  function checklistItems() {
+    var cl = window.QUIZ_CHECKLIST;
+    if (!cl || !cl.groups) return [];
+    var out = [];
+    cl.groups.forEach(function (g) { g.items.forEach(function (it) { out.push(it); }); });
+    return out;
+  }
+
+  function loadChecks() {
+    var total = checklistItems().length;
+    try {
+      var raw = localStorage.getItem(CHECK_KEY);
+      if (raw) {
+        var arr = JSON.parse(raw);
+        if (Array.isArray(arr) && arr.length === total) return arr.map(function (v) { return v ? 1 : 0; });
+      }
+    } catch (e) {}
+    var fresh = [];
+    for (var i = 0; i < total; i++) fresh.push(0);
+    return fresh;
+  }
+
+  function saveChecks(arr) {
+    try { localStorage.setItem(CHECK_KEY, JSON.stringify(arr)); } catch (e) {}
+  }
+
   function renderChecklistCard() {
     if (!window.QUIZ_CHECKLIST) return "";
+    var checks = loadChecks();
+    var done = checks.filter(Boolean).length;
+    var total = checks.length;
+    var pct = total ? Math.round((done / total) * 100) : 0;
     return '<button data-action="openChecklist" class="a-scale99" style="width:100%;text-align:left;border:1.5px solid #F4E2C2;cursor:pointer;display:flex;align-items:center;gap:12px;background:#FFF9EF;border-radius:14px;padding:13px 14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(30,40,70,.04);font-family:inherit;">' +
       '<div style="width:30px;height:30px;border-radius:9px;background:#FDEEC8;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">⭐</div>' +
       '<div style="flex:1;min-width:0;">' +
         '<div style="font-size:13.5px;font-weight:800;color:#7A4E08;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">최종 암기 체크리스트</div>' +
-        '<div style="font-size:11px;font-weight:600;color:#B08A3E;margin-top:4px;">제1장 전체 총정리 · 25항목</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">' +
+          '<div style="flex:1;height:4px;background:#F4E2C2;border-radius:99px;overflow:hidden;"><div style="height:100%;background:#D97706;border-radius:99px;width:' + pct + '%;"></div></div>' +
+          '<div style="font-size:10.5px;font-weight:700;color:#B08A3E;flex-shrink:0;">암기 ' + done + ' / ' + total + '</div>' +
+        '</div>' +
       '</div>' +
       '<span style="color:#D9B96E;font-size:18px;flex-shrink:0;">›</span>' +
     '</button>';
   }
 
+  // 한 항목 카드 HTML — 체크 토글 시 이 카드만 교체해 깜빡임·스크롤 이동을 피한다.
+  function checklistItemHTML(it, idx, checked) {
+    var box = checked
+      ? '<div style="width:22px;height:22px;border-radius:7px;background:#15803D;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">✓</div>'
+      : '<div style="width:22px;height:22px;border-radius:7px;border:1.5px solid #D5DBE7;background:#fff;flex-shrink:0;margin-top:1px;"></div>';
+    return '<button id="cl-' + idx + '" data-action="toggleCheck" data-arg="' + idx + '" class="a-scale99" style="width:100%;text-align:left;border:none;cursor:pointer;display:flex;gap:11px;background:#fff;border-radius:13px;padding:12px 13px;box-shadow:0 2px 8px rgba(30,40,70,.04);font-family:inherit;' + (checked ? 'opacity:.45;' : '') + '">' +
+      box +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:13.5px;font-weight:800;color:#1A1D24;word-break:keep-all;' + (checked ? 'text-decoration:line-through;text-decoration-color:#9AA1B0;' : '') + '">' + esc(it.key) + '</div>' +
+        '<div style="display:flex;gap:6px;margin-top:7px;font-size:12.5px;line-height:1.55;word-break:keep-all;text-wrap:pretty;">' +
+          '<span style="flex-shrink:0;font-weight:800;color:#15803D;">⭕</span>' +
+          '<span style="flex:1;min-width:0;color:#1F5132;font-weight:600;">' + esc(it.o) + '</span>' +
+        '</div>' +
+        '<div style="display:flex;gap:6px;margin-top:4px;font-size:12.5px;line-height:1.55;word-break:keep-all;text-wrap:pretty;">' +
+          '<span style="flex-shrink:0;font-weight:800;color:#DC2626;">❌</span>' +
+          '<span style="flex:1;min-width:0;color:#8C3A2B;font-weight:600;">' + esc(it.x) + '</span>' +
+        '</div>' +
+      '</div>' +
+    '</button>';
+  }
+
   function renderChecklist() {
-    var cl = window.QUIZ_CHECKLIST || { blocks: [] };
-    var inner = (cl.blocks || []).map(renderBlock).join("");
+    var cl = window.QUIZ_CHECKLIST || { groups: [] };
+    var checks = loadChecks();
+    var done = checks.filter(Boolean).length;
+    var total = checks.length;
+    var pct = total ? Math.round((done / total) * 100) : 0;
+
+    var body = "";
+    if (cl.lead) {
+      body += '<div style="font-size:13px;font-weight:700;color:#312A6B;background:#F1EFFE;border:1px solid #DDD7F7;border-radius:10px;padding:11px 13px;line-height:1.6;word-break:keep-all;text-wrap:pretty;margin-bottom:14px;">' + esc(cl.lead) + '</div>';
+    }
+    var idx = 0;
+    (cl.groups || []).forEach(function (g) {
+      body += '<div style="font-size:12.5px;font-weight:800;color:#4F46E5;margin:16px 2px 8px;word-break:keep-all;">' + esc(g.title) + '</div>';
+      body += '<div style="display:flex;flex-direction:column;gap:8px;">';
+      g.items.forEach(function (it) {
+        body += checklistItemHTML(it, idx, !!checks[idx]);
+        idx++;
+      });
+      body += '</div>';
+    });
+
     return '' +
     '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
-      '<div style="padding:20px 20px 14px;flex-shrink:0;position:sticky;top:0;background:#F7F8FB;z-index:5;">' +
+      '<div style="padding:20px 20px 12px;flex-shrink:0;position:sticky;top:0;background:#F7F8FB;z-index:5;box-shadow:0 6px 12px -10px rgba(30,40,70,.15);">' +
         '<button data-action="goToc" style="border:none;background:transparent;padding:0;display:flex;align-items:center;gap:6px;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 파트 목록</button>' +
         '<div style="font-size:18px;font-weight:800;margin-top:12px;color:#1A1D24;">⭐ 최종 암기 체크리스트</div>' +
-        '<div style="font-size:12.5px;color:#5C6473;margin-top:4px;">제1장 (총칙) 전체 총정리 · 25항목</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-top:9px;">' +
+          '<div style="flex:1;height:5px;background:#ECEFF4;border-radius:99px;overflow:hidden;"><div id="cl-pbar" style="height:100%;background:#15803D;border-radius:99px;width:' + pct + '%;transition:width .25s;"></div></div>' +
+          '<div id="cl-count" style="font-size:11.5px;font-weight:800;color:#15803D;flex-shrink:0;">암기 완료 ' + done + ' / ' + total + '</div>' +
+        '</div>' +
       '</div>' +
-      '<div style="flex:1;padding:6px 16px 28px;"><div style="display:flex;flex-direction:column;gap:11px;">' + inner + '</div></div>' +
+      '<div style="flex:1;padding:8px 16px 30px;">' + body + '</div>' +
     '</div>';
+  }
+
+  function toggleCheck(idx) {
+    var items = checklistItems();
+    if (idx < 0 || idx >= items.length) return;
+    var checks = loadChecks();
+    checks[idx] = checks[idx] ? 0 : 1;
+    saveChecks(checks);
+    var row = document.getElementById("cl-" + idx);
+    if (row) row.outerHTML = checklistItemHTML(items[idx], idx, !!checks[idx]);
+    var done = checks.filter(Boolean).length;
+    var total = checks.length;
+    var pbar = document.getElementById("cl-pbar");
+    if (pbar) pbar.style.width = (total ? Math.round((done / total) * 100) : 0) + "%";
+    var cnt = document.getElementById("cl-count");
+    if (cnt) cnt.textContent = "암기 완료 " + done + " / " + total;
   }
 
   // 한 문제 줄 HTML — 답 선택 시 이 줄만 교체해 전체 리렌더(깜빡임)를 피한다.
@@ -592,6 +687,7 @@
       case "goToc": goToc(); break;
       case "goHome": goHome(); break;
       case "openChecklist": state.screen = "checklist"; render(); break;
+      case "toggleCheck": toggleCheck(parseInt(arg, 10)); break;
       case "showResult": showResult(); break;
       case "retry": retry(); break;
       case "toggleTheory": toggleTheory(); break;
