@@ -1,15 +1,18 @@
-/* 지방세기본법 제1장 (총칙) OX 퀴즈 — 독립 실행 정적 사이트
- * Claude Design DC 프로토타입(지방세기본법 제1장 (총칙).dc.html)을
- * 프레임워크 의존성 없이 1:1 재현한 구현. 데이터는 quizdata.js 그대로 사용. */
+/* 지방세 OX 퀴즈 — 독립 실행 정적 사이트 (다장 구조)
+ * 챕터 목록은 chapters.js(window.CHAPTER_LIST), 장별 데이터는 quizdata-chNN.js가
+ * window.QUIZ_CHAPTERS[id] = { data, theory, checklist } 로 등록하며 지연 로딩된다. */
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "jibangse_theoryOn";
-  var SESSION_KEY = "jibangse_session_v1"; // 진행 상태(화면/파트/답) 저장 키
+  var STORAGE_KEY = "jibangse_theoryOn";      // 이론 토글 (전역 공통)
+  var LAST_CH_KEY = "jibangse_last_chapter";  // 마지막으로 학습한 챕터 id
+  function sessionKey() { return "jibangse_session_" + state.chapterId; }   // 챕터별 진행 상태
+  function checkKey() { return "jibangse_checklist_" + state.chapterId; }   // 챕터별 체크리스트
 
   // ---- state ---------------------------------------------------------------
   var state = {
-    screen: "home",   // home | toc | quiz | result
+    screen: "home",   // home | toc | quiz | result | checklist
+    chapterId: null,  // 현재 챕터 id (예: "ch01")
     partIndex: 0,
     answers: [],
     theoryOn: (function () {
@@ -25,8 +28,29 @@
   var lastNavKey = null;
 
   // ---- data accessors ------------------------------------------------------
-  function data() { return window.QUIZ_DATA || []; }
-  function theoryList() { return window.QUIZ_THEORY || []; }
+  function chapters() { return window.CHAPTER_LIST || []; }
+  function chapterMeta(id) {
+    var m = null;
+    chapters().forEach(function (c) { if (c.id === (id || state.chapterId)) m = c; });
+    return m;
+  }
+  function chapterTitle() { var m = chapterMeta(); return m ? m.title : ""; }
+  function currentChapter() { return (window.QUIZ_CHAPTERS || {})[state.chapterId] || null; }
+  function data() { var c = currentChapter(); return (c && c.data) || []; }
+  function theoryList() { var c = currentChapter(); return (c && c.theory) || []; }
+  function chapterChecklist() { var c = currentChapter(); return (c && c.checklist) || null; }
+
+  // 챕터 데이터 파일 지연 로딩 — 로드 완료 후 cb(성공 여부) 호출
+  function loadChapter(id, cb) {
+    if ((window.QUIZ_CHAPTERS || {})[id]) { cb(true); return; }
+    var meta = chapterMeta(id);
+    if (!meta) { cb(false); return; }
+    var s = document.createElement("script");
+    s.src = meta.file + (window.ASSET_VER ? "?v=" + window.ASSET_VER : "");
+    s.onload = function () { cb(!!(window.QUIZ_CHAPTERS || {})[id]); };
+    s.onerror = function () { cb(false); };
+    document.body.appendChild(s);
+  }
 
   // ---- helpers -------------------------------------------------------------
   function esc(s) {
@@ -73,15 +97,16 @@
 
   // ---- 진행 상태 저장/복원 -------------------------------------------------
   // 모바일에서 앱을 껐다 켜면(페이지 새로고침) 초기화되던 문제 해결:
-  // 화면·파트·푼 답을 localStorage 에 저장하고 재실행 시 그대로 복원한다.
+  // 화면·파트·푼 답을 챕터별 localStorage 키에 저장하고 재실행 시 그대로 복원한다.
   function saveSession() {
-    if (!data().length) return; // 데이터 로딩 전(초기 렌더)에는 저장하지 않는다
+    if (!state.chapterId || !data().length) return; // 챕터 미선택·데이터 로딩 전에는 저장하지 않는다
     try {
-      localStorage.setItem(SESSION_KEY, JSON.stringify({
+      localStorage.setItem(sessionKey(), JSON.stringify({
         screen: state.screen,
         partIndex: state.partIndex,
         answers: state.answers
       }));
+      localStorage.setItem(LAST_CH_KEY, state.chapterId);
     } catch (e) {}
   }
 
@@ -89,7 +114,7 @@
   // (문항 수가 바뀐 옛 저장본 등은 폐기하여 불일치를 방지한다.)
   function loadSession() {
     try {
-      var raw = localStorage.getItem(SESSION_KEY);
+      var raw = localStorage.getItem(sessionKey());
       if (!raw) return null;
       var s = JSON.parse(raw);
       if (!s || typeof s !== "object") return null;
@@ -102,6 +127,19 @@
       var ans = s.answers.map(function (a) { return a === "O" || a === "X" ? a : null; });
       return { screen: s.screen, partIndex: pIdx, answers: ans };
     } catch (e) { return null; }
+  }
+
+  // 단일 챕터 시절(v1) 저장본을 ch01 키로 1회 이관한다.
+  function migrateV1() {
+    try {
+      if (!localStorage.getItem("jibangse_session_ch01") && localStorage.getItem("jibangse_session_v1")) {
+        localStorage.setItem("jibangse_session_ch01", localStorage.getItem("jibangse_session_v1"));
+        if (!localStorage.getItem(LAST_CH_KEY)) localStorage.setItem(LAST_CH_KEY, "ch01");
+      }
+      if (!localStorage.getItem("jibangse_checklist_ch01") && localStorage.getItem("jibangse_checklist_v1")) {
+        localStorage.setItem("jibangse_checklist_ch01", localStorage.getItem("jibangse_checklist_v1"));
+      }
+    } catch (e) {}
   }
 
   // ---- theory block renderer (port of processBlocks) -----------------------
@@ -223,11 +261,40 @@
   }
 
   // ---- screen renderers ----------------------------------------------------
+  // 챕터별 저장 진행 상태를 (챕터 데이터를 로드하지 않고도) localStorage 에서 읽는다.
+  function savedProgress(chId) {
+    try {
+      var raw = localStorage.getItem("jibangse_session_" + chId);
+      if (!raw) return 0;
+      var s = JSON.parse(raw);
+      if (!s || !Array.isArray(s.answers)) return 0;
+      return s.answers.filter(function (a) { return a === "O" || a === "X"; }).length;
+    } catch (e) { return 0; }
+  }
+
   function renderHome() {
-    var ps = parts();
-    var total = data().length;
-    var totalAnswered = state.answers.filter(function (a) { return a != null; }).length;
-    var overallPct = total ? Math.round((totalAnswered / total) * 100) : 0;
+    var cards = chapters().map(function (ch) {
+      var total = ch.count || 0;
+      var answered = savedProgress(ch.id);
+      if (answered > total) answered = total;
+      var pct = total ? Math.round((answered / total) * 100) : 0;
+      return '<button data-action="enterChapter" data-arg="' + ch.id + '" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:#FFFFFF;border-radius:20px;padding:20px;box-shadow:0 6px 20px rgba(30,40,70,.06);display:flex;flex-direction:column;gap:16px;font-family:inherit;margin-bottom:12px;">' +
+        '<div style="display:flex;align-items:flex-start;gap:14px;">' +
+          '<div style="width:46px;height:46px;border-radius:14px;background:#4F46E5;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;">' + ch.num + '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-size:15.5px;font-weight:700;line-height:1.35;color:#1A1D24;">' + esc(ch.title) + '</div>' +
+            '<div style="font-size:13px;color:#5C6473;margin-top:4px;">' + total + '문제 · O/X</div>' +
+          '</div>' +
+          '<div style="color:#C2C8D4;font-size:22px;align-self:center;">›</div>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+          '<div style="flex:1;height:6px;background:#ECEFF4;border-radius:99px;overflow:hidden;">' +
+            '<div style="height:100%;background:#4F46E5;border-radius:99px;width:' + pct + '%;"></div>' +
+          '</div>' +
+          '<div style="font-size:12px;font-weight:700;color:#AEB5C4;flex-shrink:0;">' + answered + ' / ' + total + '</div>' +
+        '</div>' +
+      '</button>';
+    }).join("");
 
     return '' +
     '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
@@ -238,22 +305,7 @@
       '</div>' +
       '<div style="padding:0 16px 24px;">' +
         '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:0 8px 10px;">목록</div>' +
-        '<button data-action="enterChapter" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:#FFFFFF;border-radius:20px;padding:20px;box-shadow:0 6px 20px rgba(30,40,70,.06);display:flex;flex-direction:column;gap:16px;font-family:inherit;">' +
-          '<div style="display:flex;align-items:flex-start;gap:14px;">' +
-            '<div style="width:46px;height:46px;border-radius:14px;background:#4F46E5;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;">1</div>' +
-            '<div style="flex:1;min-width:0;">' +
-              '<div style="font-size:15.5px;font-weight:700;line-height:1.35;color:#1A1D24;">지방세기본법 제1장 (총칙)</div>' +
-              '<div style="font-size:13px;color:#5C6473;margin-top:4px;">' + ps.length + '개 파트 · ' + total + '문제 · O/X</div>' +
-            '</div>' +
-            '<div style="color:#C2C8D4;font-size:22px;align-self:center;">›</div>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:10px;">' +
-            '<div style="flex:1;height:6px;background:#ECEFF4;border-radius:99px;overflow:hidden;">' +
-              '<div style="height:100%;background:#4F46E5;border-radius:99px;width:' + overallPct + '%;"></div>' +
-            '</div>' +
-            '<div style="font-size:12px;font-weight:700;color:#AEB5C4;flex-shrink:0;">' + totalAnswered + ' / ' + total + '</div>' +
-          '</div>' +
-        '</button>' +
+        cards +
       '</div>' +
       '<div style="margin-top:auto;padding:16px 24px 28px;text-align:center;font-size:12px;color:#B4BAC8;">탭하여 문제 풀기를 시작하세요</div>' +
     '</div>';
@@ -298,7 +350,7 @@
     '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
       '<div style="padding:20px 20px 14px;flex-shrink:0;position:sticky;top:0;background:#F7F8FB;z-index:5;">' +
         '<button data-action="goHome" style="border:none;background:transparent;padding:0;display:flex;align-items:center;gap:6px;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 목록</button>' +
-        '<div style="font-size:18px;font-weight:800;margin-top:12px;color:#1A1D24;">지방세기본법 제1장 (총칙)</div>' +
+        '<div style="font-size:18px;font-weight:800;margin-top:12px;color:#1A1D24;">' + esc(chapterTitle()) + '</div>' +
         '<div style="font-size:12.5px;color:#5C6473;margin-top:4px;">총 ' + ps.length + '개 파트 · ' + total + '문제 · ' + totalAnswered + '문제 완료</div>' +
       '</div>' +
       '<div style="flex:1;padding:2px 14px 14px;">' + renderChecklistCard() + items + '</div>' +
@@ -310,10 +362,8 @@
 
   // ⭐ 최종 암기 체크리스트 — 파트 목록 상단 카드 + 전용 화면
   // 항목을 탭하면 "암기 완료" 체크되고 localStorage 에 저장된다.
-  var CHECK_KEY = "jibangse_checklist_v1";
-
-  function checklistItems() {
-    var cl = window.QUIZ_CHECKLIST;
+    function checklistItems() {
+    var cl = chapterChecklist();
     if (!cl || !cl.groups) return [];
     var out = [];
     cl.groups.forEach(function (g) { g.items.forEach(function (it) { out.push(it); }); });
@@ -323,7 +373,7 @@
   function loadChecks() {
     var total = checklistItems().length;
     try {
-      var raw = localStorage.getItem(CHECK_KEY);
+      var raw = localStorage.getItem(checkKey());
       if (raw) {
         var arr = JSON.parse(raw);
         if (Array.isArray(arr) && arr.length === total) return arr.map(function (v) { return v ? 1 : 0; });
@@ -335,11 +385,11 @@
   }
 
   function saveChecks(arr) {
-    try { localStorage.setItem(CHECK_KEY, JSON.stringify(arr)); } catch (e) {}
+    try { localStorage.setItem(checkKey(), JSON.stringify(arr)); } catch (e) {}
   }
 
   function renderChecklistCard() {
-    if (!window.QUIZ_CHECKLIST) return "";
+    if (!chapterChecklist()) return "";
     var checks = loadChecks();
     var done = checks.filter(Boolean).length;
     var total = checks.length;
@@ -379,7 +429,7 @@
   }
 
   function renderChecklist() {
-    var cl = window.QUIZ_CHECKLIST || { groups: [] };
+    var cl = chapterChecklist() || { groups: [] };
     var checks = loadChecks();
     var done = checks.filter(Boolean).length;
     var total = checks.length;
@@ -511,7 +561,7 @@
       '<div style="padding:14px 18px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #ECEFF4;position:sticky;top:0;background:#F7F8FB;z-index:5;">' +
         '<button data-action="goToc" style="border:none;background:#EAEDF3;width:32px;height:32px;border-radius:9px;font-size:15px;color:#5A6172;cursor:pointer;flex-shrink:0;font-family:inherit;">‹</button>' +
         '<div style="flex:1;min-width:0;">' +
-          '<div style="font-size:12.5px;font-weight:700;color:#1A1D24;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">지방세기본법 제1장 (총칙)</div>' +
+          '<div style="font-size:12.5px;font-weight:700;color:#1A1D24;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + esc(chapterTitle()) + '</div>' +
           '<div style="font-size:10.5px;color:#6E7585;margin-top:1px;">PART ' + (pIdx + 1) + ' / ' + ps.length + '</div>' +
         '</div>' +
         '<div id="quiz-anstext" style="font-size:11px;font-weight:700;color:#5C6473;flex-shrink:0;">' + partAnswered + ' / ' + curPart.items.length + '</div>' +
@@ -571,7 +621,7 @@
       '<div style="padding:48px 24px 20px;">' +
         '<div style="font-size:13px;font-weight:600;color:#5C6473;">학습 완료</div>' +
         '<div style="font-size:24px;font-weight:800;margin-top:8px;">' + resultTitle + '</div>' +
-        '<div style="font-size:14px;color:#5C6473;margin-top:6px;">지방세기본법 제1장 (총칙)</div>' +
+        '<div style="font-size:14px;color:#5C6473;margin-top:6px;">' + esc(chapterTitle()) + '</div>' +
         '<div style="display:flex;align-items:baseline;gap:6px;margin-top:22px;">' +
           '<span style="font-size:40px;font-weight:800;color:#1A1D24;">' + score + '</span>' +
           '<span style="font-size:18px;font-weight:700;color:#B0B6C5;">/ ' + total + '점</span>' +
@@ -590,6 +640,7 @@
 
   // ---- render dispatch -----------------------------------------------------
   function screenHTML() {
+    if (state.screen === "home" || !state.chapterId) return renderHome();
     if (!data().length) {
       return '<div style="padding:80px 24px;text-align:center;color:#8A90A0;font-size:14px;">데이터를 불러오는 중…</div>';
     }
@@ -621,10 +672,18 @@
   }
 
   // ---- actions -------------------------------------------------------------
-  function enterChapter() {
-    if (state.answers.length !== data().length) state.answers = freshAnswers();
+  function enterChapter(id) {
+    state.chapterId = id;
     state.screen = "toc";
-    render();
+    render(); // 미로딩 시 로딩 화면
+    loadChapter(id, function (ok) {
+      if (!ok) { state.chapterId = null; state.screen = "home"; render(); return; }
+      var saved = loadSession();
+      if (saved) { state.partIndex = saved.partIndex; state.answers = saved.answers; }
+      else { state.partIndex = 0; state.answers = freshAnswers(); }
+      state.screen = "toc";
+      render();
+    });
   }
   function openPart(i) { state.partIndex = i; state.screen = "quiz"; render(); }
   function goToc() { state.screen = "toc"; render(); }
@@ -682,7 +741,7 @@
     var action = el.getAttribute("data-action");
     var arg = el.getAttribute("data-arg");
     switch (action) {
-      case "enterChapter": enterChapter(); break;
+      case "enterChapter": enterChapter(arg); break;
       case "openPart": openPart(parseInt(arg, 10)); break;
       case "goToc": goToc(); break;
       case "goHome": goHome(); break;
@@ -701,26 +760,31 @@
   });
 
   // ---- boot ----------------------------------------------------------------
-  // 데이터가 준비되면 저장된 진행 상태를 복원하고, 없으면 초기 상태로 시작한다.
-  function start() {
-    var saved = loadSession();
-    if (saved) {
-      state.screen = saved.screen;
-      state.partIndex = saved.partIndex;
-      state.answers = saved.answers;
-    } else {
-      state.answers = freshAnswers();
-    }
-    render();
-  }
-
+  // 마지막 학습 챕터가 있으면 지연 로딩 후 저장된 화면·진행 상태를 복원한다.
   function boot() {
-    if (window.QUIZ_DATA) { start(); return; }
-    // quizdata.js may still be parsing on very slow loads; show loading, then retry.
+    migrateV1();
+    var last = null;
+    try { last = localStorage.getItem(LAST_CH_KEY); } catch (e) {}
+    if (last && chapterMeta(last)) {
+      state.chapterId = last;
+      render(); // 로딩 화면
+      loadChapter(last, function (ok) {
+        if (!ok) { state.chapterId = null; state.screen = "home"; render(); return; }
+        var saved = loadSession();
+        if (saved) {
+          state.screen = saved.screen;
+          state.partIndex = saved.partIndex;
+          state.answers = saved.answers;
+        } else {
+          state.answers = freshAnswers();
+          state.screen = "home";
+        }
+        render();
+      });
+      return;
+    }
+    state.screen = "home";
     render();
-    var t = setInterval(function () {
-      if (window.QUIZ_DATA) { clearInterval(t); start(); }
-    }, 30);
   }
 
   boot();
