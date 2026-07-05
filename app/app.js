@@ -93,7 +93,7 @@
       if (!raw) return null;
       var s = JSON.parse(raw);
       if (!s || typeof s !== "object") return null;
-      var validScreens = { home: 1, toc: 1, quiz: 1, result: 1 };
+      var validScreens = { home: 1, toc: 1, quiz: 1, result: 1, checklist: 1 };
       if (!validScreens[s.screen]) return null;
       if (!Array.isArray(s.answers) || s.answers.length !== data().length) return null;
       var pCount = parts().length;
@@ -301,10 +301,37 @@
         '<div style="font-size:18px;font-weight:800;margin-top:12px;color:#1A1D24;">지방세기본법 제1장 (총칙)</div>' +
         '<div style="font-size:12.5px;color:#5C6473;margin-top:4px;">총 ' + ps.length + '개 파트 · ' + total + '문제 · ' + totalAnswered + '문제 완료</div>' +
       '</div>' +
-      '<div style="flex:1;padding:2px 14px 14px;">' + items + '</div>' +
+      '<div style="flex:1;padding:2px 14px 14px;">' + renderChecklistCard() + items + '</div>' +
       '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:linear-gradient(to top,#F7F8FB 72%,transparent);">' +
         '<button data-action="showResult" class="a-scale99" style="width:100%;border:1.5px solid #DDE3EF;background:#fff;color:#5A6172;font-size:14.5px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;font-family:inherit;">전체 결과 보기</button>' +
       '</div>' +
+    '</div>';
+  }
+
+  // ⭐ 최종 암기 체크리스트 — 파트 목록 상단 카드 + 전용 화면
+  function renderChecklistCard() {
+    if (!window.QUIZ_CHECKLIST) return "";
+    return '<button data-action="openChecklist" class="a-scale99" style="width:100%;text-align:left;border:1.5px solid #F4E2C2;cursor:pointer;display:flex;align-items:center;gap:12px;background:#FFF9EF;border-radius:14px;padding:13px 14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(30,40,70,.04);font-family:inherit;">' +
+      '<div style="width:30px;height:30px;border-radius:9px;background:#FDEEC8;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">⭐</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:13.5px;font-weight:800;color:#7A4E08;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">최종 암기 체크리스트</div>' +
+        '<div style="font-size:11px;font-weight:600;color:#B08A3E;margin-top:4px;">제1장 전체 총정리 · 25항목</div>' +
+      '</div>' +
+      '<span style="color:#D9B96E;font-size:18px;flex-shrink:0;">›</span>' +
+    '</button>';
+  }
+
+  function renderChecklist() {
+    var cl = window.QUIZ_CHECKLIST || { blocks: [] };
+    var inner = (cl.blocks || []).map(renderBlock).join("");
+    return '' +
+    '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
+      '<div style="padding:20px 20px 14px;flex-shrink:0;position:sticky;top:0;background:#F7F8FB;z-index:5;">' +
+        '<button data-action="goToc" style="border:none;background:transparent;padding:0;display:flex;align-items:center;gap:6px;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 파트 목록</button>' +
+        '<div style="font-size:18px;font-weight:800;margin-top:12px;color:#1A1D24;">⭐ 최종 암기 체크리스트</div>' +
+        '<div style="font-size:12.5px;color:#5C6473;margin-top:4px;">제1장 (총칙) 전체 총정리 · 25항목</div>' +
+      '</div>' +
+      '<div style="flex:1;padding:6px 16px 28px;"><div style="display:flex;flex-direction:column;gap:11px;">' + inner + '</div></div>' +
     '</div>';
   }
 
@@ -475,6 +502,7 @@
       case "toc": return renderToc();
       case "quiz": return renderQuiz();
       case "result": return renderResult();
+      case "checklist": return renderChecklist();
       default: return renderHome();
     }
   }
@@ -563,6 +591,7 @@
       case "openPart": openPart(parseInt(arg, 10)); break;
       case "goToc": goToc(); break;
       case "goHome": goHome(); break;
+      case "openChecklist": state.screen = "checklist"; render(); break;
       case "showResult": showResult(); break;
       case "retry": retry(); break;
       case "toggleTheory": toggleTheory(); break;
