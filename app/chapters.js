@@ -7,5 +7,6 @@ window.CHAPTER_LIST = [
   { id: "ch04", num: 4, title: "지방세기본법 제4장 (지방세환급금과 납세담보)", file: "quizdata-ch04.js", count: 109 },
   { id: "ch05", num: 5, title: "지방세기본법 제5장 (지방세와 다른 채권과의 관계)", file: "quizdata-ch05.js", count: 92 },
   { id: "ch06", num: 6, title: "지방세기본법 제6장 (납세자의 권리)", file: "quizdata-ch06.js", count: 124 },
-  { id: "ch07", num: 7, title: "지방세기본법 제7장 (지방세 불복제도)", file: "quizdata-ch07.js", count: 101 }
+  { id: "ch07", num: 7, title: "지방세기본법 제7장 (지방세 불복제도)", file: "quizdata-ch07.js", count: 101 },
+  { id: "ch08", num: 8, title: "지방세기본법 제8장 (범칙행위 처벌과 처벌절차)", file: "quizdata-ch08.js", count: 70 }
 ];
