@@ -7,7 +7,7 @@
 
 | 경로 | 내용 |
 |---|---|
-| `app/` | 퀴즈 앱 (정적 사이트: `index.html`, `app.js`, `quizdata.js`) |
+| `app/` | 퀴즈 앱 (정적 사이트: `index.html`, `app.js`, `chapters.js`, `quizdata-chNN.js`) |
 | `materials/chNN/` | 장별 원본 자료 업로드 폴더 (문제·이론정리·요점 3종) |
 | `project/`, `chats/` | 초기 디자인 핸드오프 번들 (수정하지 않음) |
 
@@ -51,7 +51,7 @@
 - 3~4줄 이내. "시험에 출제되었다", "Q몇 번 참고" 같은 표현 금지.
 - 자료에 없는 조문 번호·숫자·예시를 만들어내지 않는다. 자료가 서로 모순되면 실제 기출(연도·직렬 표기가 있는 문제) 쪽을 기준으로 삼고 사용자에게 보고한다.
 
-### 데이터 형식 (`app/quizdata.js`)
+### 데이터 형식 (`app/quizdata-chNN.js`의 `DATA`)
 ```js
 { part: P1, answer: "O"|"X", text: "문항 원문", exp: "해설" }
 ```
@@ -130,9 +130,11 @@ window.QUIZ_CHECKLIST = {
 5. 커밋 메시지는 한국어로 변경 요지를 명확히. 지정 브랜치에 푸시 후 PR 생성, **사용자 승인(또는 기존 승인 패턴) 하에 병합**.
 6. 배포 실패 시: "pages build and deployment" 워크플로 로그를 확인한다. "Deployment failed, try again later"는 GitHub 서비스 장애이므로 rerun_failed_jobs 재시도 + send_later 자동 재점검을 건다.
 
-## 예정 작업 (다장 확장)
+## 다장(챕터) 구조 — 새 장 추가 절차
 
-제2장 이후 첫 처리 시 앱을 다장(챕터 선택) 구조로 확장한다:
-- 홈 화면 = 챕터 목록 (장별 카드 + 진행률)
-- 장별 데이터 파일 분리 (`quizdata-ch01.js`, `quizdata-ch02.js`, …) — 지연 로딩
-- 진행 기록(localStorage)·최종 체크리스트를 챕터별로 분리
+앱은 다장 구조다: 홈 = 챕터 목록, 장별 데이터는 지연 로딩, 진행 기록·체크리스트는 챕터별 localStorage 키로 분리되어 있다. 새 장(N장) 추가 시:
+
+1. `app/quizdata-chNN.js` 생성 — 파트 상수 선언 후 `var DATA / THEORY / CHECKLIST`를 정의하고 마지막에 `window.QUIZ_CHAPTERS["chNN"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };`로 등록 (기존 장 파일 참고)
+2. `app/chapters.js`의 `CHAPTER_LIST`에 `{ id, num, title, file, count }` 항목 추가 — **count는 실제 문항 수와 일치**시켜야 홈 진행률이 맞다
+3. `app/index.html`의 `ASSET_VER` 갱신 (지연 로딩 파일에도 같은 버전이 적용됨)
+4. 앱 코드는 수정 불필요 — 데이터만 추가하면 된다
