@@ -70,6 +70,21 @@
     return text.replace(/([.!?✓])\s+/g, "$1\n");
   }
 
+  // 이론 본문용 절제형 줄바꿈: 한글 문장이 끝나는 지점에서만 줄을 나누되,
+  // 짧은 문장은 앞 줄에 붙여 지나친 조각화를 막는다 (white-space:pre-line 로 렌더).
+  function brkPara(text) {
+    if (!text || text.length < 55) return text || "";
+    var marked = text.replace(/([가-힣"”』」)\]][.?!])\s+/g, "$1\n");
+    var segs = marked.split("\n");
+    var lines = [];
+    for (var i = 0; i < segs.length; i++) {
+      var s = segs[i];
+      if (lines.length && s.length < 15) lines[lines.length - 1] += " " + s;
+      else lines.push(s);
+    }
+    return lines.join("\n");
+  }
+
   function splitPartName(name) {
     var m = name.match(/^(PART\s*\d+)\.\s*(.*)$/);
     if (m) return { label: m[1], title: m[2] };
@@ -159,7 +174,7 @@
       return '<div style="font-size:13px;font-weight:800;color:#4F46E5;margin-top:3px;word-break:keep-all;">' + esc(b.t) + '</div>';
     }
     if (b.k === "lead") {
-      return '<div style="font-size:13.5px;font-weight:700;color:#312A6B;background:#F1EFFE;border:1px solid #DDD7F7;border-radius:10px;padding:11px 13px;line-height:1.6;word-break:keep-all;text-wrap:pretty;">' + esc(b.t) + '</div>';
+      return '<div style="font-size:13.5px;font-weight:700;color:#312A6B;background:#F1EFFE;border:1px solid #DDD7F7;border-radius:10px;padding:11px 13px;line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(brkPara(b.t)) + '</div>';
     }
     if (b.k === "tree") {
       return '<div style="background:#F3F2FA;border:1px solid #E3E0F2;border-radius:10px;padding:11px 12px;overflow-x:auto;">' +
@@ -172,7 +187,7 @@
         html += '<div style="font-size:12.5px;font-weight:800;color:' + m.ttc + ';margin-bottom:6px;word-break:keep-all;text-wrap:pretty;">' + esc(b.title) + '</div>';
       }
       if (b.t) {
-        html += '<div style="font-size:12.5px;font-weight:600;color:' + m.tc + ';line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(b.t) + '</div>';
+        html += '<div style="font-size:12.5px;font-weight:600;color:' + m.tc + ';line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(brkPara(b.t)) + '</div>';
       }
       if (b.list && b.list.length) {
         var listStyle = "display:flex;flex-direction:column;gap:6px;" + (b.title || b.t ? " margin-top:6px;" : "");
@@ -233,7 +248,7 @@
       return out;
     }
     // default: paragraph
-    return '<div style="font-size:13px;color:#353B47;line-height:1.68;word-break:keep-all;text-wrap:pretty;">' + esc(b.t) + '</div>';
+    return '<div style="font-size:13px;color:#353B47;line-height:1.68;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(brkPara(b.t)) + '</div>';
   }
 
   function renderTheoryBody(theory) {
