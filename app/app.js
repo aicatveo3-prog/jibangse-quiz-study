@@ -6,6 +6,8 @@
 
   var STORAGE_KEY = "jibangse_theoryOn";      // 이론 토글 (전역 공통)
   var LAST_CH_KEY = "jibangse_last_chapter";  // 마지막으로 학습한 챕터 id
+  var WRONG_KEY = "jibangse_wrong_v1";        // 오답노트 (전 챕터 공통, 스냅샷 저장)
+  var SAVED_KEY = "jibangse_saved_v1";        // 저장함/북마크 (전 챕터 공통, 스냅샷 저장)
   function sessionKey() { return "jibangse_session_" + state.chapterId; }   // 챕터별 진행 상태
   function checkKey() { return "jibangse_checklist_" + state.chapterId; }   // 챕터별 체크리스트
 
@@ -22,6 +24,14 @@
       } catch (e) {}
       return true;
     })()
+  };
+
+  // 복습(오답노트/저장함) 전용 상태 — 챕터 데이터와 독립적으로 스냅샷을 풀이한다.
+  var review = {
+    tab: "wrong",   // 목록 화면 탭: wrong | saved
+    mode: "wrong",  // 풀이 중인 세트: wrong | saved
+    items: [],      // 풀이 대상 스냅샷 레코드 배열
+    answers: []     // items 와 같은 길이, "O"|"X"|null
   };
 
   var root = document.getElementById("app");
@@ -114,6 +124,9 @@
   // 모바일에서 앱을 껐다 켜면(페이지 새로고침) 초기화되던 문제 해결:
   // 화면·파트·푼 답을 챕터별 localStorage 키에 저장하고 재실행 시 그대로 복원한다.
   function saveSession() {
+    // 복습·로그인 화면은 특정 챕터에 속하지 않으므로 챕터 세션에 기록하지 않는다
+    // (기록하면 챕터 진행 상태가 오염된다).
+    if (state.screen === "review" || state.screen === "reviewQuiz" || state.screen === "login") return;
     if (!state.chapterId || !data().length) return; // 챕터 미선택·데이터 로딩 전에는 저장하지 않는다
     try {
       localStorage.setItem(sessionKey(), JSON.stringify({
@@ -155,6 +168,91 @@
         localStorage.setItem("jibangse_checklist_ch01", localStorage.getItem("jibangse_checklist_v1"));
       }
     } catch (e) {}
+  }
+
+  // ---- 오답노트 / 저장함 (스냅샷 저장소) -----------------------------------
+  // 문제를 index 가 아니라 "본문 해시 기반 id"로 식별해 자료가 수정·재배열돼도
+  // 기록이 살아남게 한다. 레코드에 본문·정답·해설을 스냅샷으로 담아 챕터 데이터를
+  // 로드하지 않고도 복습 목록·풀이를 그릴 수 있다.
+  function hashStr(s) {
+    var h = 5381, i = (s || "").length;
+    while (i) h = (h * 33) ^ (s || "").charCodeAt(--i);
+    return (h >>> 0).toString(36);
+  }
+  function noteId(chId, text) { return (chId || "?") + "-" + hashStr(text); }
+
+  function loadNotes(key) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr.filter(function (r) { return r && r.id && r.text; }) : [];
+    } catch (e) { return []; }
+  }
+  function saveNotes(key, arr) {
+    try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) {}
+    if (window.QUIZ_SYNC && window.QUIZ_SYNC.onLocalChange) window.QUIZ_SYNC.onLocalChange();
+  }
+  function notesHas(arr, id) {
+    for (var i = 0; i < arr.length; i++) if (arr[i].id === id) return true;
+    return false;
+  }
+
+  // 현재 챕터의 gi 문항으로 스냅샷 레코드를 만든다.
+  function buildRecord(gi) {
+    var q = data()[gi];
+    if (!q) return null;
+    var m = chapterMeta();
+    return {
+      id: noteId(state.chapterId, q.text),
+      chId: state.chapterId,
+      chNum: m ? m.num : 0,
+      chTitle: m ? m.title : "",
+      part: q.part || "",
+      text: q.text,
+      answer: q.answer,
+      exp: q.exp || "",
+      ts: Date.now()
+    };
+  }
+
+  function addWrong(rec) {
+    if (!rec) return;
+    var arr = loadNotes(WRONG_KEY);
+    if (notesHas(arr, rec.id)) return;
+    arr.push(rec);
+    saveNotes(WRONG_KEY, arr);
+  }
+  function removeWrong(id) {
+    var arr = loadNotes(WRONG_KEY).filter(function (r) { return r.id !== id; });
+    saveNotes(WRONG_KEY, arr);
+  }
+  function isSaved(id) { return notesHas(loadNotes(SAVED_KEY), id); }
+  // 북마크 토글 → 새 상태(true=저장됨) 반환
+  function toggleSaved(rec) {
+    if (!rec) return false;
+    var arr = loadNotes(SAVED_KEY);
+    if (notesHas(arr, rec.id)) {
+      saveNotes(SAVED_KEY, arr.filter(function (r) { return r.id !== rec.id; }));
+      return false;
+    }
+    arr.push(rec);
+    saveNotes(SAVED_KEY, arr);
+    return true;
+  }
+
+  // 스냅샷 배열을 챕터별로 묶어 [{ chNum, chTitle, items:[] }] 로 (챕터 번호순) 반환
+  function groupByChapter(arr) {
+    var map = {};
+    arr.forEach(function (r) {
+      var k = r.chId || "?";
+      if (!map[k]) map[k] = { chId: k, chNum: r.chNum || 0, chTitle: r.chTitle || "", items: [] };
+      map[k].items.push(r);
+    });
+    var groups = [];
+    for (var k in map) groups.push(map[k]);
+    groups.sort(function (a, b) { return (a.chNum || 0) - (b.chNum || 0); });
+    return groups;
   }
 
   // ---- theory block renderer (port of processBlocks) -----------------------
@@ -318,12 +416,51 @@
         '<div style="font-size:22px;font-weight:800;margin-top:8px;line-height:1.3;">지방세법</div>' +
         '<div style="font-size:14px;color:#434A59;margin-top:6px;">O/X 문제로 핵심 개념을 빠르게 점검해요</div>' +
       '</div>' +
+      '<div style="padding:0 16px 8px;">' + reviewHomeCard() + syncHomeCard() + '</div>' +
       '<div style="padding:0 16px 24px;">' +
         '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:0 8px 10px;">목록</div>' +
         cards +
       '</div>' +
       '<div style="margin-top:auto;padding:16px 24px 28px;text-align:center;font-size:12px;color:#B4BAC8;">탭하여 문제 풀기를 시작하세요</div>' +
     '</div>';
+  }
+
+  // 홈 상단 "복습 노트" 카드 — 오답노트/저장함 진입점 + 개수 표시.
+  function reviewHomeCard() {
+    var nWrong = loadNotes(WRONG_KEY).length;
+    var nSaved = loadNotes(SAVED_KEY).length;
+    return '<button data-action="openReview" data-arg="wrong" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,#4F46E5,#6D63F2);border-radius:20px;padding:18px 20px;box-shadow:0 8px 22px rgba(79,70,229,.22);display:flex;align-items:center;gap:14px;font-family:inherit;margin-bottom:12px;">' +
+      '<div style="width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;">📌</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:15.5px;font-weight:800;color:#fff;">복습 노트</div>' +
+        '<div style="font-size:12.5px;color:#DCD9FB;margin-top:4px;">오답 ' + nWrong + '문제 · 저장 ' + nSaved + '문제</div>' +
+      '</div>' +
+      '<div style="color:rgba(255,255,255,.7);font-size:22px;">›</div>' +
+    '</button>';
+  }
+
+  // 로그인 동기화 카드 — sync.js 설정 시에만 노출 (미설정이면 빈 문자열).
+  function syncHomeCard() {
+    var sync = window.QUIZ_SYNC;
+    if (!sync || !sync.configured || !sync.configured()) return "";
+    var user = sync.currentUser && sync.currentUser();
+    if (user) {
+      return '<button data-action="signOut" class="a-scale985" style="width:100%;text-align:left;border:1.5px solid #DDE3EF;cursor:pointer;background:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-family:inherit;margin-bottom:12px;">' +
+        '<div style="width:34px;height:34px;border-radius:10px;background:#E8F8EF;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">✅</div>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:13px;font-weight:800;color:#15803D;">동기화 켜짐</div>' +
+          '<div style="font-size:12px;color:#5C6473;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + esc(user.email || user.name || "로그인됨") + ' · 탭하여 로그아웃</div>' +
+        '</div>' +
+      '</button>';
+    }
+    return '<button data-action="openLogin" class="a-scale985" style="width:100%;text-align:left;border:1.5px solid #DDE3EF;cursor:pointer;background:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-family:inherit;margin-bottom:12px;">' +
+      '<div style="width:34px;height:34px;border-radius:10px;background:#EDEAFB;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">☁️</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:13px;font-weight:800;color:#312A6B;">로그인하고 기기 간 동기화</div>' +
+        '<div style="font-size:12px;color:#5C6473;margin-top:2px;">오답·저장 기록을 클라우드에 백업</div>' +
+      '</div>' +
+      '<div style="color:#C2C8D4;font-size:20px;">›</div>' +
+    '</button>';
   }
 
   function renderToc() {
@@ -496,11 +633,18 @@
   }
 
   // 한 문제 줄 HTML — 답 선택 시 이 줄만 교체해 전체 리렌더(깜빡임)를 피한다.
+  // 북마크(별) 버튼 HTML — 저장 여부에 따라 채운 별/빈 별.
+  function starHTML(gi, saved) {
+    return '<button data-action="toggleSave" data-arg="' + gi + '" class="a-scale98" title="저장" ' +
+      'style="width:32px;height:32px;border:1.5px solid ' + (saved ? '#F4C84A' : '#DDE3EF') + ';background:' + (saved ? '#FFF8E6' : '#fff') + ';border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;color:' + (saved ? '#E8A400' : '#C2C8D4') + ';font-family:inherit;">' + (saved ? '★' : '☆') + '</button>';
+  }
+
   function questionRowHTML(it) {
     var sel = state.answers[it.gi] != null ? state.answers[it.gi] : null;
     var answered = sel != null;
     var isCorrect = answered && sel === it.answer;
     var gLabel = String(it.gi + 1).padStart(2, "0");
+    var saved = isSaved(noteId(state.chapterId, it.text));
 
     var controls;
     if (!answered) {
@@ -531,7 +675,7 @@
       '<div style="display:flex;gap:10px;align-items:flex-start;">' +
         '<div style="font-size:11px;font-weight:800;color:#C2C8D4;flex-shrink:0;width:18px;padding-top:2px;">' + gLabel + '</div>' +
         '<div style="flex:1;min-width:0;font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
-        '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + controls + '</div>' +
+        '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + starHTML(it.gi, saved) + controls + '</div>' +
       '</div>' +
       detail +
     '</div>';
@@ -653,8 +797,153 @@
     '</div>';
   }
 
+  // ---- 복습 노트 (오답노트 / 저장함) 목록 화면 ----------------------------
+  function reviewTabBtn(tab, labelTxt, n, active) {
+    var st = active
+      ? 'background:#1A1D24;color:#fff;'
+      : 'background:#fff;color:#5A6172;border:1.5px solid #DDE3EF;';
+    return '<button data-action="reviewTab" data-arg="' + tab + '" class="a-scale98" style="flex:1;border:none;cursor:pointer;font-size:13.5px;font-weight:800;padding:11px;border-radius:12px;font-family:inherit;' + st + '">' + labelTxt + ' ' + n + '</button>';
+  }
+
+  // 목록 한 줄 (풀이 아님) — 본문 + 정답 배지 + 별/삭제.
+  function reviewListRowHTML(rec, tab, idx) {
+    var trailBtn = tab === "wrong"
+      ? '<button data-action="removeWrongIdx" data-arg="' + idx + '" class="a-scale98" title="오답노트에서 삭제" style="width:30px;height:30px;border:1.5px solid #F3D2CC;background:#fff;border-radius:8px;cursor:pointer;color:#DC2626;font-size:14px;line-height:1;flex-shrink:0;font-family:inherit;">✕</button>'
+      : '<button data-action="toggleSaveIdx" data-arg="' + idx + '" class="a-scale98" title="저장 해제" style="width:30px;height:30px;border:1.5px solid #F4C84A;background:#FFF8E6;border-radius:8px;cursor:pointer;color:#E8A400;font-size:14px;line-height:1;flex-shrink:0;font-family:inherit;">★</button>';
+    return '<div style="display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:13px;padding:12px 13px;box-shadow:0 2px 8px rgba(30,40,70,.04);">' +
+      '<div style="flex-shrink:0;width:34px;height:20px;border-radius:6px;background:#EFF6FF;color:#2563EB;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;">정답 ' + label(rec.answer) + '</div>' +
+      '<div style="flex:1;min-width:0;font-size:13px;line-height:1.5;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(rec.text) + '</div>' +
+      trailBtn +
+    '</div>';
+  }
+
+  function renderReview() {
+    var wrong = loadNotes(WRONG_KEY);
+    var saved = loadNotes(SAVED_KEY);
+    var tab = review.tab === "saved" ? "saved" : "wrong";
+    var list = tab === "saved" ? saved : wrong;
+
+    var body;
+    if (!list.length) {
+      var msg = tab === "saved" ? "저장한 문제가 없어요.\n문제 옆 ☆ 버튼으로 저장하세요." : "오답이 없어요.\n문제를 틀리면 자동으로 여기 쌓여요.";
+      body = '<div style="padding:56px 20px;text-align:center;color:#9AA1B0;font-size:14px;line-height:1.7;white-space:pre-line;">' + esc(msg) + '</div>';
+    } else {
+      var idx = 0;
+      body = groupByChapter(list).map(function (g) {
+        var rows = g.items.map(function (rec) { return reviewListRowHTML(rec, tab, idx++); }).join("");
+        return '<div style="font-size:12px;font-weight:800;color:#4F46E5;margin:16px 2px 8px;word-break:keep-all;">' + esc(g.chTitle || "챕터") + '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:8px;">' + rows + '</div>';
+      }).join("");
+    }
+
+    var startBtn = list.length
+      ? '<button data-action="startReview" class="a-scale99" style="width:100%;border:none;background:#4F46E5;color:#fff;font-size:15px;font-weight:800;padding:15px;border-radius:14px;cursor:pointer;font-family:inherit;">이 문제들 풀기 (' + list.length + ')</button>'
+      : "";
+
+    return '' +
+    '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
+      '<div style="padding:20px 20px 12px;flex-shrink:0;position:sticky;top:0;background:#F7F8FB;z-index:5;">' +
+        '<button data-action="goHome" style="border:none;background:transparent;padding:0;display:flex;align-items:center;gap:6px;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 목록</button>' +
+        '<div style="font-size:18px;font-weight:800;margin-top:12px;color:#1A1D24;">📌 복습 노트</div>' +
+        '<div style="display:flex;gap:8px;margin-top:14px;">' +
+          reviewTabBtn("wrong", "오답노트", wrong.length, tab === "wrong") +
+          reviewTabBtn("saved", "저장함", saved.length, tab === "saved") +
+        '</div>' +
+      '</div>' +
+      '<div style="flex:1;padding:2px 16px 14px;">' + body + '</div>' +
+      (startBtn ? '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:linear-gradient(to top,#F7F8FB 72%,transparent);">' + startBtn + '</div>' : '') +
+    '</div>';
+  }
+
+  // ---- 복습 풀이 화면 (스냅샷 세트를 O/X 로 다시 풀기) ---------------------
+  // 한 줄 HTML — questionRowHTML 과 유사하나 review.answers[idx] 를 사용한다.
+  function reviewRowHTML(it, idx) {
+    var sel = review.answers[idx] != null ? review.answers[idx] : null;
+    var answered = sel != null;
+    var isCorrect = answered && sel === it.answer;
+    var num = String(idx + 1).padStart(2, "0");
+    var saved = isSaved(it.id);
+
+    var star = '<button data-action="reviewSaveIdx" data-arg="' + idx + '" class="a-scale98" title="저장" style="width:32px;height:32px;border:1.5px solid ' + (saved ? '#F4C84A' : '#DDE3EF') + ';background:' + (saved ? '#FFF8E6' : '#fff') + ';border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;color:' + (saved ? '#E8A400' : '#C2C8D4') + ';font-family:inherit;">' + (saved ? '★' : '☆') + '</button>';
+
+    var controls;
+    if (!answered) {
+      controls =
+        '<button data-action="reviewAnswer" data-arg="' + idx + '|O" class="a-ox-o" style="width:34px;height:32px;border:1.5px solid #DDE3EF;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;">' +
+          '<span style="width:13px;height:13px;border-radius:50%;border:2.5px solid #2563EB;display:block;"></span>' +
+        '</button>' +
+        '<button data-action="reviewAnswer" data-arg="' + idx + '|X" class="a-ox-x" style="width:34px;height:32px;border:1.5px solid #DDE3EF;background:#fff;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:15px;color:#EF4444;line-height:1;">✕</button>';
+    } else if (isCorrect) {
+      controls = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#E8F8EF;color:#15803D;font-size:14px;font-weight:800;">✓</span>';
+    } else {
+      controls = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#FDECEC;color:#DC2626;font-size:13px;font-weight:800;">✕</span>';
+    }
+
+    var detail = "";
+    if (answered) {
+      var head = isCorrect
+        ? '<div style="font-size:11.5px;font-weight:700;color:#15803D;">정답입니다 · 정답 ' + label(it.answer) + '</div>'
+        : '<div style="font-size:11.5px;font-weight:700;color:#DC2626;">오답 · 내 답 ' + label(sel) + ' · 정답 ' + label(it.answer) + '</div>';
+      detail =
+        '<div style="margin-left:28px;margin-top:8px;animation:slideUp .2s ease;">' + head +
+          '<div style="font-size:12.5px;line-height:1.65;color:#353B47;margin-top:5px;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(breakSentences(it.exp)) + '</div>' +
+        '</div>';
+    }
+
+    return '<div id="rq-' + idx + '" style="border-bottom:1px solid #ECEFF4;padding:13px 0;">' +
+      '<div style="display:flex;gap:10px;align-items:flex-start;">' +
+        '<div style="font-size:11px;font-weight:800;color:#C2C8D4;flex-shrink:0;width:18px;padding-top:2px;">' + num + '</div>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:10.5px;font-weight:700;color:#AEB5C4;margin-bottom:3px;">' + esc(it.chTitle || "") + '</div>' +
+          '<div style="font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
+        '</div>' +
+        '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + star + controls + '</div>' +
+      '</div>' +
+      detail +
+    '</div>';
+  }
+
+  function reviewCounts() {
+    var answered = review.answers.filter(function (a) { return a != null; }).length;
+    var correct = review.answers.reduce(function (acc, a, i) { return acc + (a != null && a === review.items[i].answer ? 1 : 0); }, 0);
+    return { answered: answered, correct: correct, total: review.items.length };
+  }
+
+  function renderReviewQuiz() {
+    var title = review.mode === "saved" ? "저장함 풀기" : "오답노트 풀기";
+    if (!review.items.length) {
+      return '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
+        '<div style="padding:20px;"><button data-action="goReview" style="border:none;background:transparent;padding:0;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 복습 노트</button></div>' +
+        '<div style="padding:56px 20px;text-align:center;color:#9AA1B0;font-size:14px;">풀 문제가 없어요.</div></div>';
+    }
+    var c = reviewCounts();
+    var pct = c.total ? Math.round((c.answered / c.total) * 100) : 0;
+    var rows = review.items.map(reviewRowHTML).join("");
+
+    return '' +
+    '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
+      '<div style="padding:14px 18px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #ECEFF4;position:sticky;top:0;background:#F7F8FB;z-index:5;">' +
+        '<button data-action="goReview" style="border:none;background:#EAEDF3;width:32px;height:32px;border-radius:9px;font-size:15px;color:#5A6172;cursor:pointer;flex-shrink:0;font-family:inherit;">‹</button>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:12.5px;font-weight:700;color:#1A1D24;">' + title + '</div>' +
+          '<div id="rq-sub" style="font-size:10.5px;color:#6E7585;margin-top:1px;">정답 ' + c.correct + ' · ' + c.answered + ' / ' + c.total + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="height:4px;background:#E4E8F0;flex-shrink:0;">' +
+        '<div id="rq-pbar" style="height:100%;background:#4F46E5;width:' + pct + '%;transition:width .35s cubic-bezier(.4,0,.2,1);"></div>' +
+      '</div>' +
+      '<div style="padding:6px 18px 12px;flex:1;">' + rows + '</div>' +
+      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:linear-gradient(to top,#F7F8FB 72%,transparent);">' +
+        '<button data-action="goReview" class="a-scale99" style="width:100%;border:none;background:#1A1D24;color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;font-family:inherit;">완료 · 복습 노트로</button>' +
+      '</div>' +
+    '</div>';
+  }
+
   // ---- render dispatch -----------------------------------------------------
   function screenHTML() {
+    if (state.screen === "review") return renderReview();
+    if (state.screen === "reviewQuiz") return renderReviewQuiz();
+    if (state.screen === "login") return renderLogin();
     if (state.screen === "home" || !state.chapterId) return renderHome();
     if (!data().length) {
       return '<div style="padding:80px 24px;text-align:center;color:#8A90A0;font-size:14px;">데이터를 불러오는 중…</div>';
@@ -706,15 +995,147 @@
   function showResult() { state.screen = "result"; render(); }
   function retry() { state.screen = "toc"; state.partIndex = 0; state.answers = freshAnswers(); render(); }
 
+  // ---- 복습 노트 액션 ------------------------------------------------------
+  function openReview(tab) {
+    review.tab = tab === "saved" ? "saved" : "wrong";
+    state.screen = "review";
+    render();
+  }
+  function startReviewQuiz() {
+    var list = review.tab === "saved" ? loadNotes(SAVED_KEY) : loadNotes(WRONG_KEY);
+    review.mode = review.tab;
+    review.items = list.slice();
+    review.answers = list.map(function () { return null; });
+    state.screen = "reviewQuiz";
+    render();
+  }
+  function reviewPick(idx, choice) {
+    if (idx < 0 || idx >= review.items.length || review.answers[idx] != null) return;
+    review.answers[idx] = choice;
+    var it = review.items[idx];
+    if (choice === it.answer) {
+      // 오답노트 풀이 중 정답 → 오답노트에서 제거(마스터). 화면 목록엔 그대로 둔다.
+      if (review.mode === "wrong") removeWrong(it.id);
+    } else {
+      addWrong(it); // 저장함 문제를 틀리면 오답노트에도 추가
+    }
+    var row = document.getElementById("rq-" + idx);
+    if (row) row.outerHTML = reviewRowHTML(it, idx);
+    var c = reviewCounts();
+    var sub = document.getElementById("rq-sub");
+    if (sub) sub.textContent = "정답 " + c.correct + " · " + c.answered + " / " + c.total;
+    var bar = document.getElementById("rq-pbar");
+    if (bar) bar.style.width = (c.total ? Math.round((c.answered / c.total) * 100) : 0) + "%";
+  }
+  // 복습 풀이 화면에서 별 토글
+  function reviewSaveIdx(idx) {
+    var it = review.items[idx];
+    if (!it) return;
+    toggleSaved(it);
+    var row = document.getElementById("rq-" + idx);
+    if (row) row.outerHTML = reviewRowHTML(it, idx);
+  }
+  // 목록 화면: 오답노트에서 삭제
+  function removeWrongIdx(idx) {
+    var arr = loadNotes(WRONG_KEY);
+    if (idx < 0 || idx >= arr.length) return;
+    removeWrong(arr[idx].id);
+    render();
+  }
+  // 목록 화면: 저장 토글(저장함 탭에선 삭제)
+  function toggleSaveIdx(idx) {
+    var arr = review.tab === "saved" ? loadNotes(SAVED_KEY) : loadNotes(WRONG_KEY);
+    if (idx < 0 || idx >= arr.length) return;
+    toggleSaved(arr[idx]);
+    render();
+  }
+
+  // ---- 로그인(동기화) 화면 ------------------------------------------------
+  function renderLogin() {
+    var sync = window.QUIZ_SYNC;
+    var configured = sync && sync.configured && sync.configured();
+    var note = configured
+      ? ""
+      : '<div style="background:#FEF3F0;border:1px solid #F6D6C9;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#9A3412;line-height:1.6;margin-bottom:18px;">동기화가 아직 설정되지 않았어요. <b>app/firebase-config.js</b> 에 Firebase 설정을 넣으면 구글·이메일 로그인이 켜집니다. (README 참고)</div>';
+    var err = review._loginError ? '<div style="color:#DC2626;font-size:12.5px;margin-top:10px;">' + esc(review._loginError) + '</div>' : "";
+    var dis = configured ? "" : "opacity:.5;pointer-events:none;";
+
+    return '' +
+    '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
+      '<div style="padding:20px 20px 4px;">' +
+        '<button data-action="goHome" style="border:none;background:transparent;padding:0;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 목록</button>' +
+      '</div>' +
+      '<div style="padding:24px 24px 8px;">' +
+        '<div style="font-size:22px;font-weight:800;color:#1A1D24;">로그인</div>' +
+        '<div style="font-size:13.5px;color:#5C6473;margin-top:8px;line-height:1.6;">오답·저장 기록을 클라우드에 백업하고 다른 기기와 동기화합니다.</div>' +
+      '</div>' +
+      '<div style="padding:16px 24px 24px;">' + note +
+        '<div style="' + dis + '">' +
+          '<button data-action="loginGoogle" class="a-scale98" style="width:100%;border:1.5px solid #DDE3EF;background:#fff;color:#1A1D24;font-size:15px;font-weight:700;padding:14px;border-radius:14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px;">' +
+            '<span style="font-size:16px;font-weight:800;color:#4285F4;">G</span> Google 계정으로 계속</button>' +
+          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;color:#AEB5C4;font-size:11.5px;font-weight:700;"><div style="flex:1;height:1px;background:#E4E8F0;"></div>또는 이메일<div style="flex:1;height:1px;background:#E4E8F0;"></div></div>' +
+          '<input id="login-email" type="email" inputmode="email" autocomplete="email" placeholder="이메일" style="width:100%;border:1.5px solid #DDE3EF;background:#fff;border-radius:12px;padding:13px 14px;font-size:14px;font-family:inherit;margin-bottom:10px;">' +
+          '<input id="login-pw" type="password" autocomplete="current-password" placeholder="비밀번호 (6자 이상)" style="width:100%;border:1.5px solid #DDE3EF;background:#fff;border-radius:12px;padding:13px 14px;font-size:14px;font-family:inherit;">' +
+          err +
+          '<div style="display:flex;gap:10px;margin-top:16px;">' +
+            '<button data-action="loginEmail" class="a-scale98" style="flex:1;border:none;background:#4F46E5;color:#fff;font-size:14.5px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;font-family:inherit;">로그인</button>' +
+            '<button data-action="registerEmail" class="a-scale98" style="flex:1;border:1.5px solid #DDE3EF;background:#fff;color:#5A6172;font-size:14.5px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;font-family:inherit;">회원가입</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
   function toggleTheory() {
     state.theoryOn = !state.theoryOn;
     try { localStorage.setItem(STORAGE_KEY, state.theoryOn ? "1" : "0"); } catch (e) {}
     render();
   }
 
+  // ---- 로그인/동기화 액션 (sync.js 미설정 시 조용히 무시) -----------------
+  function openLogin() { review._loginError = null; state.screen = "login"; render(); }
+  function authDone(err) {
+    if (err) { review._loginError = err; render(); return; }
+    review._loginError = null;
+    state.screen = "home";
+    render();
+  }
+  function loginGoogle() {
+    var sync = window.QUIZ_SYNC;
+    if (!sync || !sync.signInGoogle) return;
+    sync.signInGoogle().then(function () { authDone(); }).catch(function (e) { authDone(syncErr(e)); });
+  }
+  function loginEmail(register) {
+    var sync = window.QUIZ_SYNC;
+    if (!sync) return;
+    var email = (document.getElementById("login-email") || {}).value || "";
+    var pw = (document.getElementById("login-pw") || {}).value || "";
+    if (!email || !pw) { authDone("이메일과 비밀번호를 입력하세요."); return; }
+    var fn = register ? sync.registerEmail : sync.signInEmail;
+    if (!fn) return;
+    fn(email.trim(), pw).then(function () { authDone(); }).catch(function (e) { authDone(syncErr(e)); });
+  }
+  function signOut() {
+    var sync = window.QUIZ_SYNC;
+    if (sync && sync.signOut) sync.signOut().then(function () { render(); });
+  }
+  function syncErr(e) {
+    var code = e && e.code ? e.code : "";
+    if (code.indexOf("wrong-password") >= 0 || code.indexOf("invalid-credential") >= 0) return "이메일 또는 비밀번호가 올바르지 않습니다.";
+    if (code.indexOf("email-already-in-use") >= 0) return "이미 가입된 이메일입니다. 로그인해 주세요.";
+    if (code.indexOf("weak-password") >= 0) return "비밀번호는 6자 이상이어야 합니다.";
+    if (code.indexOf("invalid-email") >= 0) return "이메일 형식이 올바르지 않습니다.";
+    if (code.indexOf("popup-closed") >= 0 || code.indexOf("cancelled") >= 0) return "로그인이 취소되었습니다.";
+    return (e && e.message) ? e.message : "로그인에 실패했습니다.";
+  }
+
   function pick(gi, choice) {
     if (state.answers[gi] != null) return;
     state.answers[gi] = choice;
+
+    // 오답이면 오답노트에 자동 저장 (스냅샷)
+    var q = data()[gi];
+    if (q && choice !== q.answer) addWrong(buildRecord(gi));
 
     // 전체 리렌더 대신 해당 문제 줄 + 진행률만 갱신 → 깜빡임 없음
     var row = document.getElementById("q-" + gi);
@@ -723,6 +1144,15 @@
     row.outerHTML = questionRowHTML(it);
     updateQuizProgress();
     saveSession(); // 답 선택도 저장 (pick 은 부분 갱신이라 render 를 거치지 않음)
+  }
+
+  // 북마크 토글 — 현재 문제 줄만 다시 그린다.
+  function toggleSave(gi) {
+    var rec = buildRecord(gi);
+    if (!rec) return;
+    toggleSaved(rec);
+    var row = document.getElementById("q-" + gi);
+    if (row) row.outerHTML = questionRowHTML(Object.assign({ gi: gi }, data()[gi]));
   }
 
   // 상단 진행바 + "n / m" 카운터만 갱신 (현재 파트 기준)
@@ -767,9 +1197,26 @@
       case "toggleTheory": toggleTheory(); break;
       case "prevPart": prevPart(); break;
       case "nextPart": nextPart(); break;
+      case "toggleSave": toggleSave(parseInt(arg, 10)); break;
+      case "openReview": openReview(arg); break;
+      case "reviewTab": review.tab = arg; render(); break;
+      case "startReview": startReviewQuiz(); break;
+      case "goReview": state.screen = "review"; render(); break;
+      case "removeWrongIdx": removeWrongIdx(parseInt(arg, 10)); break;
+      case "toggleSaveIdx": toggleSaveIdx(parseInt(arg, 10)); break;
+      case "reviewSaveIdx": reviewSaveIdx(parseInt(arg, 10)); break;
+      case "openLogin": openLogin(); break;
+      case "loginGoogle": loginGoogle(); break;
+      case "loginEmail": loginEmail(false); break;
+      case "registerEmail": loginEmail(true); break;
+      case "signOut": signOut(); break;
       case "answer":
         var parts2 = (arg || "").split("|");
         pick(parseInt(parts2[0], 10), parts2[1]);
+        break;
+      case "reviewAnswer":
+        var parts3 = (arg || "").split("|");
+        reviewPick(parseInt(parts3[0], 10), parts3[1]);
         break;
     }
   });
@@ -801,6 +1248,9 @@
     state.screen = "home";
     render();
   }
+
+  // 로그인/동기화(sync.js)로 로컬 기록이 바뀌면 현재 화면을 다시 그린다.
+  window.addEventListener("quizsync", function () { render(); });
 
   boot();
 })();
