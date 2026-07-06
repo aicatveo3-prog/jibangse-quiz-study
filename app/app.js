@@ -411,12 +411,13 @@
 
     return '' +
     '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
-      '<div style="padding:56px 24px 28px;">' +
+      '<div style="padding:56px 24px 28px;position:relative;">' +
+        renderAccountChip() +
         '<div style="font-size:13px;font-weight:600;letter-spacing:.04em;color:#5C6473;">학습 퀴즈</div>' +
         '<div style="font-size:22px;font-weight:800;margin-top:8px;line-height:1.3;">지방세법</div>' +
         '<div style="font-size:14px;color:#434A59;margin-top:6px;">O/X 문제로 핵심 개념을 빠르게 점검해요</div>' +
       '</div>' +
-      '<div style="padding:0 16px 8px;">' + reviewHomeCard() + syncHomeCard() + '</div>' +
+      '<div style="padding:0 16px 8px;">' + reviewHomeCard() + '</div>' +
       '<div style="padding:0 16px 24px;">' +
         '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:0 8px 10px;">목록</div>' +
         cards +
@@ -425,42 +426,35 @@
     '</div>';
   }
 
-  // 홈 상단 "복습 노트" 카드 — 오답노트/저장함 진입점 + 개수 표시.
+  // 홈 상단 "복습 노트" 카드 — 오답노트/저장함 진입점 + 개수 표시 (슬림 버전).
   function reviewHomeCard() {
     var nWrong = loadNotes(WRONG_KEY).length;
     var nSaved = loadNotes(SAVED_KEY).length;
-    return '<button data-action="openReview" data-arg="wrong" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,#4F46E5,#6D63F2);border-radius:20px;padding:18px 20px;box-shadow:0 8px 22px rgba(79,70,229,.22);display:flex;align-items:center;gap:14px;font-family:inherit;margin-bottom:12px;">' +
-      '<div style="width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;">📌</div>' +
+    return '<button data-action="openReview" data-arg="wrong" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,#4F46E5,#6D63F2);border-radius:14px;padding:11px 14px;box-shadow:0 5px 14px rgba(79,70,229,.20);display:flex;align-items:center;gap:11px;font-family:inherit;margin-bottom:12px;">' +
+      '<div style="width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">📌</div>' +
       '<div style="flex:1;min-width:0;">' +
-        '<div style="font-size:15.5px;font-weight:800;color:#fff;">복습 노트</div>' +
-        '<div style="font-size:12.5px;color:#DCD9FB;margin-top:4px;">오답 ' + nWrong + '문제 · 저장 ' + nSaved + '문제</div>' +
+        '<div style="font-size:13.5px;font-weight:800;color:#fff;">복습 노트</div>' +
+        '<div style="font-size:11.5px;color:#DCD9FB;margin-top:2px;">오답 ' + nWrong + ' · 저장 ' + nSaved + '</div>' +
       '</div>' +
-      '<div style="color:rgba(255,255,255,.7);font-size:22px;">›</div>' +
+      '<div style="color:rgba(255,255,255,.7);font-size:18px;">›</div>' +
     '</button>';
   }
 
-  // 로그인 동기화 카드 — sync.js 설정 시에만 노출 (미설정이면 빈 문자열).
-  function syncHomeCard() {
+  // 우상단 계정 칩 — sync.js 설정 시에만 노출. 로그인 전=로그인 버튼, 로그인 후=계정 표시(탭→로그아웃).
+  function renderAccountChip() {
     var sync = window.QUIZ_SYNC;
     if (!sync || !sync.configured || !sync.configured()) return "";
+    var base = "position:absolute;top:52px;right:20px;height:32px;display:inline-flex;align-items:center;border-radius:16px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(30,40,70,.10);";
     var user = sync.currentUser && sync.currentUser();
     if (user) {
-      return '<button data-action="signOut" class="a-scale985" style="width:100%;text-align:left;border:1.5px solid #DDE3EF;cursor:pointer;background:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-family:inherit;margin-bottom:12px;">' +
-        '<div style="width:34px;height:34px;border-radius:10px;background:#E8F8EF;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">✅</div>' +
-        '<div style="flex:1;min-width:0;">' +
-          '<div style="font-size:13px;font-weight:800;color:#15803D;">동기화 켜짐</div>' +
-          '<div style="font-size:12px;color:#5C6473;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + esc(user.email || user.name || "로그인됨") + ' · 탭하여 로그아웃</div>' +
-        '</div>' +
+      var initial = ((user.email || user.name || "?").charAt(0) || "?").toUpperCase();
+      return '<button data-action="signOut" class="a-scale98" title="' + esc(user.email || "로그인됨") + '" style="' + base + 'gap:6px;padding:0 11px 0 4px;border:1px solid #DDE3EF;background:#fff;color:#15803D;">' +
+        '<span style="width:24px;height:24px;border-radius:50%;background:#E8F8EF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#15803D;">' + esc(initial) + '</span>' +
+        '<span style="width:7px;height:7px;border-radius:50%;background:#22C55E;"></span>' +
       '</button>';
     }
-    return '<button data-action="openLogin" class="a-scale985" style="width:100%;text-align:left;border:1.5px solid #DDE3EF;cursor:pointer;background:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;font-family:inherit;margin-bottom:12px;">' +
-      '<div style="width:34px;height:34px;border-radius:10px;background:#EDEAFB;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">☁️</div>' +
-      '<div style="flex:1;min-width:0;">' +
-        '<div style="font-size:13px;font-weight:800;color:#312A6B;">로그인하고 기기 간 동기화</div>' +
-        '<div style="font-size:12px;color:#5C6473;margin-top:2px;">오답·저장 기록을 클라우드에 백업</div>' +
-      '</div>' +
-      '<div style="color:#C2C8D4;font-size:20px;">›</div>' +
-    '</button>';
+    return '<button data-action="openLogin" class="a-scale98" style="' + base + 'gap:5px;padding:0 13px;border:1px solid #DDE3EF;background:#fff;color:#312A6B;">' +
+      '<span style="font-size:14px;">☁️</span>로그인</button>';
   }
 
   function renderToc() {
@@ -1117,7 +1111,10 @@
   }
   function signOut() {
     var sync = window.QUIZ_SYNC;
-    if (sync && sync.signOut) sync.signOut().then(function () { render(); });
+    if (!sync || !sync.signOut) return;
+    if (typeof window.confirm === "function" &&
+        !window.confirm("로그아웃할까요?\n진도는 클라우드에 저장돼 있어 다시 로그인하면 복원됩니다.")) return;
+    sync.signOut().then(function () { render(); });
   }
   function syncErr(e) {
     var code = e && e.code ? e.code : "";
