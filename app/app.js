@@ -386,28 +386,45 @@
   }
 
   function renderHome() {
-    var cards = chapters().map(function (ch) {
+    var chs = chapters();
+    var lawColor = { "지방세기본법": "#4F46E5", "지방세징수법": "#0D9488", "지방세법": "#7C3AED", "지방세특례제한법": "#DB2777" };
+    var listHtml = "", lastLaw = null;
+    chs.forEach(function (ch, ci) {
+      var law = ch.title.split(" 제")[0];
+      var accent = lawColor[law] || "#4F46E5";
+      if (law !== lastLaw) {
+        var cnt = chs.filter(function (c) { return c.title.split(" 제")[0] === law; }).length;
+        listHtml +=
+          '<div style="display:flex;align-items:center;gap:9px;padding:' + (lastLaw === null ? "0" : "22px") + ' 6px 11px;">' +
+            '<span style="width:8px;height:8px;border-radius:3px;background:' + accent + ';flex-shrink:0;"></span>' +
+            '<span style="font-size:13.5px;font-weight:800;color:#1A1D24;">' + esc(law) + '</span>' +
+            '<span style="font-size:11px;font-weight:700;color:#AEB5C4;">' + cnt + '개 장</span>' +
+            '<div style="flex:1;height:1px;background:#E7EAF0;"></div>' +
+          '</div>';
+        lastLaw = law;
+      }
+      var shortTitle = ch.title.slice(law.length).replace(/^\s+/, "");
       var total = ch.count || 0;
-      var answered = savedProgress(ch.id);
-      if (answered > total) answered = total;
+      var answered = Math.min(savedProgress(ch.id), total);
       var pct = total ? Math.round((answered / total) * 100) : 0;
-      return '<button data-action="enterChapter" data-arg="' + ch.id + '" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:#FFFFFF;border-radius:20px;padding:20px;box-shadow:0 6px 20px rgba(30,40,70,.06);display:flex;flex-direction:column;gap:16px;font-family:inherit;margin-bottom:12px;">' +
-        '<div style="display:flex;align-items:flex-start;gap:14px;">' +
-          '<div style="width:46px;height:46px;border-radius:14px;background:#4F46E5;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;">' + ch.num + '</div>' +
-          '<div style="flex:1;min-width:0;">' +
-            '<div style="font-size:15.5px;font-weight:700;line-height:1.35;color:#1A1D24;">' + esc(ch.title) + '</div>' +
-            '<div style="font-size:13px;color:#5C6473;margin-top:4px;">' + total + '문제 · O/X</div>' +
+      listHtml +=
+        '<button data-action="enterChapter" data-arg="' + ch.id + '" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:#FFFFFF;border-radius:15px;padding:13px 15px;box-shadow:0 4px 13px rgba(30,40,70,.05);display:flex;flex-direction:column;gap:10px;font-family:inherit;margin-bottom:9px;">' +
+          '<div style="display:flex;align-items:center;gap:12px;">' +
+            '<div style="width:36px;height:36px;border-radius:11px;background:' + accent + ';flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;">' + ch.num + '</div>' +
+            '<div style="flex:1;min-width:0;">' +
+              '<div style="font-size:14px;font-weight:700;line-height:1.3;color:#1A1D24;">' + esc(shortTitle) + '</div>' +
+              '<div style="font-size:11.5px;color:#7C8494;margin-top:2px;">' + total + '문제 · O/X</div>' +
+            '</div>' +
+            '<div style="color:#C2C8D4;font-size:19px;flex-shrink:0;">›</div>' +
           '</div>' +
-          '<div style="color:#C2C8D4;font-size:22px;align-self:center;">›</div>' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:10px;">' +
-          '<div style="flex:1;height:6px;background:#ECEFF4;border-radius:99px;overflow:hidden;">' +
-            '<div style="height:100%;background:#4F46E5;border-radius:99px;width:' + pct + '%;"></div>' +
+          '<div style="display:flex;align-items:center;gap:9px;">' +
+            '<div style="flex:1;height:5px;background:#ECEFF4;border-radius:99px;overflow:hidden;">' +
+              '<div style="height:100%;background:' + accent + ';border-radius:99px;width:' + pct + '%;"></div>' +
+            '</div>' +
+            '<div style="font-size:11px;font-weight:700;color:#AEB5C4;flex-shrink:0;">' + answered + ' / ' + total + '</div>' +
           '</div>' +
-          '<div style="font-size:12px;font-weight:700;color:#AEB5C4;flex-shrink:0;">' + answered + ' / ' + total + '</div>' +
-        '</div>' +
-      '</button>';
-    }).join("");
+        '</button>';
+    });
 
     return '' +
     '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
@@ -418,10 +435,7 @@
         '<div style="font-size:14px;color:#434A59;margin-top:6px;">O/X 문제로 핵심 개념을 빠르게 점검해요</div>' +
       '</div>' +
       '<div style="padding:0 16px 8px;">' + renderSyncHint() + '</div>' +
-      '<div style="padding:0 16px 24px;">' +
-        '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:0 8px 10px;">목록</div>' +
-        cards +
-      '</div>' +
+      '<div style="padding:0 16px 24px;">' + listHtml + '</div>' +
       '<div style="margin-top:auto;padding:16px 24px 28px;text-align:center;font-size:12px;color:#B4BAC8;">탭하여 문제 풀기를 시작하세요</div>' +
     '</div>';
   }
