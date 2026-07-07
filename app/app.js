@@ -126,7 +126,7 @@
   function saveSession() {
     // 복습·로그인 화면은 특정 챕터에 속하지 않으므로 챕터 세션에 기록하지 않는다
     // (기록하면 챕터 진행 상태가 오염된다).
-    if (state.screen === "review" || state.screen === "reviewQuiz" || state.screen === "login") return;
+    if (state.screen === "review" || state.screen === "reviewQuiz" || state.screen === "login" || state.screen === "account") return;
     if (!state.chapterId || !data().length) return; // 챕터 미선택·데이터 로딩 전에는 저장하지 않는다
     try {
       localStorage.setItem(sessionKey(), JSON.stringify({
@@ -445,7 +445,7 @@
     var user = sync.currentUser && sync.currentUser();
     if (user) {
       var initial = ((user.email || user.name || "?").charAt(0) || "?").toUpperCase();
-      return '<button data-action="signOut" class="a-scale98" title="' + esc(user.email || "로그인됨") + '" style="' + pill + 'gap:6px;padding:0 6px;border:1px solid #CDE9D6;background:#F1FBF4;color:#15803D;">' +
+      return '<button data-action="openAccount" class="a-scale98" title="' + esc(user.email || "로그인됨") + '" style="' + pill + 'gap:6px;padding:0 6px;border:1px solid #CDE9D6;background:#F1FBF4;color:#15803D;">' +
         '<span style="width:26px;height:26px;border-radius:50%;background:#22C55E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;">' + esc(initial) + '</span></button>';
     }
     return '<button data-action="openLogin" class="a-scale98" style="' + pill + 'gap:6px;padding:0 17px;border:none;background:#4F46E5;color:#fff;font-size:13.5px;">☁️ 로그인</button>';
@@ -954,6 +954,7 @@
     if (state.screen === "review") return renderReview();
     if (state.screen === "reviewQuiz") return renderReviewQuiz();
     if (state.screen === "login") return renderLogin();
+    if (state.screen === "account") return renderAccount();
     if (state.screen === "home" || !state.chapterId) return renderHome();
     if (!data().length) {
       return '<div style="padding:80px 24px;text-align:center;color:#8A90A0;font-size:14px;">데이터를 불러오는 중…</div>';
@@ -1104,6 +1105,59 @@
 
   // ---- 로그인/동기화 액션 (sync.js 미설정 시 조용히 무시) -----------------
   function openLogin() { review._loginError = null; state.screen = "login"; render(); }
+  function openAccount() { state.screen = "account"; render(); }
+
+  // 내 계정 화면 — 프로필 + 학습 요약(진도·오답·저장) + 로그아웃.
+  function renderAccount() {
+    var sync = window.QUIZ_SYNC;
+    var user = sync && sync.currentUser && sync.currentUser();
+    if (!user) { state.screen = "home"; return renderHome(); }
+    var initial = ((user.email || user.name || "?").charAt(0) || "?").toUpperCase();
+    var totalQ = 0, answered = 0;
+    chapters().forEach(function (ch) {
+      var t = ch.count || 0; totalQ += t;
+      answered += Math.min(savedProgress(ch.id), t);
+    });
+    var pct = totalQ ? Math.round(answered / totalQ * 100) : 0;
+    var nWrong = loadNotes(WRONG_KEY).length;
+    var nSaved = loadNotes(SAVED_KEY).length;
+
+    return '' +
+    '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
+      '<div style="padding:20px 20px 4px;">' +
+        '<button data-action="goHome" style="border:none;background:transparent;padding:0;color:#5C6473;font-size:12.5px;cursor:pointer;font-family:inherit;">‹ 목록</button>' +
+      '</div>' +
+      '<div style="padding:22px 24px 8px;display:flex;flex-direction:column;align-items:center;text-align:center;">' +
+        '<div style="width:72px;height:72px;border-radius:50%;background:#22C55E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;box-shadow:0 8px 20px rgba(34,197,94,.28);">' + esc(initial) + '</div>' +
+        '<div style="font-size:16px;font-weight:800;color:#1A1D24;margin-top:14px;word-break:break-all;">' + esc(user.email || "로그인됨") + '</div>' +
+        '<div style="display:inline-flex;align-items:center;gap:5px;margin-top:9px;background:#F1FBF4;border:1px solid #D6EFDE;border-radius:20px;padding:5px 13px;font-size:12px;font-weight:700;color:#15803D;">✅ 자동 저장 켜짐</div>' +
+      '</div>' +
+      '<div style="padding:22px 20px 8px;">' +
+        '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:0 4px 10px;">내 학습 요약</div>' +
+        '<div style="background:#fff;border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(30,40,70,.06);">' +
+          '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">' +
+            '<span style="font-size:13px;font-weight:700;color:#1F2430;">전체 진도</span>' +
+            '<span style="font-size:12px;font-weight:800;color:#4F46E5;">' + answered + ' / ' + totalQ + ' · ' + pct + '%</span>' +
+          '</div>' +
+          '<div style="height:8px;background:#ECEFF4;border-radius:99px;overflow:hidden;margin-bottom:16px;"><div style="height:100%;background:#4F46E5;border-radius:99px;width:' + pct + '%;"></div></div>' +
+          '<div style="display:flex;gap:10px;">' +
+            '<button data-action="openReview" data-arg="wrong" class="a-scale98" style="flex:1;border:1px solid #F1D9D9;background:#FEF6F6;border-radius:12px;padding:13px 10px;cursor:pointer;font-family:inherit;text-align:center;">' +
+              '<div style="font-size:21px;font-weight:800;color:#DC2626;line-height:1;">' + nWrong + '</div>' +
+              '<div style="font-size:11.5px;color:#9A6A6A;font-weight:700;margin-top:5px;">📕 오답노트</div>' +
+            '</button>' +
+            '<button data-action="openReview" data-arg="saved" class="a-scale98" style="flex:1;border:1px solid #F0E6C8;background:#FFFBF0;border-radius:12px;padding:13px 10px;cursor:pointer;font-family:inherit;text-align:center;">' +
+              '<div style="font-size:21px;font-weight:800;color:#E8A400;line-height:1;">' + nSaved + '</div>' +
+              '<div style="font-size:11.5px;color:#8A7A44;font-weight:700;margin-top:5px;">⭐ 저장함</div>' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="margin-top:auto;padding:20px 24px 32px;">' +
+        '<button data-action="signOut" class="a-scale98" style="width:100%;height:48px;border:1.5px solid #EEDEDE;background:#fff;color:#DC2626;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">로그아웃</button>' +
+        '<div style="text-align:center;font-size:11px;color:#AEB5C4;margin-top:11px;line-height:1.5;">로그아웃해도 진도는 클라우드에 저장돼 있어<br>다시 로그인하면 복원됩니다.</div>' +
+      '</div>' +
+    '</div>';
+  }
   function authDone(err) {
     if (err) { review._loginError = err; render(); return; }
     review._loginError = null;
@@ -1128,9 +1182,7 @@
   function signOut() {
     var sync = window.QUIZ_SYNC;
     if (!sync || !sync.signOut) return;
-    if (typeof window.confirm === "function" &&
-        !window.confirm("로그아웃할까요?\n진도는 클라우드에 저장돼 있어 다시 로그인하면 복원됩니다.")) return;
-    sync.signOut().then(function () { render(); });
+    sync.signOut().then(function () { state.screen = "home"; render(); });
   }
   function syncErr(e) {
     var code = e && e.code ? e.code : "";
@@ -1219,6 +1271,7 @@
       case "toggleSaveIdx": toggleSaveIdx(parseInt(arg, 10)); break;
       case "reviewSaveIdx": reviewSaveIdx(parseInt(arg, 10)); break;
       case "openLogin": openLogin(); break;
+      case "openAccount": openAccount(); break;
       case "loginGoogle": loginGoogle(); break;
       case "loginEmail": loginEmail(false); break;
       case "registerEmail": loginEmail(true); break;
