@@ -128,6 +128,8 @@
     // (기록하면 챕터 진행 상태가 오염된다).
     if (state.screen === "review" || state.screen === "reviewQuiz" || state.screen === "login" || state.screen === "account") return;
     if (!state.chapterId || !data().length) return; // 챕터 미선택·데이터 로딩 전에는 저장하지 않는다
+    // 답 배열이 문항 수와 다르면(복원 전 빈 배열 등) 저장하지 않는다 — 동기화 레이스로 진도가 지워지는 것을 방지
+    if (!Array.isArray(state.answers) || state.answers.length !== data().length) return;
     try {
       localStorage.setItem(sessionKey(), JSON.stringify({
         screen: state.screen,
@@ -1330,7 +1332,21 @@
   }
 
   // 로그인/동기화(sync.js)로 로컬 기록이 바뀌면 현재 화면을 다시 그린다.
-  window.addEventListener("quizsync", function () { render(); });
+  // 클라우드 동기화로 localStorage 가 갱신됐을 때: 현재 챕터 세션을 안전 재적용 후 렌더한다.
+  // 메모리 상태가 아직 복원 전(빈 배열)이거나 뒤처져 있어도, 저장본(더 많이 푼 쪽)을 반영해 진도 손실을 막는다.
+  function syncReload() {
+    try { var v = localStorage.getItem(STORAGE_KEY); if (v != null) state.theoryOn = v === "1"; } catch (e) {}
+    if (state.chapterId && data().length) {
+      var saved = loadSession();
+      if (saved) {
+        var memCount = state.answers.filter(function (a) { return a != null; }).length;
+        var stCount = saved.answers.filter(function (a) { return a != null; }).length;
+        if (stCount > memCount) { state.answers = saved.answers; state.partIndex = saved.partIndex; }
+      }
+    }
+    render();
+  }
+  window.addEventListener("quizsync", function () { syncReload(); });
 
   boot();
 })();
