@@ -681,7 +681,7 @@
     return '<div id="q-' + it.gi + '" style="border-bottom:1px solid #ECEFF4;padding:13px 0;">' +
       '<div style="display:flex;gap:10px;align-items:flex-start;">' +
         '<div style="flex-shrink:0;width:26px;display:flex;flex-direction:column;align-items:center;gap:7px;padding-top:2px;">' +
-          '<div style="font-size:11px;font-weight:800;color:#7C8494;">' + gLabel + '</div>' +
+          '<div style="font-size:11px;font-weight:800;color:#2E3440;">' + gLabel + '</div>' +
           starHTML(it.gi, saved) +
         '</div>' +
         '<div style="flex:1;min-width:0;font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
@@ -902,7 +902,7 @@
 
     return '<div id="rq-' + idx + '" style="border-bottom:1px solid #ECEFF4;padding:13px 0;">' +
       '<div style="display:flex;gap:10px;align-items:flex-start;">' +
-        '<div style="font-size:11px;font-weight:800;color:#7C8494;flex-shrink:0;width:18px;padding-top:2px;">' + num + '</div>' +
+        '<div style="font-size:11px;font-weight:800;color:#2E3440;flex-shrink:0;width:18px;padding-top:2px;">' + num + '</div>' +
         '<div style="flex:1;min-width:0;">' +
           '<div style="font-size:10.5px;font-weight:700;color:#AEB5C4;margin-bottom:3px;">' + esc(it.chTitle || "") + '</div>' +
           '<div style="font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
