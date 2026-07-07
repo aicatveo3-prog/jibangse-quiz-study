@@ -412,12 +412,12 @@
     return '' +
     '<div style="display:flex;flex-direction:column;min-height:100vh;">' +
       '<div style="padding:56px 24px 28px;position:relative;">' +
-        renderAccountChip() +
+        renderTopButtons() +
         '<div style="font-size:13px;font-weight:600;letter-spacing:.04em;color:#5C6473;">학습 퀴즈</div>' +
         '<div style="font-size:22px;font-weight:800;margin-top:8px;line-height:1.3;">지방세법</div>' +
         '<div style="font-size:14px;color:#434A59;margin-top:6px;">O/X 문제로 핵심 개념을 빠르게 점검해요</div>' +
       '</div>' +
-      '<div style="padding:0 16px 8px;">' + reviewHomeCard() + '</div>' +
+      '<div style="padding:0 16px 8px;">' + renderSyncHint() + '</div>' +
       '<div style="padding:0 16px 24px;">' +
         '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:0 8px 10px;">목록</div>' +
         cards +
@@ -426,35 +426,48 @@
     '</div>';
   }
 
-  // 홈 상단 "복습 노트" 카드 — 오답노트/저장함 진입점 + 개수 표시 (슬림 버전).
-  function reviewHomeCard() {
+  // 우상단 계정 칩 — sync.js 설정 시에만 노출. 로그인 전=로그인 버튼, 로그인 후=계정 표시(탭→로그아웃).
+  // 우상단 버튼 묶음 — [📌 복습] + [로그인/계정]. 헤더 우측 상단에 절대배치.
+  function renderTopButtons() {
+    var pill = "height:36px;display:inline-flex;align-items:center;border-radius:18px;cursor:pointer;font-family:inherit;font-weight:700;box-shadow:0 3px 10px rgba(30,40,70,.10);";
     var nWrong = loadNotes(WRONG_KEY).length;
-    var nSaved = loadNotes(SAVED_KEY).length;
-    return '<button data-action="openReview" data-arg="wrong" class="a-scale985" style="width:100%;text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,#4F46E5,#6D63F2);border-radius:14px;padding:11px 14px;box-shadow:0 5px 14px rgba(79,70,229,.20);display:flex;align-items:center;gap:11px;font-family:inherit;margin-bottom:12px;">' +
-      '<div style="width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">📌</div>' +
-      '<div style="flex:1;min-width:0;">' +
-        '<div style="font-size:13.5px;font-weight:800;color:#fff;">복습 노트</div>' +
-        '<div style="font-size:11.5px;color:#DCD9FB;margin-top:2px;">오답 ' + nWrong + ' · 저장 ' + nSaved + '</div>' +
-      '</div>' +
-      '<div style="color:rgba(255,255,255,.7);font-size:18px;">›</div>' +
-    '</button>';
+    var badge = nWrong > 0
+      ? '<span style="min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#EF4444;color:#fff;font-size:10.5px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-left:5px;">' + nWrong + '</span>'
+      : '';
+    var review = '<button data-action="openReview" data-arg="wrong" class="a-scale98" style="' + pill + 'gap:3px;padding:0 12px;border:1px solid #DDE3EF;background:#fff;color:#312A6B;font-size:12.5px;">📌 복습' + badge + '</button>';
+    return '<div style="position:absolute;top:50px;right:20px;display:flex;gap:8px;align-items:center;">' + review + renderAccountPill(pill) + '</div>';
   }
 
-  // 우상단 계정 칩 — sync.js 설정 시에만 노출. 로그인 전=로그인 버튼, 로그인 후=계정 표시(탭→로그아웃).
-  function renderAccountChip() {
+  // 로그인/계정 버튼 — 로그아웃 시 크고 강조된 '로그인', 로그인 시 계정 칩(탭→로그아웃).
+  function renderAccountPill(pill) {
     var sync = window.QUIZ_SYNC;
     if (!sync || !sync.configured || !sync.configured()) return "";
-    var base = "position:absolute;top:52px;right:20px;height:32px;display:inline-flex;align-items:center;border-radius:16px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;box-shadow:0 3px 10px rgba(30,40,70,.10);";
     var user = sync.currentUser && sync.currentUser();
     if (user) {
       var initial = ((user.email || user.name || "?").charAt(0) || "?").toUpperCase();
-      return '<button data-action="signOut" class="a-scale98" title="' + esc(user.email || "로그인됨") + '" style="' + base + 'gap:6px;padding:0 11px 0 4px;border:1px solid #DDE3EF;background:#fff;color:#15803D;">' +
-        '<span style="width:24px;height:24px;border-radius:50%;background:#E8F8EF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#15803D;">' + esc(initial) + '</span>' +
-        '<span style="width:7px;height:7px;border-radius:50%;background:#22C55E;"></span>' +
-      '</button>';
+      return '<button data-action="signOut" class="a-scale98" title="' + esc(user.email || "로그인됨") + '" style="' + pill + 'gap:6px;padding:0 6px;border:1px solid #CDE9D6;background:#F1FBF4;color:#15803D;">' +
+        '<span style="width:26px;height:26px;border-radius:50%;background:#22C55E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;">' + esc(initial) + '</span></button>';
     }
-    return '<button data-action="openLogin" class="a-scale98" style="' + base + 'gap:5px;padding:0 13px;border:1px solid #DDE3EF;background:#fff;color:#312A6B;">' +
-      '<span style="font-size:14px;">☁️</span>로그인</button>';
+    return '<button data-action="openLogin" class="a-scale98" style="' + pill + 'gap:6px;padding:0 17px;border:none;background:#4F46E5;color:#fff;font-size:13.5px;">☁️ 로그인</button>';
+  }
+
+  // 헤더 아래 안내 배너 — 로그아웃 시 '로그인하면 자동 저장' 안내, 로그인 시 자동저장 확인.
+  function renderSyncHint() {
+    var sync = window.QUIZ_SYNC;
+    if (!sync || !sync.configured || !sync.configured()) return "";
+    var user = sync.currentUser && sync.currentUser();
+    if (user) {
+      return '<div style="display:flex;align-items:center;gap:8px;background:#F1FBF4;border:1px solid #D6EFDE;border-radius:12px;padding:10px 14px;margin-bottom:12px;">' +
+        '<span style="font-size:14px;flex-shrink:0;">✅</span>' +
+        '<span style="font-size:12.5px;color:#15803D;font-weight:800;flex-shrink:0;">자동 저장 켜짐</span>' +
+        '<span style="font-size:11.5px;color:#5C6473;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">· ' + esc(user.email || "") + '</span>' +
+      '</div>';
+    }
+    return '<button data-action="openLogin" class="a-scale99" style="width:100%;text-align:left;display:flex;align-items:center;gap:9px;background:#EDEAFB;border:1px solid #DDD7F7;border-radius:12px;padding:10px 14px;margin-bottom:12px;cursor:pointer;font-family:inherit;">' +
+      '<span style="font-size:15px;flex-shrink:0;">☁️</span>' +
+      '<span style="flex:1;min-width:0;font-size:12.5px;color:#3A3170;font-weight:600;line-height:1.45;">로그인하면 <b>오답노트·진도가 자동 저장</b>돼 기기 간에 이어져요</span>' +
+      '<span style="color:#9C93E0;font-size:16px;flex-shrink:0;">›</span>' +
+    '</button>';
   }
 
   function renderToc() {
