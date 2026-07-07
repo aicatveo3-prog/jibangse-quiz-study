@@ -642,8 +642,8 @@
   // 한 문제 줄 HTML — 답 선택 시 이 줄만 교체해 전체 리렌더(깜빡임)를 피한다.
   // 북마크(별) 버튼 HTML — 저장 여부에 따라 채운 별/빈 별.
   function starHTML(gi, saved) {
-    return '<button data-action="toggleSave" data-arg="' + gi + '" class="a-scale98" title="저장" ' +
-      'style="width:32px;height:32px;border:1.5px solid ' + (saved ? '#F4C84A' : '#DDE3EF') + ';background:' + (saved ? '#FFF8E6' : '#fff') + ';border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;color:' + (saved ? '#E8A400' : '#C2C8D4') + ';font-family:inherit;">' + (saved ? '★' : '☆') + '</button>';
+    return '<button data-action="toggleSave" data-arg="' + gi + '" class="a-scale98" title="' + (saved ? '저장 해제' : '저장') + '" ' +
+      'style="width:26px;height:26px;border:1.5px solid ' + (saved ? '#F4C84A' : '#E4E8F0') + ';background:' + (saved ? '#FFF8E6' : '#fff') + ';border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;color:' + (saved ? '#E8A400' : '#C6CCD8') + ';font-family:inherit;padding:0;">' + (saved ? '★' : '☆') + '</button>';
   }
 
   function questionRowHTML(it) {
@@ -672,7 +672,7 @@
         ? '<div style="font-size:11.5px;font-weight:700;color:#15803D;">정답입니다 · 정답 ' + label(it.answer) + '</div>'
         : '<div style="font-size:11.5px;font-weight:700;color:#DC2626;">오답 · 내 답 ' + label(sel) + ' · 정답 ' + label(it.answer) + '</div>';
       detail =
-        '<div style="margin-left:28px;margin-top:8px;animation:slideUp .2s ease;">' +
+        '<div style="margin-left:36px;margin-top:8px;animation:slideUp .2s ease;">' +
           head +
           '<div style="font-size:12.5px;line-height:1.65;color:#353B47;margin-top:5px;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(breakSentences(it.exp)) + '</div>' +
         '</div>';
@@ -680,9 +680,12 @@
 
     return '<div id="q-' + it.gi + '" style="border-bottom:1px solid #ECEFF4;padding:13px 0;">' +
       '<div style="display:flex;gap:10px;align-items:flex-start;">' +
-        '<div style="font-size:11px;font-weight:800;color:#C2C8D4;flex-shrink:0;width:18px;padding-top:2px;">' + gLabel + '</div>' +
+        '<div style="flex-shrink:0;width:26px;display:flex;flex-direction:column;align-items:center;gap:7px;padding-top:2px;">' +
+          '<div style="font-size:11px;font-weight:800;color:#C2C8D4;">' + gLabel + '</div>' +
+          starHTML(it.gi, saved) +
+        '</div>' +
         '<div style="flex:1;min-width:0;font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
-        '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + starHTML(it.gi, saved) + controls + '</div>' +
+        '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + controls + '</div>' +
       '</div>' +
       detail +
     '</div>';
