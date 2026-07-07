@@ -684,9 +684,11 @@
 
     var detail = "";
     if (answered) {
-      var head = isCorrect
-        ? '<div style="font-size:11.5px;font-weight:700;color:#15803D;">정답입니다 · 정답 ' + label(it.answer) + '</div>'
-        : '<div style="font-size:11.5px;font-weight:700;color:#DC2626;">오답 · 내 답 ' + label(sel) + ' · 정답 ' + label(it.answer) + '</div>';
+      var resultLabel = isCorrect ? '정답입니다 · 정답 ' + label(it.answer) : '오답 · 내 답 ' + label(sel) + ' · 정답 ' + label(it.answer);
+      var head = '<div style="display:flex;align-items:center;gap:8px;">' +
+          '<span style="flex:1;min-width:0;font-size:11.5px;font-weight:700;color:' + (isCorrect ? '#15803D' : '#DC2626') + ';">' + resultLabel + '</span>' +
+          '<button data-action="retryOne" data-arg="' + it.gi + '" class="a-scale98" title="이 문제 다시 풀기" style="border:none;background:transparent;padding:0;cursor:pointer;color:#B4BAC8;font-size:11px;font-weight:700;font-family:inherit;display:inline-flex;align-items:center;gap:2px;line-height:1;flex-shrink:0;">↺ 다시</button>' +
+        '</div>';
       detail =
         '<div style="margin-left:36px;margin-top:8px;animation:slideUp .2s ease;">' +
           head +
@@ -1227,6 +1229,20 @@
     saveSession(); // 답 선택도 저장 (pick 은 부분 갱신이라 render 를 거치지 않음)
   }
 
+  // 개별 문제 다시 풀기 — 그 문제만 미응답 상태로 되돌리고, 오답이었다면 오답노트 기록도 되돌린다.
+  function retryOne(gi) {
+    if (state.answers[gi] == null) return;
+    state.answers[gi] = null;
+    var q = data()[gi];
+    if (q) removeWrong(noteId(state.chapterId, q.text));
+    var row = document.getElementById("q-" + gi);
+    if (!row) { render(); return; }
+    var it = Object.assign({ gi: gi }, data()[gi]);
+    row.outerHTML = questionRowHTML(it);
+    updateQuizProgress();
+    saveSession();
+  }
+
   // 북마크 토글 — 현재 문제 줄만 다시 그린다.
   function toggleSave(gi) {
     var rec = buildRecord(gi);
@@ -1292,6 +1308,7 @@
       case "loginEmail": loginEmail(false); break;
       case "registerEmail": loginEmail(true); break;
       case "signOut": signOut(); break;
+      case "retryOne": retryOne(parseInt(arg, 10)); break;
       case "answer":
         var parts2 = (arg || "").split("|");
         pick(parseInt(parts2[0], 10), parts2[1]);
