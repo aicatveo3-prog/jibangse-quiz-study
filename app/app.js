@@ -305,19 +305,36 @@
     if (b.k === "table") {
       var firstRow = (b.rows && b.rows[0]) || [];
       var nc = (b.head && b.head.length) || firstRow.length;
-      var gridCols;
-      if (nc <= 1) {
-        gridCols = "minmax(0,1fr)";
-      } else if (nc === 2) {
-        gridCols = "minmax(0,0.92fr) minmax(0,1.55fr)";
-      } else {
-        gridCols = "minmax(0,0.8fr)";
-        for (var i = 1; i < nc; i++) gridCols += " minmax(0,1fr)";
-      }
       var cellBase = "padding:9px 11px;font-size:12px;line-height:1.5;word-break:keep-all;text-wrap:pretty;display:flex;align-items:center;";
       var allRows = [];
       if (b.head && b.head.length) allRows.push({ head: true, cells: b.head });
       (b.rows || []).forEach(function (r) { allRows.push({ head: false, cells: r }); });
+      // 열 폭 자동 배분: 각 열은 ① 자기 내용(끊기지 않는 최장 토큰)만큼의 최소폭을 확보하고,
+      // ② 전체 내용 길이의 제곱근에 비례해 남는 폭을 나눠 가진다(긴 서술 열이 제일 넓게).
+      var gridCols;
+      var charUnit = function (s) { var len = 0; for (var k = 0; k < s.length; k++) len += (s.charCodeAt(k) > 0x1100 ? 1.7 : 1); return len; };
+      if (nc <= 1) {
+        gridCols = "minmax(0,1fr)";
+      } else {
+        var parts = [];
+        for (var ci0 = 0; ci0 < nc; ci0++) {
+          var mx = 0, tok = 0;
+          for (var ri0 = 0; ri0 < allRows.length; ri0++) {
+            var ct = String(allRows[ri0].cells[ci0] != null ? allRows[ri0].cells[ci0] : "");
+            var full = charUnit(ct);
+            if (full > mx) mx = full;
+            // 공백·쉼표·가운뎃점·슬래시로 나눈 토큰 중 최장(줄바꿈 불가 단위)
+            var tks = ct.split(/[\s,、·\/()]+/);
+            for (var ti = 0; ti < tks.length; ti++) { var tl = charUnit(tks[ti]); if (tl > tok) tok = tl; }
+          }
+          // 최소폭(px): 최장 토큰이 안 잘리게. 셀 좌우 패딩 22px + 토큰폭. 24~78px로 제한.
+          var minPx = Math.round(Math.max(24, Math.min(78, tok * 6.6 + 20)));
+          // 성장 가중(fr): 전체 내용 길이의 제곱근.
+          var fr = Math.sqrt(Math.max(4, Math.min(160, mx)));
+          parts.push("minmax(" + minPx + "px," + fr.toFixed(2) + "fr)");
+        }
+        gridCols = parts.join(" ");
+      }
 
       var out = '<div style="border:1px solid #E7E3F3;border-radius:11px;overflow:hidden;background:#fff;">';
       allRows.forEach(function (r, ri) {
