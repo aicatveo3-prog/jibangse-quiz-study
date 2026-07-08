@@ -102,8 +102,9 @@
   function fmtTrap(text) {
     if (typeof text !== "string" || (text.indexOf("❌") < 0 && text.indexOf("/") < 0)) return text;
     var out = text.replace(/\)\s*\/\s*/g, ")\n");        // ') / ' 대비 → 줄바꿈
-    out = out.replace(/\s*→\s*❌/g, "\n❌");                // 화살표로 이어진 함정 → 줄바꿈(화살표 제거)
+    out = out.replace(/\s*→\s*❌/g, "\n❌");                // 화살표로 이어진 함정(→ ❌) → 줄바꿈(화살표 제거)
     out = out.replace(/(["”』」])\s*❌/g, "$1\n❌");          // 지문 인용부호 뒤 함정 마커 → 줄바꿈
+    out = out.replace(/([^\n])\s*❌\s*→/g, "$1\n❌ →");      // 틀린내용 ❌ → 올바른내용 (❌ 뒤 화살표) → ❌ 앞에서 줄바꿈
     return out;
   }
 
