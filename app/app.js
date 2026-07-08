@@ -740,7 +740,7 @@
     var questions = curPart.items.map(questionRowHTML).join("");
 
     var prevBtn = pIdx > 0
-      ? '<button data-action="prevPart" class="a-scale98" style="flex:1 1 0;max-width:150px;border:1.5px solid #DDE3EF;background:#fff;color:#5A6172;font-size:14px;font-weight:700;padding:12px;border-radius:11px;cursor:pointer;font-family:inherit;">← 이전</button>'
+      ? '<button data-action="prevPart" class="a-scale98" style="flex:1 1 0;max-width:150px;border:1.5px solid #DDE3EF;background:#fff;color:#5A6172;font-size:12.5px;font-weight:700;padding:8px;border-radius:10px;cursor:pointer;font-family:inherit;">← 이전</button>'
       : '<span style="flex:1 1 0;max-width:150px;"></span>';
 
     return '' +
@@ -773,7 +773,7 @@
       '<div style="padding:4px 18px 12px;flex:1;">' + questions + '</div>' +
       '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:linear-gradient(to top,#F7F8FB 72%,transparent);display:flex;gap:12px;align-items:center;">' +
         prevBtn +
-        '<button data-action="nextPart" class="a-scale99" style="flex:1.5 1 0;border:none;background:#1A1D24;color:#fff;font-size:14px;font-weight:700;padding:12px;border-radius:11px;cursor:pointer;font-family:inherit;">' + (isLastPart ? "결과 보기" : "다음 파트 →") + '</button>' +
+        '<button data-action="nextPart" class="a-scale99" style="flex:1.5 1 0;border:none;background:#1A1D24;color:#fff;font-size:12.5px;font-weight:700;padding:8px;border-radius:10px;cursor:pointer;font-family:inherit;">' + (isLastPart ? "결과 보기" : "다음 파트 →") + '</button>' +
       '</div>' +
     '</div>';
   }
