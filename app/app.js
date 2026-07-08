@@ -95,6 +95,18 @@
     return lines.join("\n");
   }
 
+  // 함정 표기·대비 항목은 항상 줄바꿈해 가독성을 높인다 (white-space:pre-line 로 렌더).
+  //  ① "…지문…" ❌ 설명  → 지문 다음 줄에서 ❌ 시작
+  //  ② A = … (…) / B = … → ' / ' 대비를 줄바꿈
+  // 반드시 brkPara 뒤에 적용한다(brkPara 가 짧은 조각을 다시 합쳐 줄바꿈을 되돌리기 때문).
+  function fmtTrap(text) {
+    if (typeof text !== "string" || (text.indexOf("❌") < 0 && text.indexOf("/") < 0)) return text;
+    var out = text.replace(/\)\s*\/\s*/g, ")\n");        // ') / ' 대비 → 줄바꿈
+    out = out.replace(/\s*→\s*❌/g, "\n❌");                // 화살표로 이어진 함정 → 줄바꿈(화살표 제거)
+    out = out.replace(/(["”』」])\s*❌/g, "$1\n❌");          // 지문 인용부호 뒤 함정 마커 → 줄바꿈
+    return out;
+  }
+
   function splitPartName(name) {
     var m = name.match(/^(PART\s*\d+)\.\s*(.*)$/);
     if (m) return { label: m[1], title: m[2] };
@@ -274,7 +286,7 @@
       return '<div style="font-size:13px;font-weight:800;color:#4F46E5;margin-top:3px;word-break:keep-all;">' + esc(b.t) + '</div>';
     }
     if (b.k === "lead") {
-      return '<div style="font-size:13.5px;font-weight:700;color:#312A6B;background:#F1EFFE;border:1px solid #DDD7F7;border-radius:10px;padding:11px 13px;line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(brkPara(b.t)) + '</div>';
+      return '<div style="font-size:13.5px;font-weight:700;color:#312A6B;background:#F1EFFE;border:1px solid #DDD7F7;border-radius:10px;padding:11px 13px;line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(fmtTrap(brkPara(b.t))) + '</div>';
     }
     if (b.k === "tree") {
       return '<div style="background:#F3F2FA;border:1px solid #E3E0F2;border-radius:10px;padding:11px 12px;overflow-x:auto;">' +
@@ -287,7 +299,7 @@
         html += '<div style="font-size:12.5px;font-weight:800;color:' + m.ttc + ';margin-bottom:6px;word-break:keep-all;text-wrap:pretty;">' + esc(b.title) + '</div>';
       }
       if (b.t) {
-        html += '<div style="font-size:12.5px;font-weight:600;color:' + m.tc + ';line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(brkPara(b.t)) + '</div>';
+        html += '<div style="font-size:12.5px;font-weight:600;color:' + m.tc + ';line-height:1.6;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(fmtTrap(brkPara(b.t))) + '</div>';
       }
       if (b.list && b.list.length) {
         var listStyle = "display:flex;flex-direction:column;gap:6px;" + (b.title || b.t ? " margin-top:6px;" : "");
@@ -295,7 +307,7 @@
         b.list.forEach(function (li) {
           html += '<div style="display:flex;gap:7px;font-size:12.5px;font-weight:600;color:' + m.tc + ';line-height:1.55;word-break:keep-all;text-wrap:pretty;">' +
             '<span style="flex-shrink:0;color:' + m.ttc + ';font-weight:800;">•</span>' +
-            '<span style="flex:1;min-width:0;">' + esc(li) + '</span></div>';
+            '<span style="flex:1;min-width:0;white-space:pre-line;">' + esc(fmtTrap(li)) + '</span></div>';
         });
         html += '</div>';
       }
@@ -305,7 +317,7 @@
     if (b.k === "table") {
       var firstRow = (b.rows && b.rows[0]) || [];
       var nc = (b.head && b.head.length) || firstRow.length;
-      var cellBase = "padding:9px 11px;font-size:12px;line-height:1.5;word-break:keep-all;text-wrap:pretty;display:flex;align-items:center;";
+      var cellBase = "padding:9px 11px;font-size:12px;line-height:1.5;word-break:keep-all;text-wrap:pretty;white-space:pre-line;display:flex;align-items:center;";
       var allRows = [];
       if (b.head && b.head.length) allRows.push({ head: true, cells: b.head });
       (b.rows || []).forEach(function (r) { allRows.push({ head: false, cells: r }); });
@@ -357,7 +369,7 @@
           var glyph = null;
           if (c && c.charCodeAt(0) === 0x2b06) glyph = '<span style="color:#2563EB;font-size:15px;font-weight:800;line-height:1;">▲</span>';
           else if (c && c.charCodeAt(0) === 0x2b07) glyph = '<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:#FDE8E8;color:#DC2626;font-size:15px;font-weight:800;line-height:1;">▼</span>';
-          out += '<div style="' + s + '">' + (glyph || esc(c)) + '</div>';
+          out += '<div style="' + s + '">' + (glyph || esc(fmtTrap(c))) + '</div>';
         });
         out += '</div>';
       });
@@ -365,7 +377,7 @@
       return out;
     }
     // default: paragraph
-    return '<div style="font-size:13px;color:#353B47;line-height:1.68;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(brkPara(b.t)) + '</div>';
+    return '<div style="font-size:13px;color:#353B47;line-height:1.68;word-break:keep-all;text-wrap:pretty;white-space:pre-line;">' + esc(fmtTrap(brkPara(b.t))) + '</div>';
   }
 
   function renderTheoryBody(theory) {
