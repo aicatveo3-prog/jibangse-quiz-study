@@ -331,6 +331,7 @@
       // 열 폭 자동 배분: 각 열은 ① 자기 내용(끊기지 않는 최장 토큰)만큼의 최소폭을 확보하고,
       // ② 전체 내용 길이의 제곱근에 비례해 남는 폭을 나눠 가진다(긴 서술 열이 제일 넓게).
       var gridCols;
+      var totalMinPx = 0; // 열 최소폭 합계 — 화면보다 넓으면 가로 스크롤 처리
       var charUnit = function (s) { var len = 0; for (var k = 0; k < s.length; k++) len += (s.charCodeAt(k) > 0x1100 ? 1.7 : 1); return len; };
       if (nc <= 1) {
         gridCols = "minmax(0,1fr)";
@@ -348,6 +349,7 @@
           }
           // 최소폭(px): 최장 토큰이 안 잘리게. 셀 좌우 패딩 22px + 토큰폭. 24~78px로 제한.
           var minPx = Math.round(Math.max(24, Math.min(78, tok * 6.6 + 20)));
+          totalMinPx += minPx;
           // 성장 가중(fr): 전체 내용 길이의 제곱근.
           var fr = Math.sqrt(Math.max(4, Math.min(160, mx)));
           parts.push("minmax(" + minPx + "px," + fr.toFixed(2) + "fr)");
@@ -355,10 +357,14 @@
         gridCols = parts.join(" ");
       }
 
-      var out = '<div style="border:1px solid #E7E3F3;border-radius:11px;overflow:hidden;background:#fff;">';
+      // 열 최소폭 합이 화면 폭을 넘치면 컨테이너 안에서 가로 스크롤(각 행에 같은 min-width를
+      // 걸어 열 정렬 유지). 좁으면 min-width가 작아 스크롤이 생기지 않고 fr 배분으로 채워진다.
+      var rowMinW = totalMinPx > 0 ? ' min-width:' + totalMinPx + 'px;' : '';
+      var wrapOverflow = totalMinPx > 0 ? 'overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;' : 'overflow:hidden;';
+      var out = '<div style="border:1px solid #E7E3F3;border-radius:11px;' + wrapOverflow + 'background:#fff;">';
       allRows.forEach(function (r, ri) {
         var isLastRow = ri === allRows.length - 1;
-        var rs = "display:grid;grid-template-columns:" + gridCols + ";";
+        var rs = "display:grid;grid-template-columns:" + gridCols + ";" + rowMinW;
         if (!isLastRow) rs += " border-bottom:1px solid #ECE9F6;";
         out += '<div style="' + rs + '">';
         r.cells.forEach(function (c, ci) {
@@ -369,6 +375,8 @@
           else if (ci === 0) s += " background:#FAF9FE;font-weight:700;color:#1F2430;";
           else s += " color:#3A4150;";
           if (!isLastCol) s += " border-right:1px solid #EFECF8;";
+          // 가로 스크롤 표에서는 첫 열(행 라벨)을 고정해, 오른쪽으로 밀어도 어느 행인지 보이게 한다.
+          if (ci === 0 && totalMinPx > 0) s += " position:sticky;left:0;z-index:1;box-shadow:1px 0 0 #EFECF8;";
           if (isSym) s += " justify-content:center;font-size:14px;";
           // 방향 화살표(⬆️/⬇️)는 이모지가 모두 같은 파란색이라 구분이 어렵다.
           // 색상 글리프로 치환: 위=파랑 ▲, 아래=빨강 ▼. 특히 아래 화살표는
