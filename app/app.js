@@ -101,10 +101,16 @@
   // 반드시 brkPara 뒤에 적용한다(brkPara 가 짧은 조각을 다시 합쳐 줄바꿈을 되돌리기 때문).
   function fmtTrap(text) {
     if (typeof text !== "string" || (text.indexOf("❌") < 0 && text.indexOf("/") < 0)) return text;
+    // ❌ 뒤에 '설명 텍스트'가 이어질 때 그 시작 문자 (한글·영숫자·여는 인용부호)
+    var C = "[가-힣A-Za-z0-9\"“]";
     var out = text.replace(/\)\s*\/\s*/g, ")\n");        // ') / ' 대비 → 줄바꿈
-    out = out.replace(/\s*→\s*❌/g, "\n❌");                // 화살표로 이어진 함정(→ ❌) → 줄바꿈(화살표 제거)
-    out = out.replace(/(["”』」])\s*❌/g, "$1\n❌");          // 지문 인용부호 뒤 함정 마커 → 줄바꿈
-    out = out.replace(/([^\n])\s*❌\s*→/g, "$1\n❌ →");      // 틀린내용 ❌ → 올바른내용 (❌ 뒤 화살표) → ❌ 앞에서 줄바꿈
+    out = out.replace(/([^\n])\s*❌\s*→/g, "$1\n❌ →");     // 틀린내용 ❌ → 올바른내용 (❌ 뒤 화살표) → ❌ 앞에서 줄바꿈
+    // '지문 → ❌ 설명' : ❌ 뒤에 설명이 이어질 때만 ❌를 새 줄로 (화살표 제거)
+    out = out.replace(new RegExp("\\s*→\\s*❌\\s*(?=" + C + ")", "g"), "\n❌ ");
+    // '… → ❌' 가 문장 끝·괄호·구두점으로 끝나면 줄바꿈하지 않고 한 줄 유지 (화살표만 제거)
+    out = out.replace(/\s*→\s*❌/g, " ❌");
+    // '"지문"❌ 설명' : 인용부호 뒤 ❌ 다음에 설명이 이어질 때만 줄바꿈 (괄호 안 "(…❌)"·문장 끝은 한 줄 유지)
+    out = out.replace(new RegExp("([\"”』」])\\s*❌\\s*(?=" + C + ")", "g"), "$1\n❌ ");
     return out;
   }
 
