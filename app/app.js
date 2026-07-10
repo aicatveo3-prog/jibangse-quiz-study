@@ -573,7 +573,7 @@
         '<div style="font-size:12.5px;color:#5C6473;margin-top:4px;">총 ' + ps.length + '개 파트 · ' + total + '문제 · ' + totalAnswered + '문제 완료</div>' +
       '</div>' +
       '<div style="flex:1;padding:2px 14px 14px;">' + renderChecklistCard() + items + '</div>' +
-      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' +
+      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;z-index:10;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' +
         '<button data-action="showResult" class="a-scale99" style="width:100%;border:1.5px solid #DDE3EF;background:#fff;color:#5A6172;font-size:14.5px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;font-family:inherit;">전체 결과 보기</button>' +
       '</div>' +
     '</div>';
@@ -815,7 +815,7 @@
         '</div>' +
       '</div>' +
       '<div style="padding:4px 18px 12px;flex:1;">' + questions + '</div>' +
-      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);display:flex;gap:12px;align-items:center;">' +
+      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;z-index:10;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);display:flex;gap:12px;align-items:center;">' +
         prevBtn +
         '<button data-action="nextPart" class="a-scale99" style="flex:1.5 1 0;border:none;background:#1A1D24;color:#fff;font-size:12.5px;font-weight:700;padding:8px;border-radius:10px;cursor:pointer;font-family:inherit;">' + (isLastPart ? "결과 보기" : "다음 파트 →") + '</button>' +
       '</div>' +
@@ -862,7 +862,7 @@
         '<div style="font-size:12px;font-weight:700;color:#6E7585;letter-spacing:.03em;padding:8px;">다시 보기</div>' +
         '<div style="display:flex;flex-direction:column;gap:8px;">' + reviews + '</div>' +
       '</div>' +
-      '<div style="padding:12px 20px 28px;display:flex;gap:12px;position:sticky;bottom:0;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' +
+      '<div style="padding:12px 20px 28px;display:flex;gap:12px;position:sticky;bottom:0;z-index:10;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' +
         '<button data-action="goHome" class="a-scale98" style="flex:1;border:2px solid #DDE3EF;background:#fff;color:#5A6172;font-size:15px;font-weight:700;padding:15px;border-radius:16px;cursor:pointer;font-family:inherit;">목록으로</button>' +
         '<button data-action="retry" class="a-scale98" style="flex:1.4;border:none;background:#4F46E5;color:#fff;font-size:15px;font-weight:700;padding:15px;border-radius:16px;cursor:pointer;font-family:inherit;">다시 풀기</button>' +
       '</div>' +
@@ -923,7 +923,7 @@
         '</div>' +
       '</div>' +
       '<div style="flex:1;padding:2px 16px 14px;">' + body + '</div>' +
-      (startBtn ? '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' + startBtn + '</div>' : '') +
+      (startBtn ? '<div style="padding:12px 18px 22px;position:sticky;bottom:0;z-index:10;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' + startBtn + '</div>' : '') +
     '</div>';
   }
 
@@ -1005,7 +1005,7 @@
         '<div id="rq-pbar" style="height:100%;background:#4F46E5;width:' + pct + '%;transition:width .35s cubic-bezier(.4,0,.2,1);"></div>' +
       '</div>' +
       '<div style="padding:6px 18px 12px;flex:1;">' + rows + '</div>' +
-      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' +
+      '<div style="padding:12px 18px 22px;position:sticky;bottom:0;z-index:10;background:#F7F8FB;box-shadow:0 -10px 16px -8px rgba(30,40,70,.12);">' +
         '<button data-action="goReview" class="a-scale99" style="width:100%;border:none;background:#1A1D24;color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;font-family:inherit;">완료 · 복습 노트로</button>' +
       '</div>' +
     '</div>';
