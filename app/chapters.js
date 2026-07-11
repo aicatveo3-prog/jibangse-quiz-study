@@ -16,5 +16,6 @@ window.CHAPTER_LIST = [
   { id: "sb01", num: 1, title: "지방세법 제1장 (취득세)", file: "quizdata-sb01.js", count: 259 },
   { id: "sb02", num: 2, title: "지방세법 제2장 (등록면허세)", file: "quizdata-sb02.js", count: 296 },
   { id: "sb03", num: 3, title: "지방세법 제3장 (재산세)", file: "quizdata-sb03.js", count: 184 },
-  { id: "sb04", num: 4, title: "지방세법 제4장 (레저세)", file: "quizdata-sb04.js", count: 114 }
+  { id: "sb04", num: 4, title: "지방세법 제4장 (레저세)", file: "quizdata-sb04.js", count: 114 },
+  { id: "sb05", num: 5, title: "지방세법 제5장 (담배소비세)", file: "quizdata-sb05.js", count: 143 }
 ];
