@@ -13,5 +13,6 @@ window.CHAPTER_LIST = [
   { id: "js01", num: 1, title: "지방세징수법 제1장 (총칙)", file: "quizdata-js01.js", count: 115 },
   { id: "js02", num: 2, title: "지방세징수법 제2장 (징수)", file: "quizdata-js02.js", count: 117 },
   { id: "js03", num: 3, title: "지방세징수법 제3장 (체납처분)", file: "quizdata-js03.js", count: 176 },
-  { id: "sb01", num: 1, title: "지방세법 제1장 (취득세)", file: "quizdata-sb01.js", count: 259 }
+  { id: "sb01", num: 1, title: "지방세법 제1장 (취득세)", file: "quizdata-sb01.js", count: 259 },
+  { id: "sb02", num: 2, title: "지방세법 제2장 (등록면허세)", file: "quizdata-sb02.js", count: 296 }
 ];
