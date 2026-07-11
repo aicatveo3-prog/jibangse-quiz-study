@@ -23,5 +23,6 @@ window.CHAPTER_LIST = [
   { id: "sb08", num: 8, title: "지방세법 제8장 (지방소득세)", file: "quizdata-sb08.js", count: 212 },
   { id: "sb09", num: 9, title: "지방세법 제9장 (자동차세)", file: "quizdata-sb09.js", count: 174 },
   { id: "sb10", num: 10, title: "지방세법 제10장 (지역자원시설세)", file: "quizdata-sb10.js", count: 150 },
-  { id: "sb11", num: 11, title: "지방세법 제11장 (지방교육세)", file: "quizdata-sb11.js", count: 125 }
+  { id: "sb11", num: 11, title: "지방세법 제11장 (지방교육세)", file: "quizdata-sb11.js", count: 125 },
+  { id: "te01", num: 1, title: "지방세특례제한법 제1장 (총칙 및 보칙)", file: "quizdata-te01.js", count: 121 }
 ];
