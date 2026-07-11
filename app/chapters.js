@@ -15,5 +15,6 @@ window.CHAPTER_LIST = [
   { id: "js03", num: 3, title: "지방세징수법 제3장 (체납처분)", file: "quizdata-js03.js", count: 176 },
   { id: "sb01", num: 1, title: "지방세법 제1장 (취득세)", file: "quizdata-sb01.js", count: 259 },
   { id: "sb02", num: 2, title: "지방세법 제2장 (등록면허세)", file: "quizdata-sb02.js", count: 296 },
-  { id: "sb03", num: 3, title: "지방세법 제3장 (재산세)", file: "quizdata-sb03.js", count: 184 }
+  { id: "sb03", num: 3, title: "지방세법 제3장 (재산세)", file: "quizdata-sb03.js", count: 184 },
+  { id: "sb04", num: 4, title: "지방세법 제4장 (레저세)", file: "quizdata-sb04.js", count: 114 }
 ];
