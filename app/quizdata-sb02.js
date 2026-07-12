@@ -3423,6 +3423,17 @@
     var TAGS = [["매년 1월 1일에 그 면허를 갱신하는 신청을 하여야 한다","2024 서울시 7급"]];
     for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
   })();
+  // ==== 2024 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 등록분 비과세 — 취득세 비과세와의 교차","q":[{"answer":"O","text":"외국정부가 자기를 위하여 받는 등록 또는 면허에 대하여는 등록면허세를 부과하지 아니하지만, 대한민국 정부기관의 등록 또는 면허에 대하여 과세하는 외국정부의 등록 또는 면허의 경우에는 등록면허세를 부과한다.","exp":"옳다. 외국정부가 자기를 위하여 받는 등록·면허는 원칙적으로 비과세이나, 우리 정부기관의 등록·면허에 과세하는 외국정부에 대하여는 상호주의로 과세한다. 상호주의 예외 없이 언제나 비과세인 주한국제기구와 구별해야 한다.","src":"2024 지방직 9급"},{"answer":"X","text":"외국정부가 자기를 위하여 받는 등록 또는 면허에 대하여는 등록면허세를 부과하지 아니하며, 대한민국 정부기관의 등록 또는 면허에 대하여 과세하는 외국정부의 등록 또는 면허의 경우에도 상호주의와 관계없이 등록면허세를 부과하지 아니한다.","exp":"외국정부의 비과세에는 상호주의 예외가 있어, 우리 정부기관에 과세하는 외국정부의 등록·면허에는 등록면허세를 부과한다. 원칙적 비과세라는 앞부분은 옳지만 마지막에 '부과하지 아니한다'로 상호주의 예외를 지운 것이 틀렸다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"선박의 등록에 대한 등록면허세의 납세지는 선적항 소재지로 한다","l":"2024 지방직 9급"},{"n":"면허의 효력이 소멸한 경우에는 이미 납부한 등록면허세를 환급하지 아니한다","l":"2024 지방직 9급"},{"n":"지방세환급가산금을 가산하여 환급하여야 한다","l":"2024 지방직 9급"},{"n":"관계 서류를 열람하거나 복사할 것을 청구하는 경우에는 관계 기관은 이에 따라야 한다","l":"2024 지방직 9급"},{"n":"등록면허세의 납부 여부를 확인한 후 그 면허증서를 발급하거나 송달하여야 한다","l":"2024 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

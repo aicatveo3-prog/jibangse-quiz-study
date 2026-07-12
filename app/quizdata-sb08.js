@@ -2106,6 +2106,17 @@
     var MV = [["법인지방소득세의 납세지는 사업연도 종료일 현재의 「법인세법」에 따른 납세지로 한다. 다만, 법인 또는 연결법인이","법인지방소득세의 납세지는 해당 법인의 법인지방소득세 신고일 현재 「법인세법」 제9조에 따른 납세지로 한다."],["개인지방소득세의 납세지는 「지방세기본법」 제34조에 따른 납세의무 성립 당시의","둘 이상의 지방자치단체에 사업장이 있는 법인은 각 사업장의 종업원 수 기준과 건축물 연면적 기준"]];
     for (var m=0;m<MV.length;m++) moveAfter(MV[m][0], MV[m][1]);
   })();
+  // ==== 2024 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"「소득세법」, 「법인세법」 및 「조세특례제한법」에 따라 소득세 또는 법인세가 비과세되는 소득에 대하여는 지방소득세를 과세하지 아니한다","l":"2024 지방직 9급"},{"n":"예정신고만으로 충분하고","l":"2024 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb08"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

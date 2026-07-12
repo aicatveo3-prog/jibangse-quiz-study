@@ -507,6 +507,17 @@
     var ADDS = [{"p":"PART 5. 종업원분 — 납세의무자·과세표준·종업원·세율","q":[{"answer":"O","text":"주민세 종업원분의 세율은 조례로 정하는 바에 따라 표준세율의 100분의 50의 범위에서 가감할 수 있다.","exp":"옳다. 종업원분 표준세율(0.5%)은 조례로 100분의 50(50%) 범위에서 가감할 수 있어 0.25%~0.75%까지 가능하다. 1만원 이내에서 조례로 직접 정하는 개인분 세율(가감 구조 아님)과 구별한다.","src":"2025 지방직 9급"}],"tb":[],"wi":[]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2024 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 1. 주민세 통칙 — 3유형·용어·과세기준일·비과세","q":[{"answer":"O","text":"개인분의 징수는 보통징수의 방법으로 하고, 사업소분과 종업원분의 징수는 신고납부의 방법으로 한다.","exp":"옳다. 주민세 3유형 중 보통징수는 개인분 하나뿐이고, 사업소분·종업원분은 둘 다 신고납부다. 개인분은 정액이라 납세자가 계산할 것이 없어 지자체가 고지한다."},{"answer":"X","text":"개인분의 징수는 신고납부의 방법으로 하고, 사업소분과 종업원분은 납세지를 관할하는 지방자치단체의 장이 보통징수의 방법으로 징수한다.","exp":"징수방법이 정반대다. 개인분은 정액이라 보통징수하고, 사업소분·종업원분은 사업주가 스스로 계산하는 신고납부다. ‘개인분 신고납부·사업소분·종업원분 보통징수’로 뒤바꿔 틀렸다.","src":"2024 지방직 9급"}],"tb":[],"wi":["개인분 = 신고납부 / 사업소분·종업원분 = 보통징수 ❌ → 개인분 = 보통징수 / 사업소분·종업원분 = 신고납부 ⭕"]},{"p":"PART 2. 개인분 주민세","q":[{"answer":"O","text":"국민기초생활 보장법에 따른 수급자, 출입국관리법에 따른 외국인등록을 한 날부터 1년이 경과되지 아니한 외국인은 개인분의 납세의무자에서 제외한다.","exp":"옳다. 수급자와 외국인등록 후 1년 미경과 외국인은 모두 개인분 납세의무자에서 제외된다. 이 외국인 1년 미경과 비과세는 개인분에만 적용되고 사업소분·종업원분에는 적용되지 않는다.","src":"2024 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"1년 이상 계속하여 휴업하고 있는 자는 사업소분의 납세의무자에서 제외","l":"2024 지방직 9급"},{"n":"지방자치단체조합에 대하여는 주민세를 부과하지 아니한다","l":"2024 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
