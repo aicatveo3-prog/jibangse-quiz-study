@@ -3240,6 +3240,14 @@
     var MV = [["법인지방소득세의 납세의무는 그 과세표준이 되는 소득에 대하여","무신고가산세의 납세의무는 법정신고기한이 경과하는 때에"]];
     for (var m=0;m<MV.length;m++) moveAfter(MV[m][0], MV[m][1]);
   })();
+  // ==== 2025 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 7. 부과권의 제척기간","q":[{"answer":"X","text":"지방세 납세자가 상속으로 취득한 토지에 대한 과세표준 신고서를 법정신고기한까지 제출하지 않은 경우에는 지방세 부과제척기간을 7년으로 한다.","exp":"\"7년\"이 틀렸다. 상속으로 취득하여 법정신고기한까지 신고하지 않은 경우의 부과제척기간은 10년이다. 상속·증여 취득 무신고는 일반 무신고(7년)와 달리 10년이 적용되며, 상속은 등기 없이도 사망 즉시 취득되어 과세관청이 파악하기 어렵기 때문이다.","src":"2025 서울시 7급"}],"tb":[],"wi":[]},{"p":"PART 9. 징수권의 소멸시효","q":[{"answer":"O","text":"가산세를 제외한 지방세의 금액이 5천만원 이상인 경우 지방세징수권의 소멸시효는 10년이다.","exp":"지방세징수권의 소멸시효는 원칙 5년이나, 가산세를 제외한 지방세 금액이 5천만원 이상이면 10년이다. 금액 기준에서 가산세를 \"포함\"한다고 바꾸면 틀린 지문이 되므로, 본세만으로 5천만원 이상인지를 따진다.","src":"2025 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

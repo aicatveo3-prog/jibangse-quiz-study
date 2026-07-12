@@ -2348,6 +2348,19 @@
     ]
   };
 
+  // ==== 2025 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 4. 납기전징수","q":[{"answer":"O","text":"지방자치단체의 장은 국세, 지방세, 그 밖의 공과금의 체납으로 강제징수 또는 체납처분이 시작된 경우 납기 전이라도 이미 납세의무가 성립된 지방세를 확정하여 지방자치단체의 징수금을 징수할 수 있다.","exp":"옳다. 다른 세금의 체납으로 강제징수·체납처분이 시작된 경우는 납기전징수 사유(사유 1)로, 납기 전이라도 이미 성립된 지방세를 확정해 징수한다. 아직 납세의무가 성립되지 않은 지방세는 미리 징수할 수 없다는 점과 구별한다.","src":"2025 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
+  // ==== 기출 보강 위치 조정 (정답 연속 방지) ====
+  (function () {
+    function moveAfter(mv, af) { var qi=-1, ai=-1; for (var i=0;i<DATA.length;i++){ if(qi<0&&DATA[i].text.indexOf(mv)===0)qi=i; if(ai<0&&DATA[i].text.indexOf(af)===0)ai=i; } if(qi<0||ai<0||qi===ai)return; var q=DATA.splice(qi,1)[0]; if(qi<ai)ai--; DATA.splice(ai+1,0,q); }
+    moveAfter("지방자치단체의 장은 국세, 지방세, 그 밖의 공과금의 체납으로 강제징수 또는 체납처분이 시작된 경우 납기 전이라도", "「민사집행법」에 따른 강제집행을 받거나 파산선고를 받은 경우는 납기전징수의 사유에 해당하지");
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
