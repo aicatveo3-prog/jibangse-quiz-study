@@ -2016,6 +2016,12 @@
     ]
   };
 
+  // ==== 2024 서울시 7급 기출 출처 태깅 (중복 논점 — 기존 문항에 출처 누적) ====
+  (function () {
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var TAGS = [["허가등을 받아 사업을 경영하는 자가 지방세를 2회 이상 체납한 경우로서 그 체납액이 30만원 이상","2024 서울시 7급"]];
+    for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

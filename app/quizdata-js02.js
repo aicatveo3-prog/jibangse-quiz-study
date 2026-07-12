@@ -2361,6 +2361,12 @@
     function moveAfter(mv, af) { var qi=-1, ai=-1; for (var i=0;i<DATA.length;i++){ if(qi<0&&DATA[i].text.indexOf(mv)===0)qi=i; if(ai<0&&DATA[i].text.indexOf(af)===0)ai=i; } if(qi<0||ai<0||qi===ai)return; var q=DATA.splice(qi,1)[0]; if(qi<ai)ai--; DATA.splice(ai+1,0,q); }
     moveAfter("지방자치단체의 장은 국세, 지방세, 그 밖의 공과금의 체납으로 강제징수 또는 체납처분이 시작된 경우 납기 전이라도", "「민사집행법」에 따른 강제집행을 받거나 파산선고를 받은 경우는 납기전징수의 사유에 해당하지");
   })();
+  // ==== 2024 서울시 7급 기출 출처 태깅 (중복 논점 — 기존 문항에 출처 누적) ====
+  (function () {
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var TAGS = [["징수유예등을 하였을 때에는 10일 이내에 납세자에게 그 사실을 통지","2024 서울시 7급"],["만료일 10일 전까지 징수유예의 신청을 한 경우로서 지방자치단체의 장이 신청일부터 10일 이내에 승인 여부를 통지하지 아니하면","2024 서울시 7급"],["납세고지서의 발급시기는 납부기한이 일정한 경우 납기가 시작되기 10일 전","2024 서울시 7급"]];
+    for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
