@@ -491,6 +491,14 @@
     ]
   };
 
+  // ==== 2025 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 2. 개인분 주민세","q":[{"answer":"O","text":"「국민기초생활 보장법」에 따른 수급자는 주민세 개인분의 납세의무자에서 제외한다.","exp":"옳다. 기초생활 수급자는 담세력이 부족하여 개인분 납세의무자에서 제외된다. 이 제외는 개인분에만 적용되며 사업소분·종업원분과는 무관하다.","src":"2025 서울시 7급"},{"answer":"X","text":"주민세 개인분은 납세지를 관할하는 지방자치단체의 장이 신고납부의 방법으로 징수한다.","exp":"개인분은 정액이라 지방자치단체의 장이 고지서를 발송하는 보통징수로 징수한다. ‘신고납부’가 틀렸다 — 주민세 3유형 중 보통징수는 개인분뿐이고 사업소분·종업원분이 신고납부다.","src":"2025 서울시 7급"}],"tb":[],"wi":[]},{"p":"PART 4. 사업소분 — 세율·세액·징수","q":[{"answer":"O","text":"주민세 사업소분의 납세지는 과세기준일 현재 각 사업소 소재지로 한다.","exp":"옳다. 사업소분 납세지는 과세기준일(7월 1일) 현재 각 사업소 소재지다. 개인분 납세지(주소지)와 달리 사업소가 있는 곳에서 과세하며, 둘 이상의 시·군에 걸치면 건축물 연면적에 따라 안분해 각 시·군에 각각 납부한다.","src":"2025 서울시 7급"},{"answer":"X","text":"주민세 사업소분의 납세지는 과세기준일 현재 사업주의 주소지로 한다.","exp":"사업소분 납세지는 과세기준일 현재 각 사업소 소재지다. ‘사업주의 주소지’가 틀렸다 — 주소지는 개인분의 납세지이며, 사업소분은 사업소가 있는 곳에서 과세한다."}],"tb":[{"k":"sec","t":"4-5. 납세지 — 과세기준일 현재 각 사업소 소재지"},{"k":"p","t":"사업소분의 납세지는 과세기준일(7월 1일) 현재 각 사업소 소재지다. 개인분 납세지가 납세의무자의 주소지인 것과 달리 사업소분은 사업소가 있는 곳에서 과세한다(‘사업주 주소지’로 바꾸면 틀린다). 사업소용 건축물이 둘 이상의 시·군에 걸치는 경우의 안분 납부는 PART 3(과세표준)을 참고한다."}],"wi":["사업소분 납세지 = 사업주의 주소지 ❌ → 과세기준일 현재 각 사업소 소재지(주소지는 개인분) ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

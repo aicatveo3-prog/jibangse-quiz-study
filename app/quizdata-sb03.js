@@ -673,6 +673,14 @@
     var MV = [["공부상 등재현황과 사실상의 현황이 다른 경우에는 해당 재산의 사실상 소유자는 과세기준일부터 15일","토지에 대한 재산세의 납기는 매년 7월 16일부터"]];
     for (var m=0;m<MV.length;m++) moveAfter(MV[m][0], MV[m][1]);
   })();
+  // ==== 2025 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 2. 납세의무자","q":[{"answer":"X","text":"외국인 소유의 항공기 또는 선박을 임차하여 수입하는 경우에는 소유자인 외국인을 납세의무자로 본다.","exp":"외국인 소유 항공기·선박을 임차·수입하는 경우의 납세의무자는 소유자인 외국인이 아니라 그 수입하는 자다. '소유자인 외국인'으로 맺어 틀렸다. 소유자는 외국에 있고 실제 국내에서 사용하는 자는 수입자이므로 수입자에게 과세한다.","src":"2025 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

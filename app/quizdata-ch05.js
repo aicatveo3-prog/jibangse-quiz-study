@@ -1725,6 +1725,14 @@
     ]
   };
 
+  // ==== 2025 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 1. 지방세 우선의 원칙과 우선순위","q":[{"answer":"X","text":"지방자치단체의 징수금은 강제집행·경매 또는 파산절차에 따라 재산을 매각하여 그 매각금액에서 지방자치단체의 징수금을 징수하는 경우의 해당 강제집행·경매 또는 파산절차에 든 비용에 우선하여 징수한다.","exp":"마지막의 \"우선하여 징수한다\"가 틀렸다. 반대로 그 강제집행·경매 또는 파산절차에 든 비용이 지방자치단체의 징수금에 우선하여 징수된다. 이 비용은 재산 매각에 직접 든 실비이므로 체납처분비와 같은 논리로 어떤 세금보다도 먼저 공제된다.","src":"2025 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

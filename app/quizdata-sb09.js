@@ -543,6 +543,14 @@
     var ADDS = [{"p":"PART 5. 소유분 납기·징수·수시부과·체납처분","q":[{"answer":"O","text":"지방세법상 규정된 자동차에 관한 지방자치단체의 징수금을 납부하지 아니하거나 납부한 금액이 부족할 때에는 해당 자동차에 대하여 독촉절차 없이 즉시 체납처분을 할 수 있다.","exp":"자동차는 이동성 재산이라 독촉을 생략하고 곧바로 체납처분할 수 있는 특례가 인정된다. 전부 미납뿐 아니라 납부한 금액이 부족한 경우도 대상이며, '할 수 있다'(재량)이지 의무가 아니라는 점을 함께 기억한다.","src":"2026 지방직 9급"}],"tb":[],"wi":["체납처분 특례 = 전부 미납 시에만 ❌ → 납부한 금액이 부족할 때에도 독촉 없이 즉시 가능 ⭕ (재량)"]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2025 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 5. 소유분 납기·징수·수시부과·체납처분","q":[{"answer":"X","text":"자동차등록번호판이 영치된 경우, 생계유지를 이유로는 자동차등록번호판을 내주고 영치를 일시 해제할 수 없다.","exp":"'생계유지를 이유로는 해제할 수 없다'가 틀렸다. 번호판이 영치된 경우에도 생계유지가 곤란하다고 인정되면 번호판을 내주고 영치를 일시 해제할 수 있다. 영치는 징수 수단이지 생계를 막는 제재가 아니기 때문이다.","src":"2025 서울시 7급"},{"answer":"O","text":"자동차등록번호판이 영치된 경우, 생계유지가 곤란하다고 인정되면 자동차등록번호판을 내주고 영치를 일시 해제할 수 있다.","exp":"생계유지 곤란 시 영치 일시 해제가 인정된다. 번호판 영치 자체는 시장·군수가 직접 하지 못하고 도지사·특별시장·광역시장에게 요청한다는 점과 구별한다."},{"answer":"X","text":"자동차를 말소등록한 경우, 말소등록한 날이 속하는 기분의 자동차세는 일할계산하지 않는다.","exp":"'일할계산하지 않는다'가 틀렸다. 신규등록·말소등록은 수시부과 사유로, 등록일 또는 말소일이 속하는 기분의 세액을 일할계산하여 부과한다. 변동 없이 계속 소유한 경우에만 일할계산 없이 정기분으로 부과된다.","src":"2025 서울시 7급"},{"answer":"X","text":"자동차세를 체납한 경우에도 독촉 없이 체납처분을 할 수 없다.","exp":"'독촉 없이 할 수 없다'가 틀렸다. 자동차는 이동성 재산이라 체납 시 독촉절차 없이 즉시 체납처분을 할 수 있다. 다만 이는 '할 수 있다'는 재량이지 반드시 하여야 하는 의무는 아니다.","src":"2025 서울시 7급"}],"tb":[],"wi":["영치된 번호판 = 생계유지 이유로는 일시해제 불가 ❌ → 생계유지 곤란 시 일시해제 가능 ⭕","말소등록한 기분 자동차세 = 일할계산 안 함 ❌ → 말소일 기준 일할계산하여 수시부과 ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
