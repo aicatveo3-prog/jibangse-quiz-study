@@ -535,6 +535,14 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 5. 소유분 납기·징수·수시부과·체납처분","q":[{"answer":"O","text":"지방세법상 규정된 자동차에 관한 지방자치단체의 징수금을 납부하지 아니하거나 납부한 금액이 부족할 때에는 해당 자동차에 대하여 독촉절차 없이 즉시 체납처분을 할 수 있다.","exp":"자동차는 이동성 재산이라 독촉을 생략하고 곧바로 체납처분할 수 있는 특례가 인정된다. 전부 미납뿐 아니라 납부한 금액이 부족한 경우도 대상이며, '할 수 있다'(재량)이지 의무가 아니라는 점을 함께 기억한다.","src":"2026 지방직 9급"}],"tb":[],"wi":["체납처분 특례 = 전부 미납 시에만 ❌ → 납부한 금액이 부족할 때에도 독촉 없이 즉시 가능 ⭕ (재량)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

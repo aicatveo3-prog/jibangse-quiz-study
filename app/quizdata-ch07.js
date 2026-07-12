@@ -2145,6 +2145,14 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 2. 불복청구의 대상과 청구인","q":[{"answer":"O","text":"과세전적부심사의 청구에 대한 처분에 대하여는 이의신청 또는 심판청구를 할 수 없다.","exp":"과세전적부심사 청구에 대한 처분은 사전 구제 절차의 결과이므로 불복청구 불가 대상이다(제117조). 다만 불복이 막히는 것은 적부심사의 결과(채택·불채택) 그 자체이고, 불채택 후 이루어진 정식 부과처분에 대해서는 이의신청·심판청구를 할 수 있다는 점과 구별한다.","src":"2026 지방직 9급"},{"answer":"X","text":"「감사원법」에 따라 심사청구를 한 처분에 대하여는 지방세기본법에 따른 이의신청 또는 심판청구를 할 수 있다.","exp":"감사원법에 따라 심사청구를 한 처분은 불복 경로의 중복을 방지하기 위해 이의신청·심판청구 대상에서 제외되므로 '할 수 있다'는 부분이 틀렸다(제117조). 감사원 심사청구와 지방세기본법상 불복은 양자택일 관계여서 이미 감사원 경로로 다투고 있는 처분에 대해 중복하여 불복할 수 없다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
