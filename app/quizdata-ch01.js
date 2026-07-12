@@ -722,7 +722,7 @@
 
     // ============ PART 10. 서류의 송달 ============
     { blocks: [
-      { k: "lead", t: `세금 부과·독촉·압류 등 대부분의 처분은 서류가 상대방에게 "송달"되어야 효력이 생긴다(도달주의). 송달 방법 4가지(교부·우편·전자·공시), 효력 발생 시점, 연대납세의무자·납세관리인 규정, 송달 지연 시 납부기한(7일 요건·14일 효과)이 핵심이다.` },
+      { k: "lead", t: `세금 부과·독촉·압류 등 대부분의 처분은 서류가 상대방에게 "송달"되어야 효력이 생긴다(도달주의). 송달 방법 3가지(교부·우편·전자송달)와 그것으로 송달할 수 없을 때의 보충적 간주 제도인 공시송달, 효력 발생 시점, 연대납세의무자·납세관리인 규정, 송달 지연 시 납부기한(7일 요건·14일 효과)이 핵심이다.` },
       { k: "note", v: "box", t: `🔑 방향 정리 — 납세자가 내는 신고서는 "발신주의"(보낸 때), 과세관청이 보내는 송달 서류는 "도달주의"(받은 때). 방향이 반대다.` },
       { k: "sec", t: `10-1. 송달장소` },
       { k: "p", t: `원칙은 명의인(수신인)의 주소·거소·영업소·사무소이며, 전자송달은 전자우편주소·전자사서함·전자고지함으로 한다.` },
@@ -733,7 +733,7 @@
         [`상속재산관리인이 있는 경우`, `상속재산관리인의 주소·영업소에`],
         [`송달받을 장소를 신고한 경우`, `신고한 장소 (단, 주소·거소·영업소·사무소 중에서 지정)`] ] },
       { k: "note", v: "warn", t: `⚠️ 연대납세의무자 — 고지·독촉 서류는 "전원에게 각각"(각자 독립 의무). "대표자에게만" "징수에 유리한 자에게만" → ❌ (그건 일반 서류). 납세관리인이 있으면 관리인에게 송달하면 되고 명의인에게 따로 안 보내도 됨 — "명의인과 관리인 모두에게 각각" → ❌` },
-      { k: "sec", t: `10-2. 송달 방법 4가지` },
+      { k: "sec", t: `10-2. 송달 방법 3가지(교부·우편·전자송달)와 공시송달` },
       { k: "sub", t: `(1) 교부송달 — 단계 순서 주의` },
       { k: "p", t: `본인 교부가 원칙이되, 상대방이 거부하지 않으면 다른 장소에서도 교부할 수 있다. 본인을 못 만나면 곧바로 유치송달하는 것이 아니라 순서가 있다.` },
       { k: "tree", t: `① 본인에게 직접 교부
@@ -864,6 +864,17 @@
     function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
     var TAGS = [["납세자가 이 요구에 따르지 않을 경우 납부기한 연장을 취소하고 그 지방세를 즉시 징수","2024 서울시 7급"],["명의인과 그 납세관리인 모두에게 각각 송달하여야 한다","2024 서울시 7급"],["상속재산관리인이 있을 때에는 그 상속재산관리인의 주소 또는 영업소에 송달","2024 서울시 7급"]];
     for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
+  })();
+  // ==== 2023 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 10. 서류의 송달","q":[{"answer":"X","text":"서류의 송달은 교부·우편·전자송달 또는 공시송달로 하되, 해당 지방자치단체의 조례로 정하는 방법에 따른다.","exp":"공시송달을 송달 방법에 끼워 넣은 것이 틀렸다. 서류의 송달 방법은 교부·우편·전자송달의 세 가지이며, 공시송달은 이 세 방법으로 송달할 수 없을 때 송달로 간주하는 보충적 제도이지 독립된 송달 방법이 아니다."}],"tb":[],"wi":["📝 \"송달 방법 = 교부·우편·전자송달·공시송달\" → ❌ 송달 방법은 교부·우편·전자송달 3가지. 공시송달은 이들로 송달할 수 없을 때의 보충적 간주 제도이지 송달 방법이 아니다."]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"서류의 송달은 교부·우편 또는 전자송달로 하되, 해당 지방자치단체의 조례로 정하는 방법에 따른다","l":"2023 서울시 7급"},{"n":"다만, 송달을 받아야 할 자가 송달받기를 거부하지 아니하면 다른 장소에서 교부할 수 있다","l":"2023 서울시 7급"},{"n":"정당한 사유 없이 서류의 수령을 거부하면 공시송달의 방법으로 이를 송달할 수 있다","l":"2023 서울시 7급"},{"n":"전자송달은 서류의 송달을 받아야 할 자가 신청하는 경우에만 한다.","l":"2023 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };

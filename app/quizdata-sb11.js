@@ -430,6 +430,17 @@
     var TAGS = [{"n":"담배소비세의 납세의무자는 모두 지방교육세 납세의무자에 해당한다","l":"2024 지방직 9급"},{"n":"신고의무를 다하지 아니한 경우에도 「지방세기본법」에 따른 무신고가산세 및 과소신고가산세","l":"2024 지방직 9급"},{"n":"세목별 세액의 환급의 예에 따라 환급한다","l":"2024 지방직 9급"},{"n":"지방교육세로 징수할 세액이 고지서 1장당 2천원 미만인 경우에는 그 지방교육세를 징수하지 아니한다","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"수입판매업자의 주사무소 소재지를 관할하는 지방자치단체의 장은 담배소비세분 지방교육세에 대한 담보 제공을 요구할 수 있다","l":"2023 서울시 7급"},{"n":"세관장이 「지방세법」 제60조제6항에 따라 담배소비세를 부과·징수하는 때에는","l":"2023 서울시 7급"},{"n":"신고서 및 납부서에 해당 지방세액과 지방교육세액을 나란히 적고 그 합계액을 적어야 한다","l":"2023 서울시 7급"},{"n":"해당 지방교육세의 과세표준이 되는 세목과 세액을 적지 아니할 수 있다","l":"2023 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb11"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -518,6 +518,17 @@
     var TAGS = [{"n":"1년 이상 계속하여 휴업하고 있는 자는 사업소분의 납세의무자에서 제외","l":"2024 지방직 9급"},{"n":"지방자치단체조합에 대하여는 주민세를 부과하지 아니한다","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 1. 주민세 통칙 — 3유형·용어·과세기준일·비과세","q":[{"answer":"O","text":"주한국제기구에 근무하는 외국인에 대해서는 주민세를 부과하지 아니하는 것이 원칙이지만, 그 외국인이 국제기구에 근무하는 대한민국의 국민에게 주민세와 동일한 성격의 조세를 부과하는 국가의 국적을 가지고 있다면 예외적으로 주민세를 부과한다.","exp":"옳다. 국제기구 근무 외국인은 원칙적으로 비과세이나, 그 국적국이 우리 국민에게 같은 성격의 세금을 매기면 상호주의에 따라 예외적으로 과세한다. 국적국 과세와 무관하게 ‘언제나 비과세’로 서술하면 틀린다.","src":"2023 서울시 7급"},{"answer":"X","text":"주한국제기구에 근무하는 외국인에 대해서는 주민세를 부과하는 것이 원칙이지만, 그 국적국이 우리 국민에게 주민세와 동일한 성격의 조세를 부과하지 아니하는 경우에만 예외적으로 비과세한다.","exp":"국제기구 근무 외국인은 원칙적으로 ‘비과세’이고, 국적국이 우리 국민에게 과세할 때에만 예외적으로 과세한다. 원칙과 예외를 과세↔비과세로 뒤바꿔 틀렸다."}],"tb":[],"wi":[]},{"p":"PART 5. 종업원분 — 납세의무자·과세표준·종업원·세율","q":[{"answer":"X","text":"종업원분 주민세의 과세표준은 종업원에게 지급한 그 달의 급여총액이며, 해당 사업소의 종업원 수가 50명 이하인 경우에는 종업원분을 부과하지 아니한다.","exp":"과세표준(그 달의 급여총액)은 옳으나 면세점 기준이 틀렸다. 종업원분 면세점은 ‘종업원 수 50명 이하’가 아니라 급여총액의 월평균금액(1억8천만원 이하)으로 판단한다 — 인원수 기준은 폐지된 구법이다.","src":"2023 서울시 7급"},{"answer":"O","text":"종업원분 주민세의 과세표준은 종업원에게 지급한 그 달의 급여총액이며, 급여총액의 월평균금액이 1억8천만원 이하인 경우에는 종업원분을 부과하지 아니한다.","exp":"옳다. 과세표준은 그 달의 급여총액이고, 면세점은 급여총액 월평균 1억8천만원(360만원×50) 이하다. 면세점을 ‘종업원 수 50명 이하’(구법)로 바꾸면 틀린다."}],"tb":[],"wi":["종업원분 면세점 = 종업원 수 50명 이하 ❌ → 급여총액 월평균 1억8천만원 이하(상세 PART 6) ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"1만5천원을 초과하지 아니하는 범위에서 조례로 읍·면·동별로 달리 정할 수 있다","l":"2023 서울시 7급"},{"n":"사업소 및 그 연면적으로 하며, 연면적 중 1㎡ 미만은 계산하지 아니한다","l":"2023 서울시 7급"},{"n":"330㎡ 이하인 경우에는 연면적에 대한 사업소분 주민세를 부과하지 아니한다","l":"2023 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

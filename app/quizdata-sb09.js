@@ -576,6 +576,17 @@
     var TAGS = [{"n":"국방·경호·경비·교통순찰 또는 소방을 위하여 제공하는 자동차를 소유하는 자","l":"2024 지방직 9급"},{"n":"환자수송·청소·오물제거 또는 도로공사를 위하여 제공하는 자동차를 소유하는 자","l":"2024 지방직 9급"},{"n":"연장자, 「민법」상 상속지분이 가장 높은 자의 순서에 따라 자동차세를 납부할 의무를 진다","l":"2024 지방직 9급"},{"n":"매수인 명의로 이전등록을 하지 아니한 자동차에 대하여는 매수인이 자동차세를 납부할 의무를 진다","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 소유분 비과세와 면세 제한","q":[{"answer":"O","text":"「지방세특례제한법」을 제외한 다른 법률 중에 규정된 조세의 면제에 관한 규정은 자동차세에 관한 지방자치단체의 징수금에 대하여는 적용하지 아니한다.","exp":"지방세특례제한법 외 다른 법률의 조세 면제 규정은 자동차세 징수금에 적용되지 않는다. 자동차세는 지자체 중요 재원이라 감면 근거를 지방세특례제한법으로 한정한 것이다.","src":"2023 서울시 7급"},{"answer":"X","text":"「지방세특례제한법」에 규정된 조세의 면제에 관한 규정은 자동차세에 관한 지방자치단체의 징수금에 대하여는 적용하지 아니한다.","exp":"'지방세특례제한법에 규정된 면제도 적용 안 함'이 틀렸다. 자동차세에 적용되지 않는 것은 지방세특례제한법을 '제외한' 다른 법률의 면제 규정이며, 지방세특례제한법에 의한 감면은 그대로 인정된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"이전등록을 하지 아니한 자동차에 대하여는 매도인이 자동차세","l":"2023 서울시 7급"},{"n":"상속지분이 가장 높은 자가, 지분이 모두 같으면 연장자가","l":"2023 서울시 7급"},{"n":"등록·신고된 차량과 「건설기계관리법」에 따라 등록된 건설기계 중 차량과 유사한 것으로서 대통령령으로 정하는 것을 말한다","l":"2023 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
