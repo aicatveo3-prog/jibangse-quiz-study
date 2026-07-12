@@ -493,6 +493,14 @@
       ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 7. 부과·징수 — 신고납부·보통징수·납기·소액면제","q":[{"answer":"O","text":"컨테이너에 대한 지역자원시설세는 신고납부의 방법으로 징수한다.","exp":"컨테이너는 특정시설분이므로 신고납부의 방법으로 징수하는 것이 맞다. 특정자원분·특정시설분 중 조례로 보통징수가 가능한 특례는 지하수뿐이고, 소방분은 지자체장이 세액을 산정해 보통징수하는 것과 대비된다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

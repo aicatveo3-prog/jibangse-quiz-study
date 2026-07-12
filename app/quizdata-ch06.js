@@ -2615,6 +2615,20 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 2. 성실성 추정과 세무조사권 남용 금지","q":[{"answer":"X","text":"납세자가 지방세기본법 또는 지방세관계법에서 정하는 신고·납부, 담배의 제조·수입 등에 관한 장부의 기록 및 보관 등 납세협력의무를 이행하지 아니한 경우에는 같은 세목 및 같은 과세연도에 대하여 재조사를 할 수 있다.","exp":"마지막 결론이 틀렸다. 납세협력의무 불이행은 정기선정에 의한 조사 외에 실시하는 수시 세무조사의 대상 선정 사유(성실성 추정 배제사유이기도 하다)이지 재조사 허용사유가 아니다. 재조사 허용사유는 명백한 탈루자료·거래상대방 조사·둘 이상 과세기간 관련 잘못·금품 제공·재조사 결정·경제질서 교란·서면조사 후 경정 필요로 정리된다.","src":"2026 지방직 9급"},{"answer":"O","text":"납세자가 지방세기본법 또는 지방세관계법에서 정하는 신고·납부, 담배의 제조·수입 등에 관한 장부의 기록 및 보관 등 납세협력의무를 이행하지 아니한 경우는 정기선정에 의한 조사 외에 세무조사를 할 수 있는 사유에 해당하나, 같은 세목 및 같은 과세연도에 대한 재조사 허용사유에는 해당하지 아니한다.","exp":"납세협력의무 불이행은 첫 조사 대상을 뽑는 수시조사 선정사유이자 성실성 추정 배제사유일 뿐, 이미 끝난 조사를 다시 하는 재조사의 근거가 되지 못한다. 무작위 추출(정기선정 사유)·체납처분(납기전징수 사유)처럼 다른 단계의 사유를 재조사 사유로 바꿔치기하는 함정과 같은 유형이다."},{"answer":"O","text":"거래상대방에 대한 세무조사 중에 거래 일부의 확인이 필요한 부분에 한정한 조사를 실시한 후 해당 조사에 포함되지 아니한 부분에 대하여 조사하는 경우에는 같은 세목 및 같은 과세연도에 대하여 재조사를 할 수 있다.","exp":"거래 일부에 한정한 부분조사에 포함되지 아니하였던 부분은 아직 조사하지 않은 부분이므로 나중에 조사할 수 있고, 재조사가 허용되는 경우로 정리된다. 반면 특정세목조사는 그 세목·과세연도 전체를 조사한 것이어서 원칙적으로 다시 조사할 수 없다는 점과 대비된다.","src":"2026 지방직 9급"}],"tb":[{"k":"p","t":"납세협력의무 불이행(신고·납부, 담배의 제조·수입 등에 관한 장부의 기록·보관 등)도 재조사 허용사유가 아니라는 점에 주의한다. 이는 정기선정 외 수시 세무조사의 대상 선정 사유이자 성실성 추정 배제사유일 뿐, 이미 끝난 조사를 같은 세목·같은 과세연도에 대하여 다시 할 수 있는 근거가 되지 못한다. 무작위 추출·체납처분처럼 다른 제도의 사유를 재조사 사유로 슬쩍 바꿔 내는 것과 같은 유형의 함정이다."}],"wi":["📝 \"납세협력의무를 이행하지 아니한 경우에는 같은 세목·같은 과세연도에 대하여 재조사를 할 수 있다\" → ❌ 수시 세무조사 선정사유·성실성 추정 배제사유일 뿐 재조사 허용사유가 아니다"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
+  // ==== 기출 보강 위치 조정 (정답 연속 방지) ====
+  (function () {
+    function moveAfter(mv, af) { var qi=-1, ai=-1; for (var i=0;i<DATA.length;i++){ if(qi<0&&DATA[i].text.indexOf(mv)===0)qi=i; if(ai<0&&DATA[i].text.indexOf(af)===0)ai=i; } if(qi<0||ai<0||qi===ai)return; var q=DATA.splice(qi,1)[0]; if(qi<ai)ai--; DATA.splice(ai+1,0,q); }
+    var MV = [["납세자가 지방세기본법 또는 지방세관계법에서 정하는 신고·납부, 담배의 제조·수입 등에 관한 장부의 기록 및 보관 등 납세협력의무를 이행하지 아니한 경우는 정기선정에","세무조사는 통합조사가 원칙이고 특정세목조사와 부분조사는"]];
+    for (var m=0;m<MV.length;m++) moveAfter(MV[m][0], MV[m][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

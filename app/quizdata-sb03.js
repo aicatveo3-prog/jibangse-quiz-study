@@ -659,6 +659,20 @@
    ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 7. 부과·징수 절차","q":[{"answer":"O","text":"공부상 등재현황과 사실상의 현황이 다른 경우에는 해당 재산의 사실상 소유자는 과세기준일부터 15일 이내에 그 소재지를 관할하는 지방자치단체의 장에게 그 사실을 알 수 있는 증거자료를 갖추어 신고하여야 한다.","exp":"옳다. 공부상 등재현황과 사실상 현황이 다르면 사실상 소유자가 과세기준일부터 15일 이내에 증거자료를 갖추어 신고한다. 신고 주체가 '공부상 소유자'가 아니라 '사실상 소유자'라는 점, 기한을 '30일'로 바꾸면 틀린다는 점을 함께 기억한다."},{"answer":"X","text":"토지에 대한 재산세의 납기는 매년 7월 16일부터 7월 31일까지이다.","exp":"토지에 대한 재산세의 납기는 매년 9월 16일부터 9월 30일까지다. '7월'로 바꿔 틀렸다. 7월(7.16~7.31)은 건축물·선박·항공기와 주택 산출세액 1/2의 납기다.","src":"2026 지방직 9급"},{"answer":"X","text":"재산세의 납부세액이 1천만원인 경우 지방자치단체의 장은 해당 지방자치단체의 관할 구역 외에 있는 부동산에 대하여 물납을 허가할 수 있다.","exp":"물납은 해당 지방자치단체의 관할구역에 '있는' 부동산에 대하여만 허가할 수 있으므로 '관할 구역 외' 부동산은 물납 대상이 아니다. 또한 물납 요건은 납부세액 1천만원 '초과'이므로 정확히 1천만원이면 요건 자체도 충족하지 못한다.","src":"2026 지방직 9급"},{"answer":"X","text":"공부상 등재현황과 사실상의 현황이 다른 경우에는 해당 재산의 사실상 소유자는 과세기준일부터 30일 이내에 그 소재지를 관할하는 지방자치단체의 장에게 그 사실을 알 수 있는 증거자료를 갖추어 신고하여야 한다.","exp":"이 경우의 신고 기한은 과세기준일부터 15일 이내다. '30일 이내'로 늘려 틀렸다. 신탁재산 수탁자·1세대 1주택 특례세율 신고와 마찬가지로 재산세의 신고 기한은 모두 과세기준일부터 15일 이내로 통일되어 있다.","src":"2026 지방직 9급"},{"answer":"X","text":"재산세는 표준세율이 적용되면서 신고납부하는 지방세 세목에 해당한다.","exp":"재산세는 표준세율이 적용되는 세목(조례로 ±50% 가감 가능)은 맞지만, 징수방법은 신고납부가 아니라 관할 지방자치단체의 장이 세액을 산정해 고지하는 보통징수다. '신고납부 세목'이라는 뒷부분이 틀렸다.","src":"2026 지방직 9급"}],"tb":[{"k":"p","t":"공부상 등재현황과 사실상의 현황이 다른 경우에는 해당 재산의 '사실상 소유자'가 과세기준일부터 15일 이내에 그 소재지를 관할하는 지방자치단체의 장에게 증거자료를 갖추어 신고하여야 한다. 신탁재산 수탁자·1세대 1주택 특례세율 신고와 마찬가지로 재산세의 신고 기한은 모두 과세기준일부터 15일 이내이며, 이를 '30일 이내'로 바꾸는 것이 기출 함정이다."}],"wi":["등재현황·사실상 현황이 다른 경우의 신고 = 30일 이내 ❌ → 과세기준일부터 15일 이내 ⭕ (재산세 신고 기한은 모두 15일)","📝 \"재산세는 표준세율이 적용되면서 신고납부하는 세목이다\" → ❌ 표준세율 적용은 맞지만 징수방법은 보통징수"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
+  // ==== 기출 보강 위치 조정 (정답 연속 방지) ====
+  (function () {
+    function moveAfter(mv, af) { var qi=-1, ai=-1; for (var i=0;i<DATA.length;i++){ if(qi<0&&DATA[i].text.indexOf(mv)===0)qi=i; if(ai<0&&DATA[i].text.indexOf(af)===0)ai=i; } if(qi<0||ai<0||qi===ai)return; var q=DATA.splice(qi,1)[0]; if(qi<ai)ai--; DATA.splice(ai+1,0,q); }
+    var MV = [["공부상 등재현황과 사실상의 현황이 다른 경우에는 해당 재산의 사실상 소유자는 과세기준일부터 15일","토지에 대한 재산세의 납기는 매년 7월 16일부터"]];
+    for (var m=0;m<MV.length;m++) moveAfter(MV[m][0], MV[m][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -487,6 +487,14 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 1. 세목 성격·과세권자·세율 변천","q":[{"answer":"X","text":"지방소비세는 「지방세법」상 표준세율이 적용되면서 신고납부하는 지방세 세목에 해당한다.","exp":"지방소비세는 조례로 가감할 수 없는 일정세율(1,000분의 253) 세목이므로 표준세율 세목이 아니다. 징수도 납세자가 부가가치세와 합산 신고한 세액을 세무서장·세관장이 특별징수하여 납입관리자에게 납입하는 방식이다. 표준세율이 적용되면서 신고납부하는 세목의 예는 부동산 등기에 대한 등록면허세다.","src":"2026 지방직 9급"}],"tb":[],"wi":["📝 \"지방소비세는 표준세율이 적용되면서 신고납부하는 세목이다\" → ❌ 일정세율(1,000분의 253 고정)이며, 세무서장·세관장이 특별징수하여 납입하는 세목"]},{"p":"PART 6. 납입·안분 배분·환급금 처리","q":[{"answer":"X","text":"지방소비세환급금이 납입하여야 할 금액을 초과하는 경우에는 초과된 지방소비세환급금을 이월하지 아니한다.","exp":"초과된 환급금은 이월하지 않는 것이 아니라 그 다음 달로 이월하여 처리한다. '이월하지 아니한다'가 틀렸다. 환급금이 납입할 금액 이하이면 납입할 금액에서 공제하고, 초과하면 그 초과분을 다음 달로 이월한다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

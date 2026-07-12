@@ -513,6 +513,14 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 4. 미납세반출·반출의제·과세면제·세액공제환급","q":[{"answer":"O","text":"제조자가 담배의 제품개발·품질개선·품질검사·성분분석이나 이에 준하는 시험분석 또는 연구활동의 용도에 담배를 제공하는 경우에는 담배소비세를 면제한다.","exp":"옳다. 제품개발·품질개선·품질검사·성분분석 등 시험분석·연구활동 용도의 담배 제공은 담배소비세 면제 사유다. 같은 제조장 안이라도 일반 자가소비는 반출의제로 과세되고, 성분분석·연구 목적이면 면제된다는 대비가 함정 포인트다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

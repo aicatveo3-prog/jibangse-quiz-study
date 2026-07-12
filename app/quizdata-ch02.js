@@ -3226,6 +3226,20 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 2. 세목별 성립시기 ① 취득·소비·거래","q":[{"answer":"X","text":"담배소비세의 납세의무는 담배를 제조장 또는 보세구역으로부터 반출하거나 국외로 반출하는 때에 성립한다.","exp":"마지막의 \"국외로 반출\"이 틀렸다. 담배소비세는 담배를 제조장 또는 보세구역으로부터 반출하거나 국내로 반입하는 때 성립한다. 수입 담배가 국내로 들어오는 순간을 포착하는 규정인데, \"국내로 반입\"을 \"국외로 반출\"로 방향을 정반대로 뒤집은 함정이다.","src":"2026 지방직 9급"}],"tb":[],"wi":["📝 \"담배소비세는 제조장 또는 보세구역으로부터 반출하거나 국외로 반출하는 때 성립\" → ❌ 국내로 반입하는 때. 국내↔국외 방향을 뒤집은 함정."]},{"p":"PART 3. 세목별 성립시기 ② 기준일·연동·가산세","q":[{"answer":"O","text":"법인지방소득세의 납세의무는 그 과세표준이 되는 소득에 대하여 법인세의 납세의무가 성립하는 때에 성립한다.","exp":"법인지방소득세는 국세인 법인세에 연동되어 법인세의 납세의무가 성립하는 때 함께 성립하므로 옳다. 개인지방소득세는 소득세에 연동되며, 특별징수하는 지방소득세만 예외적으로 소득세·법인세를 원천징수하는 때 성립한다는 구분을 함께 기억한다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
+  // ==== 기출 보강 위치 조정 (정답 연속 방지) ====
+  (function () {
+    function moveAfter(mv, af) { var qi=-1, ai=-1; for (var i=0;i<DATA.length;i++){ if(qi<0&&DATA[i].text.indexOf(mv)===0)qi=i; if(ai<0&&DATA[i].text.indexOf(af)===0)ai=i; } if(qi<0||ai<0||qi===ai)return; var q=DATA.splice(qi,1)[0]; if(qi<ai)ai--; DATA.splice(ai+1,0,q); }
+    var MV = [["법인지방소득세의 납세의무는 그 과세표준이 되는 소득에 대하여","무신고가산세의 납세의무는 법정신고기한이 경과하는 때에"]];
+    for (var m=0;m<MV.length;m++) moveAfter(MV[m][0], MV[m][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

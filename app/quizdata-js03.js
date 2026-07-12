@@ -2922,6 +2922,14 @@
     ]
   };
 
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 1. 압류의 요건과 절차","q":[{"answer":"O","text":"지방세징수법상 지방세 징수 및 체납처분은 독촉 또는 최고 → 재산압류 → 공매 → 청산(배분)의 순서에 따라 진행된다.","exp":"체납처분은 독촉 또는 최고를 거쳐 재산을 압류하고, 압류재산을 공매(매각)한 뒤 그 대금을 배분하는 청산으로 끝난다. 채권추심은 별도의 마지막 단계가 아니라 압류한 채권을 환가하는 방법일 뿐이며, 절차의 마지막 단계는 어디까지나 청산(배분)이다.","src":"2026 지방직 9급"},{"answer":"X","text":"지방세징수법상 지방세 징수 및 체납처분은 독촉 또는 최고 → 재산압류 → 공매 → 채권추심의 순서에 따라 진행된다.","exp":"마지막 단계를 채권추심으로 서술한 부분이 틀렸다. 체납처분의 마지막 단계는 매각·추심으로 얻은 금전을 채권자에게 배분하는 청산(배분)이며, 올바른 순서는 독촉 또는 최고 → 재산압류 → 공매 → 청산(배분)이다."}],"tb":[],"wi":["체납처분 순서 = 독촉 또는 최고 → 재산압류 → 공매(매각) → 청산(배분) (마지막 단계를 채권추심으로 바꾸면 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

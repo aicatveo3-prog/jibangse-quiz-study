@@ -835,6 +835,14 @@
       ] }
     ]
   };
+  // ==== 2026 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 3. 용어의 정의","q":[{"answer":"X","text":"납세자란 「지방세법」에 따라 지방세를 납부할 의무(지방세를 특별징수하여 납부할 의무는 제외한다)가 있는 자를 말한다.","exp":"납세자가 아니라 납세의무자의 정의이다. 납세자는 납세의무자(연대납세의무자 포함)와 특별징수의무자를 모두 포함하는 가장 넓은 개념이므로, 특별징수하여 납부할 의무를 제외한다는 서술은 좁은 개념인 납세의무자에만 해당한다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]},{"p":"PART 10. 서류의 송달","q":[{"answer":"X","text":"교부에 의한 서류 송달의 경우에는 송달할 장소에서 서류를 송달받아야 할 자가 정당한 사유 없이 서류의 수령을 거부하더라도 송달할 장소에 서류를 둘 수 없다.","exp":"\"둘 수 없다\"가 틀렸다. 정당한 사유 없이 서류의 수령을 거부하면 송달할 장소에 서류를 둘 수 있다(유치송달). 수령 거부 시 공시송달로 넘어가는 것이 아니라 유치송달로 해결한다는 점도 함께 구별해야 한다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
