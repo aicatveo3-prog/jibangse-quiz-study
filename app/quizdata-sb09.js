@@ -559,6 +559,12 @@
     var ADDS = [{"p":"PART 6. 주행분 자동차세","q":[{"answer":"X","text":"자동차 주행에 대한 자동차세는 조례로 정하는 바에 따라 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다.","exp":"'조례·표준세율 50% 가감'이 틀렸다. 주행분 자동차세 세율은 대통령령으로 정하는 바에 따라 교통·에너지·환경세율의 100분의 30 범위에서 가감조정한다. 조례로 표준세율의 50%를 조정하는 방식은 소유분(그것도 초과만 가능)의 방식이다.","src":"2025 지방직 9급"}],"tb":[],"wi":[]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2024 서울시 7급 기출 출처 태깅 (중복 논점 — 기존 문항에 출처 누적) ====
+  (function () {
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var TAGS = [["상속인 중 연장자가 1순위로 자동차세를 납부할 의무를 진다","2024 서울시 7급"]];
+    for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

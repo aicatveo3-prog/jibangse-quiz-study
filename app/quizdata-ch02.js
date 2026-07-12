@@ -3256,6 +3256,12 @@
     var ADDS = [{"p":"PART 9. 징수권의 소멸시효","q":[{"answer":"X","text":"체납자가 국외에 6개월 이상 계속하여 체류하는 경우 해당 국외 체류기간에는 소멸시효가 중단된다.","exp":"\"중단된다\"가 틀렸다. 체납자의 6개월 이상 국외 계속 체류기간은 소멸시효의 정지 사유이지 중단 사유가 아니다. 중단은 진행한 기간이 0으로 리셋되는 것이고, 정지는 멈췄다가 남은 기간이 이어서 진행되는 것이다.","src":"2025 지방직 9급"},{"answer":"O","text":"체납자가 국외에 6개월 이상 계속하여 체류하는 경우 해당 국외 체류기간에는 소멸시효가 정지된다.","exp":"6개월 이상 국외 계속 체류기간은 정지 사유이므로 그 기간 동안 시효가 멈추었다가 종료 후 남은 기간이 이어서 진행된다. 시효가 0으로 리셋되는 압류·납세고지 등의 중단 사유와 구별해야 한다."}],"tb":[],"wi":["체납자의 6개월 이상 국외 계속 체류기간 = 중단 ❌ → 정지 ⭕ (멈췄다 이어서 진행, 리셋 아님)"]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2024 서울시 7급 기출 출처 태깅 (중복 논점 — 기존 문항에 출처 누적) ====
+  (function () {
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var TAGS = [["그 법인은 언제나 그 출자자의 소유주식 또는 출자지분의 가액 한도","2024 서울시 7급"]];
+    for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

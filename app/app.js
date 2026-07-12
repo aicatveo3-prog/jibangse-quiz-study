@@ -114,10 +114,22 @@
     return out;
   }
 
-  // 기출 출처 뱃지 — 문항에 src("2026 지방직 9급" 등)가 있으면 본문 아래 오른쪽에 작게 표시
+  // 기출 출처 뱃지 — 문항에 src가 있으면 본문 아래 오른쪽에 작게 표시.
+  // src는 문자열("2026 지방직 9급") 또는 여러 시험이 출제한 경우 배열(["2025 지방직 9급","2024 서울시 7급"])일 수 있다.
+  // 2회 이상이면 "N회 출제" 빈출 표시를 함께 붙인다.
   function srcBadge(src) {
     if (!src) return "";
-    return '<div style="margin-top:4px;text-align:right;"><span style="display:inline-block;font-size:10px;font-weight:700;color:#8A92A2;background:#F3F5F9;border:1px solid #E7EAF0;border-radius:6px;padding:1.5px 6px;line-height:1.4;">' + esc(src) + '</span></div>';
+    var arr = Array.isArray(src) ? src.slice() : [src];
+    arr = arr.filter(Boolean);
+    if (!arr.length) return "";
+    var chips = "";
+    if (arr.length >= 2) {
+      chips += '<span style="display:inline-block;font-size:10px;font-weight:800;color:#B4232A;background:#FDECEC;border:1px solid #F7C9CB;border-radius:6px;padding:1.5px 6px;line-height:1.4;">' + arr.length + '회 출제</span>';
+    }
+    for (var i = 0; i < arr.length; i++) {
+      chips += '<span style="display:inline-block;font-size:10px;font-weight:700;color:#8A92A2;background:#F3F5F9;border:1px solid #E7EAF0;border-radius:6px;padding:1.5px 6px;line-height:1.4;">' + esc(arr[i]) + '</span>';
+    }
+    return '<div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;">' + chips + '</div>';
   }
 
   function splitPartName(name) {
