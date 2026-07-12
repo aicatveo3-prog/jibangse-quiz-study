@@ -114,6 +114,12 @@
     return out;
   }
 
+  // 기출 출처 뱃지 — 문항에 src("2026 지방직 9급" 등)가 있으면 본문 아래 오른쪽에 작게 표시
+  function srcBadge(src) {
+    if (!src) return "";
+    return '<div style="margin-top:4px;text-align:right;"><span style="display:inline-block;font-size:10px;font-weight:700;color:#8A92A2;background:#F3F5F9;border:1px solid #E7EAF0;border-radius:6px;padding:1.5px 6px;line-height:1.4;">' + esc(src) + '</span></div>';
+  }
+
   function splitPartName(name) {
     var m = name.match(/^(PART\s*\d+)\.\s*(.*)$/);
     if (m) return { label: m[1], title: m[2] };
@@ -233,6 +239,7 @@
       text: q.text,
       answer: q.answer,
       exp: q.exp || "",
+      src: q.src || "",
       ts: Date.now()
     };
   }
@@ -746,7 +753,10 @@
           '<div style="font-size:11px;font-weight:800;color:#2E3440;">' + gLabel + '</div>' +
           starHTML(it.gi, saved) +
         '</div>' +
-        '<div style="flex:1;min-width:0;font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
+          srcBadge(it.src) +
+        '</div>' +
         '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + controls + '</div>' +
       '</div>' +
       detail +
@@ -968,6 +978,7 @@
         '<div style="flex:1;min-width:0;">' +
           '<div style="font-size:10.5px;font-weight:700;color:#AEB5C4;margin-bottom:3px;">' + esc(it.chTitle || "") + '</div>' +
           '<div style="font-size:13.5px;line-height:1.55;color:#14171D;word-break:keep-all;text-wrap:pretty;">' + esc(it.text) + '</div>' +
+          srcBadge(it.src) +
         '</div>' +
         '<div style="flex-shrink:0;display:flex;gap:6px;align-items:center;padding-top:1px;">' + star + controls + '</div>' +
       '</div>' +
