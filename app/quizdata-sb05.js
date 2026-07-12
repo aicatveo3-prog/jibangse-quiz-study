@@ -535,6 +535,17 @@
     var TAGS = [["다른 담배의 원료로 사용하기 위하여 반출하는 경우에는 담배소비세를 징수한다","2024 서울시 7급"],["미납세반출 및 과세면제를 위한 반출의 경우에도 제조자 또는 수입판매업자는 지방자치단체의 장에게 반출신고","2024 서울시 7급"],["담배가 성분분석을 위해 그 제조장에서 소비되는 경우에는 제조자가 담배를 제조장에서 반출한 것으로 본다","2024 서울시 7급"],["환가되는 경우에는 제조자가 담배를 제조장에서 반출한 것으로 보지 아니한다","2024 서울시 7급"]];
     for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
   })();
+  // ==== 2024 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 5. 신고·납부·반출신고·특별징수","q":[{"answer":"X","text":"담배 제조자는 매월 1일부터 말일까지 제조장에서 반출한 담배에 대한 산출세액을 대통령령으로 정하는 안분기준에 따라 다음 달 25일까지 각 지방자치단체의 장에게 신고납부하여야 한다.","exp":"제조자의 신고납부 기한은 다음 달 25일이 아니라 다음 달 20일이다. ‘25일’이 틀렸다 — 매월 반출분의 산출세액을 그 다음 달 20일까지 안분하여 각 지방자치단체의 장에게 신고납부한다.","src":"2024 지방직 9급"},{"answer":"O","text":"담배 제조자는 매월 1일부터 말일까지 제조장에서 반출한 담배에 대한 산출세액을 대통령령으로 정하는 안분기준에 따라 다음 달 20일까지 각 지방자치단체의 장에게 신고납부하여야 한다.","exp":"옳다. 제조자는 반출한 달의 다음 달 20일까지 안분기준에 따라 각 지방자치단체의 장에게 신고납부한다. 기한을 25일·말일로 바꾸거나 납세지를 주사무소 소재지로 바꾸면 틀린다."}],"tb":[],"wi":["신고납부 기한 = 다음 달 25일 ❌ → 다음 달 20일 ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"담배보관장소로 반입할 목적으로 보세구역에서 반출된 경우에는 담배소비세를 면제하지 아니한다","l":"2024 지방직 9급"},{"n":"그 수취인이 담배소비세를 납부할 의무가 있다","l":"2024 지방직 9급"},{"n":"제품개발·품질개선·품질검사·성분분석이나 이에 준하는 시험분석","l":"2024 지방직 9급"},{"n":"담배의 개비 수, 중량 또는 니코틴 용액의 용량 등으로 한다","l":"2024 지방직 9급"},{"n":"반출하는 것에 대하여는 담배소비세를 징수하지 아니한다","l":"2024 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

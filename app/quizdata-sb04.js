@@ -431,6 +431,17 @@
     var ADDS = [{"p":"PART 3. 과세표준과 세율","q":[{"answer":"X","text":"레저세는 조례로 정하는 바에 따라 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다.","exp":"레저세 세율(100분의 10)은 법률에 확정된 일정세율이라 조례로 가감할 수 없으므로 틀렸다. ‘표준세율의 100분의 50 범위 가감’은 재산세의 가감조정 규정을 레저세에 갖다 붙인 함정이다. 조례로 가감할 수 있는 세목(취득세·주민세 종업원분)과 없는 세목(자동차세 주행분·레저세)을 구별해야 한다.","src":"2025 지방직 9급"}],"tb":[],"wi":[]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2024 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 과세대상과 납세의무자","q":[{"answer":"O","text":"「경륜·경정법」에 따른 경륜 및 경정과 「한국마사회법」에 따른 경마는 레저세의 과세대상에 해당한다.","exp":"옳다. 경륜·경정·경마는 모두 투표권을 발매하고 적중자에게 환급금을 교부하는 구조라 지방세인 레저세로 과세한다. 여기에 소싸움을 더한 ‘마륜정소’ 4가지가 과세대상이며, 카지노를 끼워 넣으면 틀린다.","src":"2024 지방직 9급"},{"answer":"X","text":"「경륜·경정법」에 따른 경륜 및 경정과 「한국마사회법」에 따른 경마는 레저세가 아니라 국세인 개별소비세의 과세대상에 해당한다.","exp":"경륜·경정·경마는 국세인 개별소비세가 아니라 지방세인 레저세의 과세대상이다. 개별소비세로 과세하는 것은 투표권 발매 구조가 없는 카지노이므로, 두 세목을 뒤바꿔 틀렸다."}],"tb":[],"wi":[]},{"p":"PART 4. 부과·징수와 세액 안분","q":[{"answer":"O","text":"레저세 납세의무자는 승자투표권·승마투표권 등의 발매일이 속하는 달의 다음 달 10일까지 산출세액을 대통령령으로 정하는 바에 따라 안분계산하여 경륜장 등이 소재하는 지방자치단체의 장에게 신고·납부하여야 한다.","exp":"옳다. 매월 발매분을 다음 달 10일까지 안분계산하여 경륜장 등 소재지 관할 지방자치단체의 장에게 신고·납부한다. 기한을 ‘다음 달 20일’이나 ‘말일’로 늘리면 틀린다."},{"answer":"X","text":"레저세 납세의무자는 승자투표권·승마투표권 등의 발매일이 속하는 달의 다음 달 20일까지 산출세액을 대통령령으로 정하는 바에 따라 안분계산하여 해당 경륜장 등이 소재하는 지방자치단체의 장에게 신고하고 납부하여야 한다.","exp":"신고·납부 기한은 다음 달 20일이 아니라 다음 달 10일이다. 안분계산하여 경륜장 등 소재지에 신고·납부한다는 부분은 옳고 기한 숫자만 틀렸다. ‘20일’은 ‘말일’과 함께 대표적 함정 숫자다.","src":"2024 지방직 9급"}],"tb":[],"wi":["신고·납부 기한 = 다음 달 20일 ❌ → 다음 달 10일 ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"발매금총액 중 투표 적중자에게 지급하는 환급금 총액으로 한다","l":"2024 지방직 9급"},{"n":"레저세의 세율은 100분의 10으로 한다","l":"2024 지방직 9급"},{"n":"레저세 납세의무자는 조례로 정하는 바에 따라 경륜 등의 시행에 관한 사항을 장부에 기재하고","l":"2024 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
