@@ -472,6 +472,14 @@
     ]
   };
 
+  // ==== 2024 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 2. 경정 등의 청구","q":[{"answer":"O","text":"결정 또는 경정의 청구를 받은 지방자치단체의 장은 청구를 받은 날부터 2개월 이내에 과세표준 및 세액을 결정 또는 경정하거나 결정 또는 경정하여야 할 이유가 없다는 것을 그 청구를 한 자에게 통지하여야 한다.","exp":"경정청구를 받은 지방자치단체의 장은 청구받은 날부터 2개월 이내에 결정·경정 여부(또는 이유 없음)를 청구인에게 통지하여야 한다. 처리·통지 기한을 '3개월'로 늘리는 변형이 대표 함정이다.","src":"2024 서울시 7급"},{"answer":"X","text":"결정 또는 경정의 청구를 받은 지방자치단체의 장은 청구를 받은 날부터 3개월 이내에 과세표준 및 세액을 결정·경정하거나 결정·경정하여야 할 이유가 없다는 것을 그 청구를 한 자에게 통지하여야 한다.","exp":"'3개월'이 틀렸다. 경정청구에 대한 처리·통지 기한은 청구받은 날부터 2개월 이내이다. 후발적 사유 청구기한(안 날부터 90일)이나 신청 10일 전 등 다른 숫자와 혼동하지 않도록 2개월을 정확히 기억한다."}],"tb":[{"k":"p","t":"경정청구를 받은 지방자치단체의 장은 청구를 받은 날부터 2개월 이내에 과세표준 및 세액을 결정·경정하거나 결정·경정하여야 할 이유가 없다는 것을 청구인에게 통지하여야 한다. 일반 경정청구(법정신고기한 후 5년)·후발적 사유 청구(안 날부터 90일)와 함께 이 2개월 처리기한이 경정청구 절차의 핵심 숫자다."}],"wi":["📝 \"경정청구를 받은 지자체장은 청구받은 날부터 3개월 이내에 통지\" → ❌ 청구받은 날부터 2개월 이내."]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
