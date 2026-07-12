@@ -423,6 +423,14 @@
     var ADDS = [{"p":"PART 3. 과세표준과 세율","q":[{"answer":"X","text":"레저세는 「지방세법」상 표준세율이 적용되면서 신고납부하는 지방세 세목에 해당한다.","exp":"레저세는 신고납부 세목이 맞지만, 세율은 표준세율이 아니라 법률에 확정된 일정세율(100분의 10)이어서 조례로 가감할 수 없다. ‘표준세율’ 부분이 틀렸다. 표준세율이 적용되면서 신고납부하는 세목은 부동산 등기에 대한 등록면허세다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]},{"p":"PART 5. 납세협력의무·가산세·교부금·부가세와 성립·확정","q":[{"answer":"X","text":"레저세 납세의무자가 장부 비치의 의무를 이행하지 아니한 경우에는 산출세액의 100분의 30에 해당하는 금액을 징수하여야 할 세액에 가산하여 보통징수의 방법으로 징수한다.","exp":"장부 비치 의무 불이행 가산세는 산출세액의 100분의 30이 아니라 100분의 10이다. 보통징수의 방법으로 징수한다는 뒷부분은 옳고 비율만 부풀려 틀렸다. 20%·30% 모두 함정 숫자다.","src":"2026 지방직 9급"}],"tb":[],"wi":[]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2025 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    var ADDS = [{"p":"PART 3. 과세표준과 세율","q":[{"answer":"X","text":"레저세는 조례로 정하는 바에 따라 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다.","exp":"레저세 세율(100분의 10)은 법률에 확정된 일정세율이라 조례로 가감할 수 없으므로 틀렸다. ‘표준세율의 100분의 50 범위 가감’은 재산세의 가감조정 규정을 레저세에 갖다 붙인 함정이다. 조례로 가감할 수 있는 세목(취득세·주민세 종업원분)과 없는 세목(자동차세 주행분·레저세)을 구별해야 한다.","src":"2025 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
