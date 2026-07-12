@@ -109,7 +109,7 @@
     { part: P4, answer: "O", text: "우리나라에서 수출된 담배가 품질 불량 등으로 다시 수입되어 제조장 또는 담배보관장소로 반입할 목적으로 보세구역으로부터 반출된 경우에는 담배소비세를 면제한다.", exp: "옳다. 재수입 담배는 원래 수출 시 면세되었고 해외에서 소비되지도 않았으므로 다시 과세하지 않고 면제한다." },
     { part: P4, answer: "X", text: "우리나라에서 수출된 담배가 품질 불량으로 다시 수입되어 담배보관장소로 반입할 목적으로 보세구역에서 반출된 경우에는 담배소비세를 면제하지 아니한다.", exp: "재수입 담배는 면제한다. ‘면제하지 아니한다’가 틀렸다 — 이미 수출 시 면세되었고 해외 소비도 없었으므로 다시 과세하지 않는다." },
     { part: P4, answer: "O", text: "담배 공급의 편의를 위하여 과세면제 담배를 제조장에서 다른 제조장으로 반출하는 경우에는 담배소비세를 징수하지 아니한다.", exp: "옳다. 과세면제 담배라도 제조장 간 이동은 미납세반출 규정이 그대로 적용되어 징수하지 않는다." },
-    { part: P4, answer: "X", text: "수입판매업자가 보세구역에서의 판매를 위하여 담배를 제공하는 경우에는 담배소비세를 면제한다.", exp: "‘보세구역에서의 판매를 위하여 제공’은 일반 반출로 볼 여지가 있어 그대로는 면제로 인정되지 않는다. 면제되려면 보세판매장(면세점)에서 해외여행자에게 판매하는 등의 요건을 갖춰야 한다." },
+    { part: P4, answer: "X", text: "수입판매업자가 담배를 보세구역에서 판매하는 경우에도 담배소비세를 면제하지 아니한다.", exp: "틀렸다. 보세구역에서의 판매는 수출·재수입 반출과 함께 법에 열거된 담배소비세 면제 사유이다. 국내 일반 소비가 아니므로 과세하지 않고 면제한다." },
     { part: P4, answer: "O", text: "미납세반출은 무조건 허용되는 것이 아니라 관할 지방자치단체장의 승인을 받아야 하며, 승인 없이 반출하면 일반 반출로 보아 과세된다.", exp: "옳다. 미납세반출은 지자체장 승인이 필요하고, 승인 없는 반출은 과세된다. 또 사유가 소멸하면 즉시 과세된다." },
     { part: P4, answer: "X", text: "미납세반출은 세금을 내지 않고 반출하는 것이므로, 반출 후 그 사유가 소멸하더라도 담배소비세를 납부할 필요가 없다.", exp: "미납세반출은 사유가 소멸하면(예: 수출하겠다던 담배를 국내 판매) 즉시 과세된다. ‘납부할 필요가 없다’가 틀렸다 — 조건부 유보이기 때문이다." },
     { part: P4, answer: "X", text: "반출의제와 환급은 담배가 실제로 소비되었는지와 무관하게, 오직 담배가 물리적으로 제조장 밖으로 나갔는지만을 기준으로 과세 여부를 판단한다.", exp: "반출의제·환급은 물리적 반출이 아니라 실질적 소비·처분 여부를 기준으로 한다. 반출의제는 반출 안 해도 실질 처분이면 과세, 환급은 반출해도 소비 없으면 반환이다. ‘물리적 반출만 기준’이 틀렸다." },
@@ -544,6 +544,17 @@
     var ADDS = [{"p":"PART 5. 신고·납부·반출신고·특별징수","q":[{"answer":"X","text":"담배 제조자는 매월 1일부터 말일까지 제조장에서 반출한 담배에 대한 산출세액을 대통령령으로 정하는 안분기준에 따라 다음 달 25일까지 각 지방자치단체의 장에게 신고납부하여야 한다.","exp":"제조자의 신고납부 기한은 다음 달 25일이 아니라 다음 달 20일이다. ‘25일’이 틀렸다 — 매월 반출분의 산출세액을 그 다음 달 20일까지 안분하여 각 지방자치단체의 장에게 신고납부한다.","src":"2024 지방직 9급"},{"answer":"O","text":"담배 제조자는 매월 1일부터 말일까지 제조장에서 반출한 담배에 대한 산출세액을 대통령령으로 정하는 안분기준에 따라 다음 달 20일까지 각 지방자치단체의 장에게 신고납부하여야 한다.","exp":"옳다. 제조자는 반출한 달의 다음 달 20일까지 안분기준에 따라 각 지방자치단체의 장에게 신고납부한다. 기한을 25일·말일로 바꾸거나 납세지를 주사무소 소재지로 바꾸면 틀린다."}],"tb":[],"wi":["신고납부 기한 = 다음 달 25일 ❌ → 다음 달 20일 ⭕"]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
     var TAGS = [{"n":"담배보관장소로 반입할 목적으로 보세구역에서 반출된 경우에는 담배소비세를 면제하지 아니한다","l":"2024 지방직 9급"},{"n":"그 수취인이 담배소비세를 납부할 의무가 있다","l":"2024 지방직 9급"},{"n":"제품개발·품질개선·품질검사·성분분석이나 이에 준하는 시험분석","l":"2024 지방직 9급"},{"n":"담배의 개비 수, 중량 또는 니코틴 용액의 용량 등으로 한다","l":"2024 지방직 9급"},{"n":"반출하는 것에 대하여는 담배소비세를 징수하지 아니한다","l":"2024 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
+  // ==== 2023 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 4. 미납세반출·반출의제·과세면제·세액공제환급","q":[{"answer":"O","text":"「담배사업법」에 따라 담배를 수입하여 판매하는 자가 담배를 보세구역에서 판매하는 경우에는 담배소비세를 면제한다.","exp":"옳다. 보세구역(면세점 구역 등)에서의 판매는 국내 일반 소비가 아니어서 수출·재수입 반출과 함께 열거된 법정 면제 사유다. ‘보세구역 판매는 과세된다’로 바꾸면 틀린다.","src":"2023 서울시 7급"},{"answer":"X","text":"수입판매업자가 담배를 보세구역에서 판매하는 경우에도 국내로 반출하는 담배와 마찬가지로 담배소비세를 납부하여야 한다.","exp":"보세구역에서의 판매는 법정 면제 사유이므로 납부의무가 없다. ‘납부하여야 한다’가 틀렸다 — 국내 일반 소비가 아니어서 수출과 같은 취급을 받는다."}],"tb":[],"wi":["보세구역에서의 판매 = 과세(납부) ❌ → 면제 ⭕ (수출·재수입 반출과 함께 열거된 법정 면제 사유)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"수입판매업자가 담배를 수출하는 경우에는 담배소비세를 면제한다","l":"2023 서울시 7급"},{"n":"그 가족에게 판매하는 담배는 면제 대상에서 제외된다","l":"2023 서울시 7급"},{"n":"제조장 또는 담배보관장소로 반입할 목적으로 보세구역으로부터 반출된 경우에는 담배소비세를 면제한다","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};

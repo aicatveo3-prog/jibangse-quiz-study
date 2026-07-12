@@ -461,6 +461,17 @@
     var TAGS = [{"n":"정당한 사유 없이 그 취득일부터 1년이 경과할 때까지 해당 용도로 직접 사용하지 아니하는 경우 그 해당 부분에 대해서는 감면된 취득세를 추징한다","l":"2024 지방직 9급"},{"n":"지방세감면건의서 또는 지방세감면평가서를 해당 지방자치단체의 장에게 제출하여야 한다","l":"2024 지방직 9급"},{"n":"100분의 80의 범위에서 조례로 인하하여 조정할 수 있다","l":"2024 지방직 9급"},{"n":"지방세의 감면을 받으려는 자는 대통령령으로 정하는 바에 따라 지방세 감면 신청을 하여야 하지만, 지방자치단체의 장이 감면대상을 알 수 있을 때에는 직권으로 감면할 수 있다","l":"2024 지방직 9급"},{"n":"해당 지방자치단체의 직권으로 지방세 감면을 할 수 있다","l":"2024 지방직 9급"},{"n":"제147조에 따른 지방세심의위원회의 심의를 거쳐 조례로 정하여야 한다","l":"2024 지방직 9급"},{"n":"지방세지출보고서)를 작성하여 지방의회에 제출하여야 한다","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 조례 감면 — 사유·기간·방법과 한계","q":[{"answer":"O","text":"지방자치단체는 서민생활 지원, 대중교통 확충 지원 등 공익을 위해 지방세 감면이 필요하다고 인정될 때에는 3년의 기간 이내에서 조례로 지방세 세율경감, 세액감면 및 세액공제 등을 할 수 있다.","exp":"사유(공익)·기간(3년 이내)·방법(세율경감·세액감면·세액공제)이 모두 적법하다. 사유 표현이 법 조문(서민생활 지원·특정지역 개발)과 다소 달라도 기간 3년과 방법 세세세가 정확하면 옳은 지문으로 본다. 판별 기준은 사유 문구가 아니라 숫자와 방법이다.","src":"2023 서울시 7급"},{"answer":"X","text":"지방자치단체는 서민생활 지원, 대중교통 확충 지원 등 공익을 위해 지방세 감면이 필요하다고 인정될 때에는 3년의 기간 이내에서 조례로 지방세 세율경감, 세액감면, 세액공제 및 과세표준 공제 등을 할 수 있다.","exp":"'과세표준 공제'가 틀렸다. 조례로 할 수 있는 감면 방법은 세율경감·세액감면·세액공제 3가지뿐이고, 과세표준 공제·중과세 배제·재산세 구분전환은 조례 감면에서 제외된다. 특례의 정의(6가지 포함)와 조례로 가능한 범위(3가지)를 혼동시키는 함정이다."}],"tb":[],"wi":["📝 \"…3년 이내에서 조례로 세율경감, 세액감면 및 과세표준 공제 등을 할 수 있다\" → ❌ 조례 감면 방법은 세율경감·세액감면·세액공제 3가지뿐 (과세표준 공제 추가 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"「조세특례제한법」 및 조약에 따르지 아니하고는 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 없다","l":"2023 서울시 7급"},{"n":"천재지변, 지진, 풍수해 등의 사유로 지방세 감면이 필요하다고 인정되는 자에 대해서는 행정안전부장관의 허가를 얻어","l":"2023 서울시 7급"},{"n":"지방세지출보고서)를 작성하여 지방의회에 제출하여야 한다","l":"2023 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["te01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
