@@ -1283,9 +1283,13 @@
     if (state.answers[gi] != null) return;
     state.answers[gi] = choice;
 
-    // 오답이면 오답노트에 자동 저장 (스냅샷)
+    // 오답이면 오답노트에 자동 저장 + 저장함(별)도 자동 활성화 (스냅샷)
     var q = data()[gi];
-    if (q && choice !== q.answer) addWrong(buildRecord(gi));
+    if (q && choice !== q.answer) {
+      var rec = buildRecord(gi);
+      addWrong(rec);
+      if (rec && !isSaved(rec.id)) toggleSaved(rec); // 틀린 문제는 저장 버튼(★)도 자동 켜짐
+    }
 
     // 전체 리렌더 대신 해당 문제 줄 + 진행률만 갱신 → 깜빡임 없음
     var row = document.getElementById("q-" + gi);
