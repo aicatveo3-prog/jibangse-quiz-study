@@ -267,6 +267,10 @@
     var arr = loadNotes(WRONG_KEY).filter(function (r) { return r.id !== id; });
     saveNotes(WRONG_KEY, arr);
   }
+  function removeSaved(id) {
+    var arr = loadNotes(SAVED_KEY).filter(function (r) { return r.id !== id; });
+    saveNotes(SAVED_KEY, arr);
+  }
   function isSaved(id) { return notesHas(loadNotes(SAVED_KEY), id); }
   // 북마크 토글 → 새 상태(true=저장됨) 반환
   function toggleSaved(rec) {
@@ -1300,12 +1304,16 @@
     saveSession(); // 답 선택도 저장 (pick 은 부분 갱신이라 render 를 거치지 않음)
   }
 
-  // 개별 문제 다시 풀기 — 그 문제만 미응답 상태로 되돌리고, 오답이었다면 오답노트 기록도 되돌린다.
+  // 개별 문제 다시 풀기 — 그 문제만 미응답 상태로 되돌리고, 오답이었다면 오답노트 기록과 자동 저장(★)도 되돌린다.
   function retryOne(gi) {
     if (state.answers[gi] == null) return;
     state.answers[gi] = null;
     var q = data()[gi];
-    if (q) removeWrong(noteId(state.chapterId, q.text));
+    if (q) {
+      var rid = noteId(state.chapterId, q.text);
+      removeWrong(rid);
+      removeSaved(rid); // 오답 시 자동 켜졌던 저장함(★)도 함께 해제
+    }
     var row = document.getElementById("q-" + gi);
     if (!row) { render(); return; }
     var it = Object.assign({ gi: gi }, data()[gi]);
