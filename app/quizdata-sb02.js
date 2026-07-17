@@ -3445,6 +3445,17 @@
     var TAGS = [{"n":"다만, 등록지와 사용본거지가 다른 경우에는 사용본거지를 납세지로 한다","l":"2023 서울시 7급"},{"n":"피상속인이 납부한 면허에 대한 등록면허세는 상속인이 납부한 것으로 보고","l":"2023 서울시 7급"},{"n":"둘 이상의 저당권을 등록하는 경우 그 등록에 관계되는 재산을 나중에 등록한 등록관청 소재지를 등록면허세의 납세지로 한다","l":"2023 서울시 7급"},{"n":"관계 서류를 열람하거나 복사할 것을 청구하는 경우에는 관계 기관은 이에 따라야 한다","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 1. 등록면허세의 기본 성격·분류와 5대 원칙","q":[{"answer":"O","text":"법인의 자본금 또는 출자금의 납입, 증자 및 출자전환에 따른 등기 또는 등록에 대하여는 등록면허세를 부과한다.","exp":"옳다. 자본금·출자금의 납입, 증자, 출자전환에 따른 등기·등록은 취득을 수반하지 않는 법인등기로서 등록면허세 과세대상이며, 새로운 출자금이라는 경제적 가치가 발생하므로 증가액을 기준으로 하는 종가세로 과세한다. 본점 이전·지점 설치처럼 자본 변동이 없는 법인등기가 건당 정액의 종량세인 것과 구별해야 한다.","src":"2023 지방직 9급"},{"answer":"X","text":"법인의 자본금 또는 출자금의 납입, 증자 및 출자전환에 따른 등기 또는 등록은 새로운 출자금이라는 경제적 가치가 발생하는 등기이지만, 이에 대하여는 등록면허세를 부과하지 아니한다.","exp":"새로운 출자금이라는 경제적 가치가 발생한다는 앞부분은 옳지만, 그러한 자본 증가 법인등기는 증가액을 기준으로 하는 종가세로 등록면허세를 부과한다. '부과하지 아니한다'고 한 결론이 틀렸다. 취득을 수반하지 않는 대표적인 등록면허세 과세대상이다."}],"tb":[{"k":"note","v":"tip","title":"📎 심화·참고 — 법인 자본·출자 관련 등기","t":"법인의 자본금·출자금 납입, 증자, 출자전환에 따른 등기·등록도 취득을 수반하지 않는 등기로서 등록면허세 과세대상이다. 자본이 늘어 새로운 출자금이라는 경제적 가치가 발생하므로 증가액 기준의 종가세로 과세되고, 본점 이전·지점 설치처럼 자본 변동이 없는 등기는 건당 정액의 종량세다(상세 세율은 PART 6)."}],"wi":["📝 \"법인 자본금·출자금 납입·증자·출자전환에 따른 등기·등록에는 등록면허세를 부과하지 아니한다\" → ❌ 새 출자금이라는 경제적 가치가 발생하는 종가세 과세대상이므로 부과한다"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"등록지가 사용본거지와 다른 경우에는 등록지를 납세지로 한다","l":"2023 지방직 9급"},{"n":"선박의 등록에 대한 등록면허세의 과세표준은","l":"2023 지방직 9급"},{"n":"부동산 등기에 대한 등록면허세의 세율을 표준세율의 100분의 80의 범위에서 가감할 수 있다","l":"2023 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

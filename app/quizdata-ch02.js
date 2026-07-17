@@ -3273,6 +3273,17 @@
     var TAGS = [{"n":"부가가치세의 납세의무가 확정되는 때에 성립한다","l":"2024 지방직 9급"},{"n":"자동차세의 납세의무는 과세기준일인 매년 1월 1일","l":"2024 지방직 9급"},{"n":"선박의 건조가 완료되는 때에 성립한다","l":"2024 지방직 9급"},{"n":"승자투표권, 승마투표권 등을 발매하는 때에 성립한다","l":"2024 지방직 9급"},{"n":"제조장 또는 보세구역으로부터 반출하거나 국내로 반입하는 때에 성립한다","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 9. 징수권의 소멸시효","q":[{"answer":"O","text":"시효는 「지방세법」에 따른 분할납부기간에는 진행되지 아니한다.","exp":"분할납부기간은 소멸시효의 정지 사유이므로 그 기간에는 시효가 진행되지 않는다. 사유가 끝나면 남은 기간이 이어서 진행되는 정지이며, 0부터 다시 시작하는 중단(압류·교부청구 등)과 구별한다.","src":"2023 지방직 9급"},{"answer":"X","text":"지방세징수권의 소멸시효는 「지방세법」에 따른 분할납부기간에도 진행한다.","exp":"\"진행한다\"가 틀렸다. 분할납부기간은 소멸시효의 정지 사유이므로 그 기간에는 시효가 진행되지 않는다. 징수유예기간·체납처분유예기간·연부연납기간도 마찬가지로 진행되지 않는다."},{"answer":"O","text":"시효는 「지방세징수법」에 따른 체납처분유예기간에는 진행되지 아니한다.","exp":"체납처분유예기간은 소멸시효의 정지 사유이므로 그 기간에는 시효가 진행되지 않는다. 유예가 끝나면 남은 기간이 이어서 진행되는 정지이며, 진행된 시효가 리셋되는 중단과 다르다.","src":"2023 지방직 9급"},{"answer":"X","text":"지방세징수권의 소멸시효는 「지방세징수법」에 따른 체납처분유예기간에도 진행한다.","exp":"\"진행한다\"가 틀렸다. 체납처분유예기간은 소멸시효의 정지 사유이므로 그 기간에는 시효가 진행되지 않는다. 분할납부기간·징수유예기간·연부연납기간도 정지 사유로 마찬가지다."},{"answer":"O","text":"납부최고에 의해 중단된 시효는 납부최고에 따른 납부기간이 지난 때부터 새로 진행한다.","exp":"납부최고는 중단 사유이고, 중단된 시효는 납부최고에 따른 납부기간이 지난 때부터 0에서 새로 진행한다. 재진행 시점을 \"납부최고를 한 날부터\"로 앞당기는 함정과 구별한다.","src":"2023 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"기각되더라도 그 소송의 제기로 인한 시효정지는 효력이 있다","l":"2023 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

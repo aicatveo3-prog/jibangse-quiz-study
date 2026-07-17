@@ -531,6 +531,17 @@
     var TAGS = [{"n":"특정시설분 지역자원시설세 및 소방분 지역자원시설세로 구분한다","l":"2023 서울시 7급"},{"n":"지역의 부존자원을 이용하는 것이므로 특정자원분","l":"2023 서울시 7급"},{"n":"해당 연도 내에 철거하기로 계획이 확정되어","l":"2023 서울시 7급"},{"n":"발전에 이용된 물의 양이며, 표준세율은 10세제곱미터당 2원","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 4. 납세지와 납세의무 성립","q":[{"answer":"O","text":"지하수에 대한 특정자원분 지역자원시설세의 납세지는 채수공(採水孔)의 소재지이고, 컨테이너에 대한 특정시설분 지역자원시설세의 납세지는 컨테이너를 취급하는 부두의 소재지이다.","exp":"지하수는 채수공 소재지, 컨테이너는 부두 소재지가 맞다. 둘 다 자원이 빠져나가거나 시설이 있는 곳에 낸다는 납세지 원칙을 따른다. 컨테이너 납세지를 선박의 선적항으로 바꾸면 틀린 지문이 되며, 선적항은 소방분 선박의 납세지 기준이다.","src":"2023 지방직 9급"},{"answer":"X","text":"지하수에 대한 특정자원분 지역자원시설세의 납세지는 채수공(採水孔)의 소재지이고, 컨테이너에 대한 특정시설분 지역자원시설세의 납세지는 컨테이너를 운송하는 선박의 선적항 소재지이다.","exp":"'선적항 소재지'가 틀렸다. 컨테이너의 납세지는 컨테이너를 취급하는 부두의 소재지다. 선적항 기준은 소방분에서 선박의 납세지이므로 둘을 바꿔치기한 함정이다. 앞의 지하수 채수공 부분은 옳다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"발전용수, 지하수, 지하자원, 컨테이너에 대한 지역자원시설세의 세율은 조례로","l":"2023 지방직 9급"},{"n":"특정시설분 지역자원시설세는 관할 지방자치단체의 장이 세액을 산정하여 보통징수","l":"2023 지방직 9급"},{"n":"재산세의 규정을 준용하여 관할 지방자치단체의 장이 세액을 산정하여 보통징수","l":"2023 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

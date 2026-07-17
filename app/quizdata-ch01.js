@@ -876,6 +876,17 @@
     var TAGS = [{"n":"서류의 송달은 교부·우편 또는 전자송달로 하되, 해당 지방자치단체의 조례로 정하는 방법에 따른다","l":"2023 서울시 7급"},{"n":"다만, 송달을 받아야 할 자가 송달받기를 거부하지 아니하면 다른 장소에서 교부할 수 있다","l":"2023 서울시 7급"},{"n":"정당한 사유 없이 서류의 수령을 거부하면 공시송달의 방법으로 이를 송달할 수 있다","l":"2023 서울시 7급"},{"n":"전자송달은 서류의 송달을 받아야 할 자가 신청하는 경우에만 한다.","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 10. 서류의 송달","q":[{"answer":"O","text":"교부의 방법으로 서류를 송달하려는 경우에는 지방자치단체의 조례로 정하는 바에 따라 지방자치단체의 하부조직을 통하여 송달할 수 있다.","exp":"교부송달은 세무공무원이 직접 하는 것뿐 아니라, 조례로 정하는 바에 따라 지방자치단체의 하부조직(읍·면·동 등)을 통해서도 할 수 있다. \"세무공무원이 직접 하여야 하며 하부조직을 통한 송달은 허용되지 아니한다\"는 서술은 틀린 지문이다.","src":"2023 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"5회 이상 송달의 효력이 발생한 때부터 60일 동안 확인하지 아니한","l":"2023 지방직 9급"},{"n":"독촉에 관한 서류를 송달하려면 그 대표자를 명의인으로 하며 대표자가 없을 때에는","l":"2023 지방직 9급"},{"n":"그 사실 자체로 공시송달을 할 수 있으며, 서류의 주요 내용을 공고하면 공고한 날에","l":"2023 지방직 9급"},{"n":"새로운 해석이 있는 날 이후에 납세의무가 성립하는 행위에 대해서도 새로운 해석에 따라 과세할 수 없다","l":"2023 지방직 9급"},{"n":"해당 지방세의 과세표준 조사 및 결정은 그 기록한 장부와 이에 관계되는 증거자료에 따라야 한다","l":"2023 지방직 9급"},{"n":"지방세관계법의 규정에도 불구하고 이를 존중하여야 한다","l":"2023 지방직 9급"},{"n":"사실상 귀속되는 자가 따로 있을 때에는 사실상 귀속되는 자를 납세의무자로 하여 적용한다","l":"2023 지방직 9급"},{"n":"특별시의 세목에는 등록면허세가 포함되지 않는다.","l":"2023 지방직 9급"},{"n":"지역자원시설세를 포함하여 광역 세목과 기초 세목이 모두 특별자치시의 세목에 해당한다","l":"2023 지방직 9급"},{"n":"시·군의 세목에는 목적세인 지방교육세가 포함된다.","l":"2023 지방직 9급"},{"n":"군(郡) 지역에서는 도세를 광역시세로 한다","l":"2023 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
