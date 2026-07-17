@@ -3295,6 +3295,17 @@
     var TAGS = [{"n":"신고납부하는 지방세의 경우에는 신고하는 때에 납세의무가 확정된다","l":"2022 서울시 7급"},{"n":"부가가치세의 납세의무가 성립하는 때에 성립한다","l":"2022 서울시 7급"},{"n":"부과할 수 있는 날부터 7년이 만료되면 지방자치단체에 징수금을 납부할 의무가 소멸한다","l":"2022 서울시 7급"},{"n":"부과되거나 그 법인이 납부할 지방자치단체의 징수금을 납부할 의무를 진다","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 세목별 성립시기 ② 기준일·연동·가산세","q":[{"answer":"X","text":"자동차 소유에 대한 자동차세의 납세의무는 교통·에너지·환경세의 납세의무가 성립하는 때에 성립한다.","exp":"\"교통·에너지·환경세의 납세의무가 성립하는 때\"가 틀렸다. 소유분 자동차세는 납기가 있는 달의 1일(상반기 6월 1일, 하반기 12월 1일)에 성립한다. 교통·에너지·환경세에 연동되어 성립하는 것은 소유분이 아니라 주행분 자동차세다.","src":"2022 지방직 9급"},{"answer":"O","text":"자동차 소유에 대한 자동차세의 납세의무는 교통·에너지·환경세의 납세의무가 성립하는 때가 아니라 납기가 있는 달의 1일에 성립한다.","exp":"옳다. 소유분 자동차세는 교통·에너지·환경세와 무관하게 납기가 있는 달의 1일에 성립한다. 교통·에너지·환경세의 성립에 연동되는 것은 주행분 자동차세이므로, 소유분과 주행분의 성립시기를 뒤바꾸지 않도록 한다."}],"tb":[],"wi":["📝 \"소유분 자동차세 — 교통·에너지·환경세의 납세의무가 성립하는 때 성립\" → ❌ 납기가 있는 달의 1일. 교통·에너지·환경세에 연동되는 것은 주행분 자동차세."]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"그 과세표준이 되는 소득에 대하여 소득세·법인세를 원천징수하는 때에 성립한다","l":"2022 지방직 9급"},{"n":"면허에 대한 등록면허세의 납세의무는 각종 면허를 받는 때와 납기가 있는 달의 1일에 성립한다","l":"2022 지방직 9급"},{"n":"특별징수하는 지방소득세는 납세의무가 성립하는 때에 특별한 절차 없이 그 세액이 확정된다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

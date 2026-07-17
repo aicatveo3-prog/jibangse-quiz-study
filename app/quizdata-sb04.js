@@ -442,6 +442,17 @@
     var TAGS = [{"n":"발매금총액 중 투표 적중자에게 지급하는 환급금 총액으로 한다","l":"2024 지방직 9급"},{"n":"레저세의 세율은 100분의 10으로 한다","l":"2024 지방직 9급"},{"n":"레저세 납세의무자는 조례로 정하는 바에 따라 경륜 등의 시행에 관한 사항을 장부에 기재하고","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 5. 납세협력의무·가산세·교부금·부가세와 성립·확정","q":[{"answer":"O","text":"레저세의 징수·납부에 든 경비에 대한 교부금은 국가가 아니라 관할 시장·군수·구청장이 납세의무자에게 지급할 수 있다.","exp":"옳다. 레저세는 지방세여서 교부금 지급 주체는 국가(행정안전부장관)가 아니라 관할 시장·군수·구청장이다. ‘지급할 수 있다’는 재량이므로 반드시 지급하는 것은 아니라는 점도 함께 기억한다."},{"answer":"X","text":"레저세의 징수·납부에 든 경비에 대한 교부금은 관할 시장·군수·구청장이 아니라 국가기관인 행정안전부장관이 납세의무자에게 지급한다.","exp":"교부금 지급 주체는 행정안전부장관이 아니라 관할 시장·군수·구청장이다. 레저세는 지방세이므로 국가기관이 아니라 지방자치단체가 징수·납부 경비를 교부금으로 지급한다. 주체를 국가로 바꿔 틀렸다."}],"tb":[],"wi":["레저세 교부금 지급 주체 = 국가(행정안전부장관) ❌ → 관할 시장·군수·구청장(지방자치단체) ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"경륜 및 경정에 해당하는 사업을 하는 자는 레저세를 납부할 의무가 있다","l":"2022 지방직 9급"},{"n":"그 징수·납부에 든 경비를 교부금으로 지급할 수 있다","l":"2022 지방직 9급"},{"n":"레저세의 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다","l":"2022 지방직 9급"},{"n":"레저세의 과세표준은 승자투표권·승마투표권 등의 발매금총액으로 한다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

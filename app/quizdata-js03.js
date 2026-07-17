@@ -2990,6 +2990,17 @@
     var TAGS = [{"n":"시효완성정리를 한 후 압류할 수 있는 다른 재산을 발견하였을 때에는 지체 없이 체납처분을 하여야 한다","l":"2022 서울시 7급"},{"n":"체납된 지방세가 30만원 미만인 때에는 행정기관에 체납자의 행방이나 재산 유무를 확인하지 않고도","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 1. 압류의 요건과 절차","q":[{"answer":"X","text":"지방자치단체의 장은 「지방세징수법」 제33조제2항에 따라 압류한 유가증권을 확정되리라고 추정되는 지방자치단체의 징수금에 충당할 수 있다.","exp":"틀렸다. 충당 대상은 '확정되리라고 추정되는' 징수금이 아니라 '확정된' 지방자치단체의 징수금이다. 세액이 아직 확정되지 않은 추정 단계에서 충당하면 근거 없는 징수가 되므로, 세액이 확정된 뒤 그 확정된 징수금에 충당한다.","src":"2022 지방직 9급"},{"answer":"O","text":"지방자치단체의 장은 「지방세징수법」 제33조제2항에 따라 압류한 유가증권을 확정된 지방자치단체의 징수금에 충당할 수 있다.","exp":"압류한 유가증권 등의 충당 대상은 '확정된' 지방자치단체의 징수금이다. '확정되리라고 추정되는' 징수금에 충당한다고 하면 아직 확정되지 않은 세액에 충당하는 것이 되어 틀린 지문이 된다."}],"tb":[],"wi":["압류한 유가증권 등의 충당 대상 = \"확정된\" 지방자치단체의 징수금 (\"확정되리라고 추정되는\" 징수금에 충당한다고 하면 ❌)"]},{"p":"PART 4. 압류의 해제와 제3자 소유권 주장","q":[{"answer":"O","text":"납부로 압류가 필요 없게 되었을 때에는 지방자치단체의 장은 그 압류를 즉시 해제하여야 한다.","exp":"납부로 압류가 필요 없게 된 때는 필요적 해제 사유이므로 '즉시 해제하여야 한다'가 맞다(제47조 제1항). '해제할 수 있다'(재량)로 낮추면 틀리며, 체납액 일부만 납부·충당된 임의적 해제와 구별한다.","src":"2022 지방직 9급"}],"tb":[],"wi":["압류할 수 있는 다른 재산을 체납자가 제공하여 그 재산을 압류한 때 = 임의적 해제 '해제할 수 있다' (즉시 해제하여야 하는 필요적 해제 사유로 나오면 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"공매의 중지로 압류가 필요 없게 되었을 때","l":"2022 지방직 9급"},{"n":"소유권주장이 상당한 이유가 있다고 인정되는 때","l":"2022 지방직 9급"},{"n":"다른 재산을 체납자가 제공하여 그 재산을 압류하였을 때에는 지방자치단체의 장은 당초 압류한 재산의 압류를 즉시 해제하여야 한다","l":"2022 지방직 9급"},{"n":"질문·검사 또는 수색을 하거나 재산을 압류할 때에는 신분을 표시하는 증표를 지니고","l":"2022 지방직 9급"},{"n":"주류를 제공하는 영업을 하는 장소에 대해서는 해가 진 후에는 영업 중이라도 수색을 시작할 수 없다","l":"2022 지방직 9급"},{"n":"확정되리라고 추정되는 금액의 한도에서 납세자의 재산을 납기 전이라도 압류할 수 있다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

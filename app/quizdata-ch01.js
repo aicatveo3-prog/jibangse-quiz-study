@@ -898,6 +898,17 @@
     var TAGS = [{"n":"「지방세기본법」상 목적세는 지역자원시설세와 지방교육세이며","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"그 장애가 복구된 날을 기한으로 한다","l":"2022 지방직 9급"},{"n":"그 밖의 서류 제출·통지에 관한 기한이 토요일, 일요일, 공휴일 및 대체공휴일","l":"2022 지방직 9급"},{"n":"우편으로 과세표준 신고서, 과세표준 수정신고서를 제출한 경우","l":"2022 지방직 9급"},{"n":"직권 또는 납세자의 신청으로 그 기한을 연장할 수 있다","l":"2022 지방직 9급"},{"n":"납세자와 세무공무원은 신의에 따라 성실하게 그 의무를 이행하거나 직무를 수행하여야 한다","l":"2022 지방직 9급"},{"n":"누락된 부분에 한하여 지방자치단체의 장이 조사한 사실에 따라 결정할 수 있다","l":"2022 지방직 9급"},{"n":"실질내용과 관계없이 그 명칭이나 형식에 따라 적용한다","l":"2022 지방직 9급"},{"n":"세무공무원은 「지방세기본법」 또는 지방세관계법의 목적에 따른 한계를 준수하여야 한다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

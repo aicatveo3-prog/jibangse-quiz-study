@@ -531,6 +531,17 @@
     var TAGS = [{"n":"합쳐진 금액으로 신고·납부·경정 및 환급하여야 한다","l":"2023 지방직 9급"},{"n":"규정되어 있지 아니한 사항에 관하여는 지방자치단체의 조례로 정한다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 과세대상·납세의무자·납세지(사업장)","q":[{"answer":"O","text":"지방소비세의 과세대상은 「부가가치세법」 제4조에 따른 부가가치세의 과세대상과 동일하다.","exp":"옳다. 지방소비세의 과세대상은 「부가가치세법」 제4조의 과세대상(재화의 공급·용역의 공급·재화의 수입)과 동일하다. 부가세와 같은 것은 과세대상·납세의무자·납세지(대·의·지)이고, 다른 것은 과세표준·세율(표·율)이다.","src":"2022 지방직 9급"},{"answer":"X","text":"지방소비세의 과세대상은 「부가가치세법」 제4조에 따른 부가가치세의 과세대상과 서로 달라, 「지방세법」에서 별도의 과세대상을 정하고 있다.","exp":"지방소비세의 과세대상은 부가가치세의 과세대상과 동일하다. ‘서로 달라 별도로 정한다’가 틀렸다 — 부가세와 다른 것은 과세대상이 아니라 과세표준·세율(표·율)이며, 과세대상(대)은 부가세와 같다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"제68조에 따른 특별징수의무자가 징수하며","l":"2022 지방직 9급"},{"n":"지방자치단체의 장을 그 처분청으로 본다","l":"2022 지방직 9급"},{"n":"규정되어 있지 아니한 사항에 관하여는 「부가가치세법」을 준용한다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
