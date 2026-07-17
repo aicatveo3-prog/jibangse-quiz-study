@@ -542,6 +542,17 @@
     var TAGS = [{"n":"제68조에 따른 특별징수의무자가 징수하며","l":"2022 지방직 9급"},{"n":"지방자치단체의 장을 그 처분청으로 본다","l":"2022 지방직 9급"},{"n":"규정되어 있지 아니한 사항에 관하여는 「부가가치세법」을 준용한다","l":"2022 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 납입·안분 배분·환급금 처리","q":[{"answer":"O","text":"납입관리자는 감소되는 취득세·지방교육세·지방교부세·지방교육재정교부금 등을 보전하기 위하여 지방소비세 세액 중 일정 부분을 대통령령으로 정하는 바에 따라 특별시장 등에게 안분하여 납입한다.","exp":"옳다. 감소된 취득세·지방교육세 등을 보전하는 재원은 지방소비세 세액의 일부(보전분)이며, 납입관리자가 대통령령에 따라 특별시장 등에게 안분하여 납입한다. 재원을 ‘지방소득세’ 세액으로 바꾸면 틀린다 — 지방소득세는 지방소비세와 전혀 다른 세목이다."},{"answer":"X","text":"납입관리자는 감소된 취득세·지방교육세·지방교부세·지방교육재정교부금 등을 보전하기 위하여 지방소득세 세액의 100분의 21 중 5에 해당하는 부분을 대통령령으로 정하는 바에 따라 특별시장 등에게 안분하여 납입한다.","exp":"보전을 위해 안분하는 재원은 ‘지방소득세’가 아니라 지방소비세 세액이다. 세목을 지방소득세로 바꿔 쓴 부분이 틀렸다. 참고로 현행 보전분은 지방소비세 세율 25.3% 중 6%에 해당한다.","src":"2021 서울시 7급"},{"answer":"X","text":"특별징수의무자는 징수한 지방소비세를 다음 달 20일까지 납입관리자에게 납입하여야 하나, 납입업무의 효율적 처리를 위하여 행정안전부장관을 통하여 납입관리자에게 일괄 납입할 수 있다.","exp":"앞부분(다음 달 20일까지 납입관리자에게 납입)은 옳으나, 효율적 처리를 위한 일괄 납입은 ‘행정안전부장관’이 아니라 국세청장을 통하여 한다. 일괄 납입 경유 기관을 바꾼 것이 틀렸다."}],"tb":[{"k":"note","v":"box","title":"💡 보전분의 재원 = 지방소비세(지방소득세 아님)","t":"감소된 취득세·지방교육세·지방교부세·지방교육재정교부금을 보전하기 위하여 특별시장 등에게 안분하는 재원은 지방소비세 세액의 일부(보전분, 현행 세율 25.3% 중 6%)다. 이를 ‘지방소득세’ 세액이라고 하면 틀린다 — 지방소득세는 지방소비세와 전혀 다른 세목이며, 보전분 안분은 납입관리자가 대통령령에 따라 수행한다."}],"wi":["📝 \"납입관리자는 지방소득세 세액의 일부를 안분하여 특별시장 등에게 납입한다\" → ❌ ‘지방소득세’가 아니라 지방소비세 세액의 일부(보전분)를 안분·납입","일괄 납입 경유 = 행정안전부장관 ❌ → 국세청장 ⭕ (납입업무의 효율적 처리를 위해)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"감면세액 및 공제세액을 빼고 가산세를 더하여 계산한 세액으로 한다","l":"2021 서울시 7급"},{"n":"납입관리자에게 행정안전부령으로 정하는 징수명세서와 함께 납입하여야 한다","l":"2021 서울시 7급"},{"n":"국세청장을 통하여 납입관리자에게 지방소비세를 일괄 납입","l":"2021 서울시 7급"},{"n":"그 초과된 환급금을 그 다음 달로 이월한다","l":"2021 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
