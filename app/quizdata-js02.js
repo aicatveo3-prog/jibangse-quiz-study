@@ -2389,6 +2389,17 @@
     var TAGS = [{"n":"독촉장 또는 납부최고서를 발급할 때에는 납부기한을 발급일부터 20일 이내로 한다","l":"2023 지방직 9급"},{"n":"징수유예를 한 경우 납세고지서의 발급시기는 그 기간이 만료한 날이다","l":"2023 지방직 9급"},{"n":"금전의 급부를 목적으로 하는 것은 법률에 따로 규정이 있는 것을 제외하고는 상계할 수 있다","l":"2023 지방직 9급"},{"n":"납세자의 명의로 납부한 제3자는 지방자치단체에 대하여 그 반환을 청구할 수 있다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 징수유예 — 사유와 기간","q":[{"answer":"O","text":"지방자치단체의 장은 납세자가 납세의 고지 또는 독촉을 받은 후에 사업에 현저한 손실을 입은 경우 고지된 지방세 또는 체납액을 납부기한까지 납부할 수 없다고 인정할 때에는 납부기한을 다시 정하여 징수를 유예할 수 있다.","exp":"납세의 고지·독촉을 받은 후 사업에 현저한 손실을 입어 납부가 곤란하면 납부기한을 다시 정하여 징수를 유예할 수 있다. 현저한 손실(이미 발생한 큰 손실)과 중대한 위기(진행 중인 위기)는 각각 독립된 유예 사유다.","src":"2022 서울시 7급"},{"answer":"X","text":"지방자치단체의 장은 납세자가 납세의 고지 또는 독촉을 받은 후에 사업에 현저한 손실을 입어 고지된 지방세 또는 체납액을 납부기한까지 납부할 수 없다고 인정하더라도, 이미 고지·독촉이 이루어진 이상 납부기한을 다시 정하여 징수를 유예할 수는 없다.","exp":"틀리다. 고지·독촉을 받은 후라도 사업의 현저한 손실로 납부가 곤란하면 납부기한을 다시 정하여 징수를 유예할 수 있다. '유예할 수는 없다'는 부분이 틀렸다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"주소 또는 영업소가 분명하지 아니하여 납세고지서를 송달할 수 없을 때에는 징수유예를 결정한 날부터 6개월 이내","l":"2022 서울시 7급"},{"n":"신청일부터 10일 이내에 승인 여부를 통지하지 아니하면, 그 10일이 되는 날에 징수유예의 신청을 승인한 것으로 본다","l":"2022 서울시 7급"},{"n":"취소한 경우에도 다시 징수유예 사유가 있으면 그 지방세 또는 체납액에 대하여 재차 징수유예를 할 수 있다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

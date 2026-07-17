@@ -2164,6 +2164,17 @@
     var TAGS = [{"n":"과세전적부심사의 청구에 대한 처분이 위법하여 이익을 침해당한 자는 그 처분에 대하여 이의신청과 심판청구를 할 수 있다","l":"2023 지방직 9급"},{"n":"오기, 계산착오, 그 밖에 이와 비슷한 잘못이 있는 것이 명백할 때에는 시장·군수 또는 도지사는 직권 또는 이의신청인의 신청을 받아 결정을 경정","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 불복청구의 대상과 청구인","q":[{"answer":"X","text":"당초 처분의 적법성에 관하여 재조사하여 그 결과에 따라 과세표준과 세액을 경정하거나 당초 처분을 유지하는 등의 처분을 하도록 하는 결정은 불복청구의 대상이 되지 않는다.","exp":"재조사 결정도 불복청구의 대상이 되므로 '대상이 되지 않는다'는 부분이 틀렸다. 재조사 결과에 따라 처분청이 경정하거나 당초 처분을 유지하더라도 이에 대하여 이의신청·심판청구로 다툴 수 있다. 불복할 수 없는 것은 통고처분·감사원 심사청구한 처분·과세전적부심사 결과·과태료뿐이다.","src":"2022 서울시 7급"},{"answer":"O","text":"당초 처분의 적법성에 관하여 재조사하여 그 결과에 따라 과세표준과 세액을 경정하거나 당초 처분을 유지하는 등의 처분을 하도록 하는 결정도 불복청구의 대상이 된다.","exp":"재조사 결정은 불복 불가 대상(통고처분·감사원 심사청구한 처분·과세전적부심사 결과·과태료)에 포함되지 않으므로 불복청구의 대상이 된다. 사전 구제 절차의 결과인 과세전적부심사 결과가 불복 대상에서 제외되는 것과 혼동하지 않아야 한다."}],"tb":[{"k":"p","t":"재조사 결정은 처분을 바로 취소·변경하기 어려워 처분청에 다시 조사하도록 명하는 결정으로, 그 결과에 따라 세액을 경정하거나 당초 처분을 그대로 유지하게 된다. 이러한 재조사 결정과 그에 따른 경정처분·당초 처분 유지처분 역시 불복청구의 대상이 되므로 이의신청 또는 심판청구로 다툴 수 있다. 불복할 수 없는 것은 통고처분·감사원 심사청구를 한 처분·과세전적부심사 청구에 대한 처분(결과)·과태료 등에 한정된다."},{"k":"note","v":"box","title":"💡 재조사 결정 vs 과세전적부심사 결과","t":"둘 다 '심사·조사에 관한 결정'처럼 보이지만 불복 가능 여부가 반대다. 재조사 결정(과 그에 따른 처분)은 불복 대상이 되지만, 과세전적부심사의 청구에 대한 처분(결과)은 사전 구제 절차의 결과이므로 불복 대상이 아니다 — 다만 적부심사 후 이루어진 정식 부과처분은 별개로 불복할 수 있다."}],"wi":["📝 \"재조사 결과에 따른 경정·당초 처분 유지 결정은 불복청구의 대상이 되지 않는다\" → ❌ 재조사 결정도 불복청구 대상 — 불복 불가는 통고처분·감사원 심사청구한 처분·과세전적부심사 결과·과태료뿐"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"부터 90일 이내에 불복의 사유를 구비하여 이의신청을 하여야 한다","l":"2022 서울시 7급"},{"n":"미치지 아니하지만, 압류한 재산에 대하여는 그 결정처분이 있는 날부터 30일까지","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

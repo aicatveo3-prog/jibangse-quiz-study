@@ -568,6 +568,17 @@
     var TAGS = [{"n":"미납세반출을 하였을 때에는 지방자치단체의 장에게 반출신고를 하여야 할 의무가 없다","l":"2023 지방직 9급"},{"n":"제2종 파이프담배와 제4종 각련의 세율보다 낮다","l":"2023 지방직 9급"},{"n":"환가되는 경우에는 제조자가 담배를 제조장에서 반출한 것으로 보지 아니한다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 납세담보·가산세·기장의무·부가세","q":[{"answer":"X","text":"지방자치단체의 장은 담보제공을 요구받은 수입판매업자가 담보를 제공하지 아니하거나 부족하게 제공한 경우에는 그 담배의 반출을 직접 금지할 수 있다.","exp":"수입판매업자의 담배는 세관이 관할하는 보세구역에 있으므로 지방자치단체의 장이 직접 반출을 금지할 수 없고 세관장에게 반출금지를 요구한다. ‘직접 금지할 수 있다’가 틀렸다 — 직접 금지가 가능한 것은 제조장에 있는 제조자의 담배다."},{"answer":"X","text":"지방자치단체의 장은 담보제공을 요구받은 제조자가 담보를 제공하지 아니하거나 부족하게 제공한 경우에는 세관장에게 그 담배의 반출금지를 요구할 수 있다.","exp":"제조자의 담배는 지방자치단체가 관할하는 제조장에 있으므로 지자체장이 직접 반출을 금지한다. ‘세관장에게 반출금지를 요구한다’가 틀렸다 — 세관장에게 요구하는 것은 보세구역에 있는 수입판매업자의 담배다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"납세보전을 위하여 제조자 또는 수입판매업자에게 담보의 제공을 요구할 수 있다","l":"2022 서울시 7급"},{"n":"수입판매업자의 경우에는 세관장에게 반출금지를 요구할 수 있다","l":"2022 서울시 7급"},{"n":"정당한 사유가 있으면 그 요구를 거부할 수 있다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

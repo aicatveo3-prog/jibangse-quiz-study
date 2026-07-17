@@ -540,6 +540,17 @@
     var TAGS = [{"n":"사업소의 연면적 및 종업원 수로 한다","l":"2023 지방직 9급"},{"n":"기본세액 10만원으로 산출된다","l":"2023 지방직 9급"},{"n":"기숙사와 사택의 연면적이 포함된다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 개인분 주민세","q":[{"answer":"X","text":"개인분의 납세지는 과세기준일 현재 주소지로 하며 그 징수는 신고납부의 방법으로 한다.","exp":"납세지가 주소지인 것은 옳으나 징수방법이 틀렸다. 개인분은 정액이라 지방자치단체가 고지서를 발송하는 보통징수로 징수한다 — 주민세 3유형 중 보통징수는 개인분뿐이고 사업소분·종업원분이 신고납부다.","src":"2022 서울시 7급"},{"answer":"O","text":"개인분의 납세지는 과세기준일 현재 주소지로 하며 그 징수는 보통징수의 방법으로 한다.","exp":"옳다. 개인분 납세지는 과세기준일(7월 1일) 현재 주소지이고 징수는 보통징수다. 납세지를 사업소 소재지로, 징수를 신고납부로 바꾸면 각각 사업소분·종업원분과 혼동한 것이다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"체류지)를 둔 개인으로 한다","l":"2022 서울시 7급"},{"n":"사업소 및 그 연면적으로 하며, 연면적 중 1㎡ 미만","l":"2022 서울시 7급"},{"n":"급여를 지급하는 사업주로 한다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -3456,6 +3456,17 @@
     var TAGS = [{"n":"등록지가 사용본거지와 다른 경우에는 등록지를 납세지로 한다","l":"2023 지방직 9급"},{"n":"선박의 등록에 대한 등록면허세의 과세표준은","l":"2023 지방직 9급"},{"n":"부동산 등기에 대한 등록면허세의 세율을 표준세율의 100분의 80의 범위에서 가감할 수 있다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 등록분 비과세 — 취득세 비과세와의 교차","q":[{"answer":"X","text":"회사의 정리 또는 특별청산에 관하여 법원의 촉탁으로 인한 등기 또는 등록의 경우 등록면허세를 부과한다.","exp":"회사의 정리 또는 특별청산에 관하여 법원의 촉탁으로 하는 등기·등록은 등록면허세 비과세 대상이다(지방세법 제26조 제2항). 당사자의 자발적 신청이 아니라 법원의 촉탁에 의한 강제적 등기이므로 '부과한다'가 아니라 '과세하지 아니한다'가 맞다. 회생·파산·정리·특별청산이 같은 비과세 계열임을 함께 기억한다.","src":"2022 서울시 7급"},{"answer":"O","text":"회사의 정리 또는 특별청산에 관하여 법원의 촉탁으로 인한 등기 또는 등록의 경우 등록면허세를 부과하지 아니한다.","exp":"옳다. 법원의 촉탁으로 하는 회사 정리·특별청산 등기·등록은 회생·파산 관련 등기와 함께 등록면허세 비과세다(지방세법 제26조 제2항). '법원의 촉탁'이라는 강제적·비자발적 성격 때문에 세금을 부과하지 않으며, 새 권리를 설정하는 등기가 과세되는 것과 구별된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"취득을 원인으로 이루어지는 등기 또는 등록은 등록면허세 과세대상에서 제외하나","l":"2022 서울시 7급"},{"n":"50만원 이하인 물건의 등기 또는 등록은 등록면허세 부과대상에 해당한다","l":"2022 서울시 7급"},{"n":"외국정부의 등록 또는 면허의 경우는 등록면허세를 부과한다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

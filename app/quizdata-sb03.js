@@ -728,6 +728,17 @@
     var TAGS = [{"n":"상속지분이 가장 높은 사람이 두 명 이상이면 그 중 나이가 가장 적은 사람으로 한다","l":"2023 지방직 9급"},{"n":"수탁자의 명의로 등기 또는 등록된 신탁재산의 경우에는 그 수탁자가 재산세를 납부할 의무가 있다","l":"2023 지방직 9급"},{"n":"그 재산의 사용권을 무상으로 받은 경우에는 그 매도계약자가 재산세를 납부할 의무가 있다","l":"2023 지방직 9급"},{"n":"파산선고 이후 파산종결의 결정까지 파산재단에 속하는 재산의 경우에는 공부상 소유자가 재산세를 납부할 의무가 있다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"현행 적용 비율은 100분의 60이다","l":"2022 서울시 7급"},{"n":"재산세의 과세기준일은 매년 6월 1일로 한다.","l":"2022 서울시 7급"},{"n":"구분한 납세고지서에 과세표준과 세액을 적어 늦어도 납기개시 5일 전까지 발급하여야 한다","l":"2022 서울시 7급"},{"n":"인접한 지방자치단체의 관할구역에 있는 부동산에 대하여 물납을 허가","l":"2022 서울시 7급"},{"n":"신탁 설정일 이후에 법정기일이 도래하는 재산세를 체납한 경우로서 그 위탁자의 다른 재산에 대하여 체납처분을 하여도 징수할 금액에 미치지 못할 때","l":"2022 서울시 7급"},{"n":"수탁자로부터 납세의무자의 재산세등을 징수하려는 지방자치단체의 장은 납부통지서를 수탁자에게 고지","l":"2022 서울시 7급"},{"n":"포기·이전하거나 신탁재산을 양도하는 경우에는 고지된 부분에 대한 수탁자의 물적납세의무가 소멸한다","l":"2022 서울시 7급"},{"n":"신탁재산의 보존 및 개량을 위하여 지출한 필요비 또는 유익비의 우선변제를 받을 권리가 있다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

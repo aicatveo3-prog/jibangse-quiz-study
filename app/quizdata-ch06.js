@@ -2667,6 +2667,17 @@
     var TAGS = [{"n":"과세자료에 따라 과세하는 경우에는 납세자에게 미리 서면으로 과세예고통지를 하여야 한다","l":"2023 서울시 7급"},{"n":"통지받은 날부터 30일 이내에 지방자치단체의 장에게 통지내용의 적법성에 관해 과세전적부심사를 청구할 수 있다","l":"2023 서울시 7급"},{"n":"다른 기관에 법령해석을 요청하는 등의 사유가 있다면 30일 범위에서 1회에 한정하여 심사기간을 연장할 수 있다","l":"2023 서울시 7급"},{"n":"만료일까지의 기간이 6개월 이하인 경우라면 과세예고통지를 받은 자가 과세전적부심사를 청구할 수 없다","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"세무조사 기간을 30일 이내로 하는 것을 원칙으로 한다","l":"2022 서울시 7급"},{"n":"납부하여야 하는 모든 지방세 세목을 통합하여 실시하는 것을 원칙으로 한다","l":"2022 서울시 7급"},{"n":"둘 이상의 사업연도와 관련하여 잘못이 있는 경우","l":"2022 서울시 7급"},{"n":"정기선정에 의한 조사 외에 납세자가 세무조사를 신청하는 경우에는 세무조사를 할 수 있다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
