@@ -2139,6 +2139,17 @@
     var TAGS = [{"n":"그 초과금액은 다음 사업연도로 이월하여 공제한다","l":"2023 지방직 9급"},{"n":"1월 1일부터 출국한 날의 전날까지로 한다","l":"2023 지방직 9급"},{"n":"「법인세법」에 따른 납세지로 한다. 다만, 법인 또는 연결법인이","l":"2023 지방직 9급"},{"n":"토지 등의 양도소득은 물론 청산소득까지 모두 포함된다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 특별징수·결정경정·수시부과·제재","q":[{"answer":"O","text":"특별징수의무자가 내국법인으로부터 법인세를 원천징수하는 경우에는 원천징수하는 법인세의 100분의 10에 해당하는 금액을 법인지방소득세로 특별징수하여 그 징수일이 속하는 달의 다음 달 10일까지 관할 지방자치단체에 납부하여야 한다.","exp":"옳다. 국세에서 원천징수하는 법인세의 100분의 10을 법인지방소득세로 특별징수하고, 납부기한은 징수일이 속하는 달의 다음 달 10일이다. 세율을 20%로, 납부기한을 다음 달 말일로 바꾸면 틀린 지문이 된다.","src":"2022 서울시 7급"},{"answer":"X","text":"특별징수의무자가 내국법인으로부터 법인세를 원천징수하는 경우에는 원천징수하는 법인세의 100분의 20에 해당하는 금액을 법인지방소득세로 특별징수하여 그 징수일이 속하는 달의 다음 달 10일까지 관할 지방자치단체에 납부하여야 한다.","exp":"틀렸다. 특별징수 세율은 원천징수하는 법인세의 100분의 20이 아니라 100분의 10이다. 납부기한(다음 달 10일)은 옳으나 세율을 20%로 올린 것이 함정이다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"3개월 이내에 그 사업연도의 소득에 대한 법인지방소득세","l":"2022 서울시 7급"},{"n":"양도소득 과세표준 예정신고를 하는 경우에는 해당 신고기한에 2개월을 더한 날까지","l":"2022 서울시 7급"},{"n":"개인지방소득세 과세표준과 세액을 납세지 관할 지방자치단체의 장에게 확정신고·납부하여야 한다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb08"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

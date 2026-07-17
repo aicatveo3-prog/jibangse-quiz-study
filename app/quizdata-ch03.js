@@ -502,6 +502,17 @@
     var TAGS = [{"n":"사기나 그 밖의 부정한 행위로 법정신고기한까지 과세표준 신고를 하지 아니한 경우에는 무신고납부세액의 100분의 20","l":"2023 지방직 9급"},{"n":"지방세를 감면하는 경우에 가산세도 그 감면대상에 포함한다","l":"2023 지방직 9급"},{"n":"상속재산으로 확정되지 아니하여 과소신고한 경우에는 과소신고가산세를 부과하지 아니한다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 1. 수정신고","q":[{"answer":"X","text":"수정신고로 인하여 추가납부세액이 발생한 경우라도 지방자치단체의 장이 그 지방세의 과세표준과 세액을 결정하기 전까지는 수정신고를 한 자가 그 추가납부세액을 납부할 의무가 없다.","exp":"\"결정하기 전까지는 납부할 의무가 없다\"가 틀렸다. 수정신고로 추가납부세액이 발생하면 그 수정신고를 한 자는 이를 납부하여야 한다. 신고서만 제출하고 세액을 함께 내지 않더라도 가산세 감면은 받을 수 있으나, 납부 의무 자체가 사라지는 것은 아니다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"결정하여 통지하기 전에는 기한후신고서를 제출할 수 있다","l":"2022 서울시 7급"},{"n":"추가납부세액이 발생한 경우에는 그 수정신고를 한 자는 추가납부세액을 납부하여야 한다","l":"2022 서울시 7급"},{"n":"청구를 받은 날부터 90일 이내에 그 청구를 한 자에게 과세표준 및 세액을 결정·경정","l":"2022 서울시 7급"},{"n":"관청의 허가나 그 밖의 처분이 취소된 경우 과세표준신고서를 법정신고기한까지 제출한 자는 그 사유가 발생한 것을 안 날부터 90일","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -483,6 +483,17 @@
     var TAGS = [{"n":"정비 결과를 행정안전부장관에게 제출하여야 한다","l":"2023 지방직 9급"},{"n":"지방세지출보고서)를 작성하여 지방의회에 제출하여야 한다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"「조세특례제한법」, 조약 및 조례에 따르지 아니하고는 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 없다.","l":"2022 서울시 7급"},{"n":"감염병의 발생으로 인하여 지방세의 감면이 필요하다고 인정될 때에는 3년의 기간 이내에서 지방세 감면을 할 수 있다.","l":"2022 서울시 7급"},{"n":"지방세의 감면은 감면을 받으려는 자의 신청에 의하여야 하므로, 지방자치단체의 장이 감면대상을 알 수 있을 때에도 직권으로 감면할 수 없다.","l":"2022 서울시 7급"},{"n":"중복 감면을 배제하기 위해 원칙적으로 납세의무자가 먼저 신청하는 것 하나만을 적용한다.","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["te01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

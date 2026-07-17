@@ -1744,6 +1744,17 @@
     var TAGS = [{"n":"교부청구한 다른 지방자치단체의 징수금 또는 국세를 압류에 관계되는 지방자치단체의 징수금에 우선하여 징수한다","l":"2023 서울시 7급"},{"n":"체납처분을 하였을 경우에 그 체납처분비는 다른 지방자치단체의 징수금과 국세 및 그 밖의 채권에 우선하여 징수한다","l":"2023 서울시 7급"},{"n":"그 매각금액 중 지방세를 징수하는 경우의 그 전세권·질권·저당권에 따라 담보된 채권에 우선하여 징수하지 아니한다","l":"2023 서울시 7급"},{"n":"직접 부과된 재산세의 우선 징수 순서에 대신하여 변제될 수 있다","l":"2023 서울시 7급"},{"n":"실질적으로 양도인에 대한 채권담보의 대상이 된 재산으로 한다","l":"2023 서울시 7급"},{"n":"이 경우 납세자에게 그 사실을 알려야 한다","l":"2023 서울시 7급"},{"n":"체납처분을 집행하고도 징수할 금액이 부족한 경우에만 그 명의신탁한 재산으로써","l":"2023 서울시 7급"},{"n":"법정기일 후에 담보의 대상이 된 양도담보재산에 대해서는 지방자치단체의 징수금을 징수할 수 없다","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"국세 또는 공과금의 체납처분비는 지방자치단체의 징수금에 우선하여 징수한다","l":"2022 서울시 7급"},{"n":"해당 파산절차에 든 비용은 지방자치단체의 징수금에 우선하여 징수한다","l":"2022 서울시 7급"},{"n":"임대차계약, 전세권, 질권 또는 저당권의 설정계약 등을 하고 확정일자를 갖추거나 등기 또는 등록 등을 하여","l":"2022 서울시 7급"},{"n":"담보된 채권에 대해서는 지방자치단체의 징수금을 우선 징수하지 아니한다","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -2979,6 +2979,17 @@
     var TAGS = [{"n":"합병에 의하여 소멸된 때에도 그 재산에 대하여 한 체납처분은 이를 속행하여야 한다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 8. 청산·체납처분 유예·정리보류","q":[{"answer":"X","text":"지방자치단체의 장은 지방세징수권의 소멸시효가 완성되었을 때에는 정리보류를 할 수 있다.","exp":"틀렸다. 소멸시효 완성은 정리보류 사유가 아니라 납세의무가 소멸하는 시효완성정리 사유다. 정리보류는 납세의무가 존속하는 재량 처리이고, 시효완성정리는 소멸시효(5년) 완성으로 하는 의무 처리라 성격이 정반대다.","src":"2022 서울시 7급"},{"answer":"O","text":"지방세징수권의 소멸시효가 완성되었을 때에는 지방자치단체의 장은 정리보류가 아니라 시효완성정리를 하여야 한다.","exp":"옳다. 소멸시효(5년) 완성은 정리보류 사유가 아니라 납세의무가 소멸하는 시효완성정리 사유이며, 시효완성정리는 재량이 아닌 의무('하여야 한다')다. 재산이 없거나 행방불명일 때 하는 재량 처리인 정리보류와 성격이 정반대다."},{"answer":"X","text":"지방자치단체의 장은 납세자에게 체납처분이 종결되고 체납액에 충당된 배분금액이 그 체납액보다 많을 때에는 정리보류를 할 수 있다.","exp":"틀렸다. 정리보류는 체납처분이 종결되고 배분금액이 체납액보다 적을(부족할) 때 하는 처리다. 배분금액이 체납액보다 많으면 체납액이 전액 징수·충당된 것이라 보류할 잔여 체납액이 없다.","src":"2022 서울시 7급"},{"answer":"O","text":"체납처분이 종결되고 체납액에 충당된 배분금액이 그 체납액보다 적을 때에는 정리보류의 사유에 해당한다.","exp":"옳다. 배분금액이 체납액에 부족(적을 때)해 징수하지 못한 부분이 남을 때가 정리보류 사유다. '많을 때'로 바꾸면 전액 징수되어 보류할 것이 없으므로 틀린다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"시효완성정리를 한 후 압류할 수 있는 다른 재산을 발견하였을 때에는 지체 없이 체납처분을 하여야 한다","l":"2022 서울시 7급"},{"n":"체납된 지방세가 30만원 미만인 때에는 행정기관에 체납자의 행방이나 재산 유무를 확인하지 않고도","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
