@@ -520,6 +520,17 @@
     var TAGS = [{"n":"세관장을 지방소비세의 특별징수의무자로 한다","l":"2024 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 과세표준·세율","q":[{"answer":"O","text":"지방소비세의 과세표준은 「부가가치세법」에 따른 부가가치세의 납부세액에서 감면세액 및 공제세액을 빼되, 「부가가치세법」에 따른 가산세는 더한 세액으로 한다.","exp":"옳다. 감면·공제는 빼고(−) 가산세는 더한다(+). ‘가산세를 더하지 아니한’으로 바꾸면 틀린다 — 가산세는 반드시 더해 과세표준에 포함한다. 올바른 공식은 납부세액 − 감면 − 공제 + 가산세다."},{"answer":"X","text":"지방소비세의 과세표준은 「부가가치세법」에 따른 부가가치세의 납부세액이며, 「부가가치세법」에 따른 가산세를 더하지 아니한 세액으로 한다.","exp":"가산세는 더하지 아니한 것이 아니라 더해야(+) 한다. 또한 납부세액 그대로가 아니라 감면세액·공제세액을 뺀 뒤 가산세를 더해야 과세표준이 완성된다. 올바른 공식은 납부세액 − 감면 − 공제 + 가산세다.","src":"2023 지방직 9급"}],"tb":[],"wi":[]},{"p":"PART 4. 특별징수·납세의무 성립·확정·가산세 미부과","q":[{"answer":"O","text":"「부가가치세법」에 따라 재화의 수입에 대한 부가가치세를 징수하는 세관장은 지방소비세의 특별징수의무자이다.","exp":"옳다. 수입분 부가가치세를 징수하는 세관장은 지방소비세의 특별징수의무자다. ‘납세의무자’로 바꾸면 틀린다 — 세관장은 세금을 부담하는 자가 아니라 대신 걷어 납입관리자에게 납입하는 자다."},{"answer":"X","text":"「부가가치세법」 제58조제2항에 따라 재화의 수입에 대한 부가가치세를 징수하는 세관장은 지방소비세의 납세의무자이다.","exp":"세관장은 납세의무자가 아니라 수입분 부가가치세와 함께 지방소비세를 징수하는 특별징수의무자다. ‘납세의무자’가 틀렸다. 납세의무자는 부가가치세를 부담하는 사업자이고, 세관장·세무서장은 이를 대신 걷어 납입관리자에게 납입한다.","src":"2023 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"합쳐진 금액으로 신고·납부·경정 및 환급하여야 한다","l":"2023 지방직 9급"},{"n":"규정되어 있지 아니한 사항에 관하여는 지방자치단체의 조례로 정한다","l":"2023 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

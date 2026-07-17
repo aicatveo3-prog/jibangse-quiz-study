@@ -529,6 +529,17 @@
     var TAGS = [{"n":"1만5천원을 초과하지 아니하는 범위에서 조례로 읍·면·동별로 달리 정할 수 있다","l":"2023 서울시 7급"},{"n":"사업소 및 그 연면적으로 하며, 연면적 중 1㎡ 미만은 계산하지 아니한다","l":"2023 서울시 7급"},{"n":"330㎡ 이하인 경우에는 연면적에 대한 사업소분 주민세를 부과하지 아니한다","l":"2023 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2023 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 종업원분 — 면세점·납세지·징수·특례","q":[{"answer":"X","text":"지방세기본법 제35조에 따른 납세의무 확정일이 속하는 달부터 최근 1년간 해당 사업소 종업원 급여총액의 월평균금액이 2억원 이하인 경우에는 주민세 종업원분을 부과하지 아니한다.","exp":"면세점 판단의 기준 시점은 납세의무 ‘성립일’이고 금액도 급여총액 월평균 1억8천만원(360만원×50) 이하다. ‘확정일’과 ‘2억원’ 두 곳이 틀렸다 — 성립(의무 발생)과 확정(세액 확정)은 다른 시점이다.","src":"2023 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"사업소의 연면적 및 종업원 수로 한다","l":"2023 지방직 9급"},{"n":"기본세액 10만원으로 산출된다","l":"2023 지방직 9급"},{"n":"기숙사와 사택의 연면적이 포함된다","l":"2023 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
