@@ -2925,6 +2925,17 @@
     var TAGS = [{"n":"종합체육시설 이용회원권 또는 요트회원권을 취득한 자에게 부과한다","l":"2022 서울시 7급"},{"n":"선박, 차량과 기계장비의 종류를 변경하거나 토지의 지목을 사실상 변경함으로써 그 가액이 증가한 경우에는 취득으로 본다","l":"2022 서울시 7급"},{"n":"해산한 것으로 보는 법인(해산간주법인)은 대도시 중과 대상인 휴면법인에 해당한다","l":"2022 서울시 7급"},{"n":"폐업법인이 법인 인수일 이전 2년 이내에 다시 사업자등록을 한 경우에는 휴면법인에 해당한다","l":"2022 서울시 7급"},{"n":"법인의 과점주주가 아닌 주주가 다른 주주의 주식을 취득하여 최초로 과점주주가 된 경우","l":"2022 서울시 7급"},{"n":"법인설립 시에 발행하는 주식 또는 지분을 취득함으로써 과점주주가 되었을 때에는","l":"2022 서울시 7급"},{"n":"이미 과점주주가 된 주주가 해당 법인의 주식을 취득하여 주식비율이 증가된 경우 증가된 후의 주식비율이 그 증가된 날을 기준으로 그 이전 5년 이내에","l":"2022 서울시 7급"},{"n":"과점주주였으나 주식 양도로 과점주주에 해당되지 아니하는 주주가 해당 법인의 주식을 취득하여 다시 과점주주가 된 경우에는 다시 과점주주가 된 당시의 주식비율이","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 11. 과점주주 간주취득","q":[{"answer":"X","text":"설립 시 51%를 취득하여 과점주주가 된 자가 60%로 늘렸다가 40%로 양도한 뒤 다시 75%를 취득하여 과점주주가 된 경우, 취득세 과세범위는 설립 시 취득분 51%를 초과하는 24% 증가분이다.","exp":"24%가 아니다. 비교 기준은 설립 시 51%가 아니라 그 이후 도달했던 이전 최고비율 60%이므로 75%−60%=15% 증가분만 과세된다. 설립분 51%를 기준으로 75%−51%=24%로 계산한 함정이다."},{"answer":"X","text":"설립 시 51%를 취득하여 과점주주가 된 자가 60%로 늘렸다가 40%로 양도한 뒤 다시 75%를 취득하여 과점주주가 된 경우, 취득세 과세범위는 직전 보유비율 40%를 초과하는 35% 증가분이다.","exp":"35%가 아니다. 재과점 비교 기준은 직전 40%가 아니라 그 이전에 도달했던 최고비율 60%이므로 75%−60%=15%만 과세된다. 직전 40%를 기준으로 75%−40%=35%로 계산한 함정이다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"이전 최고비율 60%를 초과하는 15% 증가분이다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

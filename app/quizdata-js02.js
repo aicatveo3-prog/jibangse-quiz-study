@@ -2400,6 +2400,17 @@
     var TAGS = [{"n":"주소 또는 영업소가 분명하지 아니하여 납세고지서를 송달할 수 없을 때에는 징수유예를 결정한 날부터 6개월 이내","l":"2022 서울시 7급"},{"n":"신청일부터 10일 이내에 승인 여부를 통지하지 아니하면, 그 10일이 되는 날에 징수유예의 신청을 승인한 것으로 본다","l":"2022 서울시 7급"},{"n":"취소한 경우에도 다시 징수유예 사유가 있으면 그 지방세 또는 체납액에 대하여 재차 징수유예를 할 수 있다","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 7. 징수유예 — 절차·효과·취소","q":[{"answer":"O","text":"지방자치단체의 장은 징수유예등을 결정할 때에는 그 유예에 관계되는 금액에 상당하는 납세담보의 제공을 요구할 수 있다.","exp":"옳다. 징수유예등을 결정할 때 유예 금액에 상당하는 납세담보의 제공을 요구할 수 있는 재량 규정이다. 반드시 요구해야 하는 의무가 아니며, 유예 결정을 문서로 통지하는 것은 의무인 점과 구분한다.","src":"2022 지방직 9급"},{"answer":"X","text":"지방자치단체의 장은 징수유예등을 결정할 때에는 그 유예에 관계되는 금액에 상당하는 납세담보의 제공을 반드시 요구하여야 한다.","exp":"틀리다. 납세담보의 제공 요구는 '요구할 수 있다'는 재량이지 '반드시 요구하여야 한다'는 의무가 아니다. 담보를 요구하지 않고도 유예를 결정할 수 있다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"취소하고 그에 관계되는 지방세 또는 체납액을 한꺼번에 징수","l":"2022 지방직 9급"},{"n":"징수를 확보할 수 없다고 인정할 때에는 그 부과결정을 철회할 수 있다","l":"2022 지방직 9급"},{"n":"체납처분(교부청구를 포함한다)을 할 수 없다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

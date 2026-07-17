@@ -586,6 +586,17 @@
     var TAGS = [{"n":"도시지역(개발제한구역과 녹지지역은 제외함) 내에 있는 농지를 취득한 경우","l":"2023 지방직 9급"},{"n":"본인과 배우자(세대별 주민등록표에 함께 기재된 경우로 한정함) 모두 2년 이상 농업에 종사","l":"2023 지방직 9급"},{"n":"취득일부터 90일 이내에 귀농인이 되면 그 농지에 대한 취득세를 경감한다","l":"2023 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 자동차 관련 감면 — 장애인·다자녀·경차","q":[{"answer":"X","text":"장애인이 대통령령으로 정하는 바에 따라 대체취득을 하는 경우 해당 자동차에 대해서는 자동차 주행에 대한 자동차세를 면제한다.","exp":"틀렸다. 장애인 감면 세목은 자동차 주행에 대한 자동차세(주행분)가 아니라 자동차 소유에 대한 자동차세(소유분)이다. 주행분은 연료에 부과되어 감면 대상이 아니며, 대체취득의 경우에도 소유분 면제 원칙은 동일하다.","src":"2022 지방직 9급"},{"answer":"O","text":"장애인이 대통령령으로 정하는 바에 따라 대체취득을 하는 경우 해당 자동차에 대해서는 자동차 소유에 대한 자동차세를 면제한다.","exp":"옳다. 대체취득한 장애인 자동차도 취득세와 자동차 소유에 대한 자동차세(소유분)가 면제된다. 연료에 부과되는 주행분은 면제 대상이 아니라는 점을 함께 기억한다."}],"tb":[],"wi":["📝 \"장애인이 대체취득을 하는 경우 자동차 주행에 대한 자동차세를 면제한다\" → ❌ 대체취득이라도 면제 세목은 자동차 소유분이며 주행분은 감면 대상이 아님"]},{"p":"PART 6. 감면 공통원칙·비과세·기타","q":[],"tb":[{"k":"p","t":"광업권 면허의 등록면허세 면제는 지방세특례제한법상 기한이 정해진 한시 감면으로, 광업권의 설정·변경·이전 등의 등록에 해당하는 면허를 새로 받거나 변경받는 경우 2024년 12월 31일까지 등록면허세를 면제한다. 50% 경감이 아니라 전액 면제라는 점이 핵심이다."}],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"광업권의 설정·변경·이전, 그 밖의 등록에 해당하는 면허로서 면허를 새로 받거나 변경받는 경우에는 면허에 대한 등록면허세를 면제한다","l":"2022 지방직 9급"},{"n":"새 건축물의 연면적이 종전 건축물의 연면적을 초과하면 그 초과부분에 대하여도 취득세를 면제한다","l":"2022 지방직 9급"},{"n":"시내버스·농어촌버스·마을버스 또는 시외버스 운송사업에 직접 사용하기 위하여 취득하는 자동차에 대하여는 자동차세를 면제한다","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["te02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

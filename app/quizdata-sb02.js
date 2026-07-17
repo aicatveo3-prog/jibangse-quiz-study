@@ -3467,6 +3467,17 @@
     var TAGS = [{"n":"취득을 원인으로 이루어지는 등기 또는 등록은 등록면허세 과세대상에서 제외하나","l":"2022 서울시 7급"},{"n":"50만원 이하인 물건의 등기 또는 등록은 등록면허세 부과대상에 해당한다","l":"2022 서울시 7급"},{"n":"외국정부의 등록 또는 면허의 경우는 등록면허세를 부과한다","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2022 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 등록분 과세대상 — 취득 수반 등기의 4가지 예외","q":[{"answer":"X","text":"법인의 증자 및 출자전환에 따른 등기 또는 등록은 등록면허세의 부과대상인 등록에 포함되지 않는다.","exp":"법인의 증자·출자전환에 따른 등기·등록은 재산의 취득을 수반하지 아니하는 권리 설정·변경 등기로서 등록면허세의 부과대상인 등록에 포함된다. '포함되지 않는다'가 틀렸다. 저당권·전세권 설정, 법인 설립·증자 등기처럼 취득 없이 권리만 설정·변경하는 등기가 바로 등록면허세 과세대상이다.","src":"2022 지방직 9급"},{"answer":"O","text":"법인의 증자 및 출자전환에 따른 등기 또는 등록은 재산의 취득을 수반하지 아니하는 등기·등록으로서 등록면허세의 부과대상인 등록에 포함된다.","exp":"옳다. 증자·출자전환 등기는 취득을 수반하지 않고 권리만 설정·변경하는 등기이므로 처음부터 등록면허세 과세대상이다. 취득을 수반하는 등기·등록이 원칙적으로 제외되었다가 4가지 예외에서 다시 과세되는 것과 달리, 취득 미수반 등기는 예외를 따질 필요 없이 과세대상이라는 점이 대비된다."}],"tb":[],"wi":["📝 \"법인의 증자·출자전환에 따른 등기·등록은 부과대상인 등록에 포함되지 않는다\" → ❌ 취득을 수반하지 않는 권리 설정·변경 등기로서 부과대상에 포함됨"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"외국인 소유의 취득세 과세대상 물건인 항공기의 연부 취득에 따른 등록은 등록면허세에서 사용하는 등록에 포함된다","l":"2022 지방직 9급"},{"n":"양식업권의 취득에 따른 등록은 등록면허세의 부과대상인 등록에 포함되지 않는다","l":"2022 지방직 9급"},{"n":"변경면허를 받는 자는 등록면허세를 납부할 의무가 없다.","l":"2022 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
