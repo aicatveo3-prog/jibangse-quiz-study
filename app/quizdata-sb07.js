@@ -551,6 +551,17 @@
     var TAGS = [{"n":"체류지)를 둔 개인으로 한다","l":"2022 서울시 7급"},{"n":"사업소 및 그 연면적으로 하며, 연면적 중 1㎡ 미만","l":"2022 서울시 7급"},{"n":"급여를 지급하는 사업주로 한다","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 종업원분 — 면세점·납세지·징수·특례","q":[{"answer":"O","text":"종업원분의 면세점은 급여총액의 월평균금액이 360만원에 50을 곱한 금액 이하인 경우이며, 여기서 50은 종업원 인원수가 아니라 산식상의 승수이다.","exp":"옳다. 현행 면세점은 360만원×50=1억8천만원 이하이며, 산식의 ‘50’은 종업원 인원수가 아니라 승수다. 판단 기준은 인원수가 아니라 급여총액의 월평균금액이라는 점을 함께 기억한다."},{"answer":"X","text":"주민세 종업원분의 경우 납세의무 성립일이 속하는 달부터 최근 1년간 해당 사업소 종업원 급여총액의 월평균금액이 270만원에 50을 곱한 금액 이하인 경우에는 종업원분을 부과하지 아니한다.","exp":"면세점 산식의 기준 금액이 틀렸다. 270만원×50이 아니라 360만원에 50을 곱한 1억8천만원 이하일 때 부과하지 아니하며, 판단은 인원수가 아니라 급여총액의 월평균금액으로 한다.","src":"2021 서울시 7급"}],"tb":[],"wi":[]},{"p":"PART 2. 개인분 주민세","q":[{"answer":"X","text":"주민세 개인분의 과세기준일은 매년 6월 1일로 하며, 개인분의 납기는 매년 7월 16일부터 7월 31일까지로 한다.","exp":"개인분의 과세기준일과 납기가 모두 틀렸다. 개인분 과세기준일은 7월 1일이고(6월 1일은 재산세의 과세기준일), 납기는 8월 16일부터 8월 31일까지다 — ‘7월 16일~31일’은 개인분 납기가 아니다.","src":"2021 서울시 7급"},{"answer":"O","text":"주민세 개인분의 과세기준일은 매년 7월 1일로 하며, 개인분의 납기는 매년 8월 16일부터 8월 31일까지로 한다.","exp":"옳다. 개인분 과세기준일은 7월 1일, 납기는 8월 16일부터 8월 31일까지다. 사업소분 납기(8월 1일 시작)와 시작일이 다르고, 과세기준일을 6월 1일로 바꾸면 재산세와 혼동한 것이다."}],"tb":[],"wi":["개인분 과세기준일·납기 = 6월 1일·7월 16일~31일 ❌ → 7월 1일·8월 16일~31일(6월 1일은 재산세 과세기준일) ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"매월 납부할 세액을 다음 달 10일까지 납세지 관할 지방자치단체의 장에게 신고하고 납부하여야 한다","l":"2021 서울시 7급"},{"n":"주민세 비과세대상자인 경우에는 그에게 사업소분 주민세의 제2차 납세의무를 지울 수 없다","l":"2021 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

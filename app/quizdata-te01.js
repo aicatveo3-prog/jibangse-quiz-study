@@ -113,7 +113,7 @@
     { part: P5, answer: "O", text: "지방자치단체의 장은 지방세 감면 등 지방세 특례에 따른 재정 지원의 직전 회계연도의 실적과 해당 회계연도의 추정 금액에 대한 보고서(지방세지출보고서)를 작성하여 지방의회에 제출하여야 한다.", exp: "지방세지출보고서(직전 연도 실적 + 해당 연도 추정 금액)의 제출처는 지방의회가 맞다. 세금을 깎아주는 것도 재정 지출과 같다는 관점에서 주민 대표기관인 의회에 보고하는 것이다." },
     { part: P5, answer: "X", text: "지방자치단체의 장은 지방세 감면 등 지방세 특례에 따른 재정 지원의 직전 회계연도의 실적과 해당 회계연도의 추정 금액에 대한 보고서를 작성하여 행정안전부장관에게 제출하여야 한다.", exp: "'행정안전부장관에게'가 틀렸다(2018 지방직 기출). 지방세지출보고서는 지방의회에 제출한다. 감면 정비 결과(행안부장관 제출)와 제출처를 서로 바꿔치기하는 것이 단골 함정이다." },
     { part: P5, answer: "O", text: "지방자치단체는 지방세 감면에 관한 사항을 정비하여야 하며, 지방자치단체의 장은 그 정비 결과를 행정안전부장관에게 제출하여야 한다.", exp: "감면 정비 결과의 제출처는 행정안전부장관이 맞다. 전국 감면 현황을 중앙에서 관리하기 위한 것으로, '보고서는 의회, 정비는 행안부'로 짝지어 암기한다." },
-    { part: P5, answer: "X", text: "지방자치단체는 지방세 감면에 관한 사항을 정비하여야 하며, 지방자치단체의 장은 그 정비 결과를 지방의회에 제출하여야 한다.", exp: "'지방의회에'가 틀렸다(2018 지방직 기출). 정비 결과는 행정안전부장관에게 제출한다. 같은 문제에서 보고서와 정비 결과의 제출처를 서로 맞바꿔 두 지문을 모두 틀리게 만든 교차 함정이 출제된 바 있다." },
+    { part: P5, answer: "X", text: "지방자치단체는 지방세 감면에 관한 사항을 정비하여야 하며, 지방자치단체의 장은 그 정비 결과를 지방의회에 제출하여야 한다.", exp: "'지방의회에'가 틀렸다. 정비 결과는 행정안전부장관에게 제출한다. 보고서와 정비 결과의 제출처를 서로 맞바꿔 두 지문을 모두 틀리게 만드는 교차 함정에 주의한다." },
     { part: P5, answer: "O", text: "관계 행정기관의 장은 지방세특례제한법에 따라 지방세 특례를 받고 있는 법인 등에 대한 특례 범위를 변경하려고 법률을 제정하려면 미리 행정안전부장관과 협의하여야 한다.", exp: "타 부처의 특례 범위 변경 법률 제정 시 '미리(사전) 행안부장관과 협의'가 맞다. 다른 부처의 감면 확대가 지자체 세수를 줄일 수 있으므로 지방세 주무부처와 먼저 조율하게 한 것이다." },
     { part: P5, answer: "X", text: "관계 행정기관의 장은 지방세 특례를 받고 있는 법인 등에 대한 특례 범위를 변경하는 법률을 제정하려면 미리 행정안전부장관의 승인을 받아야 한다.", exp: "'승인'이 틀렸다. 요구되는 절차는 사전 '협의'이지 승인·허가가 아니다. 행안부장관은 보고받고 협의하고 고시하는 역할이며, 허가 권한은 감면규모 초과의 경우에만 있다." },
     { part: P5, answer: "X", text: "관계 행정기관의 장은 지방세 특례 범위를 변경하는 법률을 제정한 후 지체 없이 그 내용을 행정안전부장관에게 보고하면 된다.", exp: "'제정한 후 보고'가 틀렸다. 법률을 제정하기 전에 '미리' 협의하여야 한다. 사전 협의를 사후 보고로 바꾼 절차 변형 함정이다." },
@@ -492,6 +492,17 @@
     var ADDS = [];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
     var TAGS = [{"n":"「조세특례제한법」, 조약 및 조례에 따르지 아니하고는 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 없다.","l":"2022 서울시 7급"},{"n":"감염병의 발생으로 인하여 지방세의 감면이 필요하다고 인정될 때에는 3년의 기간 이내에서 지방세 감면을 할 수 있다.","l":"2022 서울시 7급"},{"n":"지방세의 감면은 감면을 받으려는 자의 신청에 의하여야 하므로, 지방자치단체의 장이 감면대상을 알 수 있을 때에도 직권으로 감면할 수 없다.","l":"2022 서울시 7급"},{"n":"중복 감면을 배제하기 위해 원칙적으로 납세의무자가 먼저 신청하는 것 하나만을 적용한다.","l":"2022 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
+  // ==== 2021 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 조례 감면 — 사유·기간·방법과 한계","q":[{"answer":"O","text":"농어촌 생활환경 개선을 위하여 지방세 감면이 필요하다고 인정될 때에는 3년의 기간 이내에서 지방세의 세율경감, 세액감면 및 세액공제를 할 수 있다.","exp":"사유(농어촌 생활환경 개선 = 지역 공익)·기간(3년 이내)·방법(세율경감·세액감면·세액공제)이 모두 적법하다. 판별 기준은 사유 표현이 아니라 숫자와 방법으로, 기간이 5년이거나 방법에 과세표준 공제·중과세 배제가 끼면 틀린 지문이 된다.","src":"2021 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"해당 지방자치단체의 직권으로 지방세 감면을 할 수 있다","l":"2021 서울시 7급"},{"n":"위임에 따른 감면은 제외한다)을 하려면 「지방세기본법」에 따른 지방세심의위원회의 심의를 거쳐","l":"2021 서울시 7급"},{"n":"정비 결과를 행정안전부장관에게 제출하여야 한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};

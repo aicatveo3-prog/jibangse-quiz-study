@@ -609,6 +609,17 @@
     var TAGS = [{"n":"영업용 고속버스(100,000원) > 영업용 대형전세버스(70,000원)","l":"2022 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 주행분 자동차세","q":[{"answer":"O","text":"자동차 주행에 대한 자동차세는 휘발유·경유 및 이와 유사한 대체유류에 대한 교통·에너지·환경세의 납세의무가 있는 자에게 부과한다.","exp":"주행분 자동차세는 교통·에너지·환경세의 납세의무가 있는 자(정유사·수입업자)에게 부과한다. 유류를 소비하는 운전자나 자동차의 사실상의 소유자에게 부과하는 것이 아니다."},{"answer":"X","text":"자동차 주행에 대한 자동차세는 비영업용 승용자동차에 대한 관할 지방자치단체에서 휘발유·경유 및 이와 유사한 대체유류에 대한 교통·에너지·환경세의 납세의무가 있는 자가 아닌 자동차의 사실상의 소유자에게 부과한다.","exp":"'교통·에너지·환경세의 납세의무가 있는 자가 아닌 사실상의 소유자에게 부과'가 틀렸다. 주행분 자동차세는 그 반대로 교통·에너지·환경세의 납세의무가 있는 자(정유사·수입업자)에게 부과한다.","src":"2021 서울시 7급"},{"answer":"O","text":"자동차 주행에 대한 자동차세의 지방세환급금이 발생한 경우에는 특별징수의무자가 환급하고 해당 지방자치단체에 납부하여야 할 세액에서 이를 공제한다.","exp":"환급 주체는 특별징수의무자이고, 공제는 그 특별징수의무자가 해당 지방자치단체에 납부하여야 할 세액에서 이루어진다. 주행분이 특별징수 세목이라 지방자치단체가 직접 환급하지 않고 특별징수의무자가 환급·정산한다."},{"answer":"X","text":"자동차 주행에 대한 자동차세의 지방세환급금이 발생한 경우에는 해당 지방자치단체가 환급하고 특별징수의무자에 납부하여야 할 세액에서 이를 공제한다.","exp":"'해당 지방자치단체가 환급'과 '특별징수의무자에 납부하여야 할 세액'이 뒤바뀌어 틀렸다. 올바르게는 특별징수의무자가 환급하고, 그가 해당 지방자치단체에 납부하여야 할 세액에서 이를 공제하여 정산한다.","src":"2021 서울시 7급"}],"tb":[{"k":"p","t":"주행분 자동차세에 지방세환급금이 발생하면 특별징수의무자가 환급하고, 그가 해당 지방자치단체에 납부하여야 할 세액에서 공제하여 정산한다. 주행분이 특별징수 세목이라 지방자치단체가 직접 환급하는 방식이 아니다."}],"wi":["주행분 자동차세 = 교통세 납세의무자가 아닌 사실상 소유자에게 부과 ❌ → 교통·에너지·환경세의 납세의무가 있는 자(정유사·수입업자)에게 부과 ⭕","주행분 지방세환급금 = 지자체가 환급·특별징수의무자에 납부할 세액에서 공제 ❌ → 특별징수의무자가 환급·해당 지자체에 납부할 세액에서 공제 ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"연장자, 「민법」상 상속지분이 가장 높은 자의 순서에 따라 자동차세를 납부할 의무를 진다","l":"2021 서울시 7급"},{"n":"다른 법률 중에 규정된 조세의 면제에 관한 규정은 자동차세에 관한 지방자치단체의 징수금에 대하여는 적용하지 아니한다","l":"2021 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
