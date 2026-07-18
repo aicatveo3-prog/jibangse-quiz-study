@@ -568,5 +568,16 @@
     var TAGS = [{"n":"환급청구를 촉구하기 위하여 납세자에게 하는 지방세 환급청구의 안내·통지","l":"2019 서울시 7급"},{"n":"물납재산의 수납일부터 환급일까지의 기간에 대한 지방세환급가산금을 함께 지급하여야 한다","l":"2019 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 5. 납세담보의 종류와 제공","q":[{"answer":"X","text":"토지, 주택, 주택 외 건물을 납세담보로 제공하려는 자는 이를 공탁하고 그 공탁영수증을 지방자치단체의 장에게 제출하여야 한다.","exp":"\"공탁하고 그 공탁영수증을 제출\"이 틀렸다. 토지·주택·주택 외 건물 등 부동산은 등기필증·등기완료통지서·등록확인증을 지방자치단체의 장에게 제시하고, 저당권 설정을 위한 등기·등록 절차는 지방자치단체의 장이 밟는다. 공탁하고 공탁영수증을 제출하는 방식은 금전과 실물 유가증권에 적용된다.","src":"2018 서울시 7급"}],"tb":[],"wi":["📝 \"토지·주택·건물 등 부동산을 담보로 제공하려면 공탁하고 공탁영수증을 제출\" → ❌ 부동산은 등기필증 등을 지자체장에게 제시하고 지자체장이 저당권을 설정 (공탁·공탁영수증은 금전·유가증권 방식)."]},{"p":"PART 6. 납세담보의 평가·변경·납부·징수·해제","q":[{"answer":"O","text":"납세담보를 제공한 자는 지방자치단체의 장의 승인을 받아 담보를 변경할 수 있다.","exp":"납세담보는 지방자치단체의 장의 승인을 받아 다른 담보로 변경할 수 있다. 보증서를 다른 담보재산으로 교체하거나, 담보 가액이 변동되어 과다하게 되거나, 유가증권이 상환시기에 이른 세 가지 경우에는 지방자치단체의 장이 반드시 승인하여야 한다(기속). \"변경할 수 없다\"로 단정한 지문과 구별한다.","src":"2018 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"보증인의 지급능력 감소 등을 사유로 납세담보로써 지방자치단체의 징수금","l":"2018 서울시 7급"},{"n":"금전으로 담보한 지방세를 납부할 수 있지만, 금전 이외의 담보물로는 지방세를 납부할 수 없다","l":"2018 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

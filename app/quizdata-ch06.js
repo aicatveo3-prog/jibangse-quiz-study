@@ -2712,5 +2712,16 @@
     var TAGS = [{"n":"당사자의 동의를 받지 아니하고도 과세정보를 제공할 수 있다","l":"2019 지방직 9급"},{"n":"국가기관이 조세쟁송을 할 목적으로 과세정보를 요구하는 경우에는 그 사용 목적에 맞는 범위에서 제공할 수 있다","l":"2019 지방직 9급"},{"n":"거래상대방에 대한 조사가 필요한 경우라 하더라도 같은 세목 및 같은 과세기간에 대하여는 재조사를 할 수 없다","l":"2019 지방직 9급"},{"n":"경우라 할지라도 변호사, 공인회계사 또는 세무사 등으로 하여금 조사에 참석","l":"2019 지방직 9급"},{"n":"그 사유가 종료되는 날부터 20일 이내의 범위에서 조사기간을 연장할 수 있다","l":"2019 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 세무조사 대상 선정","q":[{"answer":"X","text":"납세자가 세무조사를 신청하는 경우는 지방자치단체의 장이 정기선정에 의하여 세무조사 대상으로 선정하는 사유에 해당한다.","exp":"마지막의 정기선정 분류가 틀렸다. 정기선정 사유는 성실도 분석결과 불성실혐의, 최근 4년 이상 미조사자에 대한 신고내용 검증 필요, 무작위추출 표본조사의 세 가지뿐이다. 납세자가 스스로 세무조사를 신청하는 경우는 정기선정 외에 실시하는 수시 세무조사 사유에 해당한다.","src":"2018 서울시 7급"},{"answer":"O","text":"납세자가 세무조사를 신청하는 경우는 정기선정에 의한 세무조사 사유가 아니라 정기선정에 의한 조사 외에 실시하는 수시 세무조사 사유에 해당한다.","exp":"납세자 본인의 조사 신청은 수시선정 사유다. 사업 정리나 향후 분쟁 예방을 위해 스스로 신고내용의 검증을 원하는 경우로, 불성실혐의·최근 4년 이상 미조사·무작위추출의 정기선정 3가지 사유와 헷갈리지 않도록 구분한다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"무작위추출방식으로 표본조사를 하려는 경우에는 정기선정에 의한 세무조사를 할 수 있다","l":"2018 서울시 7급"},{"n":"불성실혐의가 있다고 인정하는 경우는 정기선정에 의한 세무조사 사유에 해당한다","l":"2018 서울시 7급"},{"n":"최근 4년 이상 지방세와 관련한 세무조사를 받지 아니한 납세자에 대하여 업종, 규모 등을 고려하여 신고내용이 적정한지를 검증할 필요가 있는 경우는 정기선정에 의한 세무조사 사유에 해당한다","l":"2018 서울시 7급"},{"n":"통지받은 날부터 30일 이내에 지방자치단체의 장에게 통지내용의 적법성에 관해 과세전적부심사를 청구할 수 있다","l":"2018 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

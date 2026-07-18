@@ -598,5 +598,16 @@
     var TAGS = [{"n":"이익을 받는 자의 건축물 및 선박을 과세대상으로 한다","l":"2019 지방직 9급"},{"n":"재산세가 비과세되는 건축물과 선박에 대하여는 소방분 지역자원시설세를 부과하지 아니한다","l":"2019 지방직 9급"},{"n":"재산세의 규정을 준용하여 관할 지방자치단체의 장이 세액을 산정하여 보통징수의 방법으로 부과·징수한다","l":"2019 지방직 9급"},{"n":"화력발전에 대한 지역자원시설세의 세율을 법정 표준세율의 100분의 50의 범위에서 가감할 수 있다","l":"2019 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 7. 부과·징수 — 신고납부·보통징수·납기·소액면제","q":[{"answer":"X","text":"지역자원시설세로 징수할 세액이 고지서 1장당 2천원 미만인 경우에는 그 지역자원시설세를 2천원으로 하여 징수한다.","exp":"'2천원으로 하여 징수한다'가 틀렸다. 고지서 1장당 징수할 세액이 2,000원 미만이면 이를 2천원으로 올려 받는 것이 아니라 아예 징수하지 아니한다(소액징수면제). 징수 비용이 세액보다 클 수 있어 재산세와 동일한 기준으로 면제한다.","src":"2018 서울시 7급"},{"answer":"O","text":"지역자원시설세로 징수할 세액이 고지서 1장당 2천원 미만인 경우에는 이를 2천원으로 올려 징수하지 아니하고 그 지역자원시설세를 징수하지 아니한다.","exp":"소액징수면제가 맞다. 2,000원 미만은 2천원으로 올려 받지도, 그대로 받지도 않고 전액 면제한다. 기준은 세목 합산이 아니라 '고지서 1장당' 2,000원 미만이라는 점이 재산세와 같은 함정 포인트다."}],"tb":[],"wi":["📝 \"2천원 미만이면 2천원으로 하여 징수한다\" → ❌ 2천원으로 올려 받지 않고 아예 징수하지 아니함(소액징수면제)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"재산세가 비과세되는 건축물과 선박에 대하여는 소방분 지역자원시설세를 부과하지 아니한다","l":"2018 서울시 7급"},{"n":"특정자원분 지역자원시설세는 보통징수의 방법으로 징수하나, 지하수에 대한 지역자원시설세의 경우 조례로 정하는 바에 따라 신고납부","l":"2018 서울시 7급"},{"n":"재산세와 세목이 다르므로 재산세의 납세고지서에 나란히 적어 고지할 수 없고, 반드시 별도의 납세고지서를 발급","l":"2018 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
