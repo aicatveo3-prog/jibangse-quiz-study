@@ -3556,5 +3556,16 @@
     var TAGS = [{"n":"등기 담당 공무원의 착오로 인한 지번의 오기에 대한 경정등기","l":"2018 서울시 9급"},{"n":"묘지는 공익적 성격이 강하고 수익을 목적으로 하는 재산이 아니므로","l":"2018 서울시 9급"},{"n":"면허의 소재지 변경이나 상호 변경에 따라 변경면허를 받는 경우에는","l":"2018 서울시 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 9. 면허분 — 과세 구조·세율·1회 과세·납부","q":[{"answer":"X","text":"제조·가공 또는 수입의 면허로서 품목별로 받는 면허에 대하여는 매년 1월 1일에 그 면허가 갱신된 것으로 보아 등록면허세를 반복하여 부과한다.","exp":"품목별 제조·가공·수입 면허는 면허를 할 때 1회에 한정하여 등록면허세를 부과하는 대상이므로 '매년 갱신의제·반복 부과'가 틀렸다. 매년 1월 1일 갱신의제에 따른 정기분 반복 과세는 유효기간 1년 초과·무기한 면허에 적용된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"임차하여 수입하는 경우의 연부 취득에 따른 등기 또는 등록은 등록면허세의 과세대상","l":"2018 지방직 9급"},{"n":"직접 환급할 수 있으며, 이 경우 지방세환급가산금을 환급금에 가산하여 환급하여야 한다","l":"2018 지방직 9급"},{"n":"품목별로 받는 면허에 대하여는 면허를 할 때 1회에 한정하여 등록면허세를 부과한다","l":"2018 지방직 9급"},{"n":"「자동차관리법」에 따른 등록지이다. 다만, 등록지와 사용본거지가 다른 경우에는 사용본거지를 납세지로 한다","l":"2018 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

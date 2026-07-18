@@ -3384,5 +3384,16 @@
     var TAGS = [{"n":"취득세의 납세의무는 취득세 과세물건을 취득하는 때에 성립한다","l":"2018 서울시 9급"},{"n":"담배를 제조장 또는 보세구역으로부터 반출하거나 국내로 반입하는 때에 성립한다","l":"2018 서울시 9급"},{"n":"컨테이너를 취급하는 부두를 이용하기 위하여 컨테이너를 입항·출항하는 때에 성립한다","l":"2018 서울시 9급"},{"n":"공동주택의 공유물은 제외한다), 공동사업 또는 그 공동사업에 속하는 재산에 관계되는 지방자치단체의 징수금은 공유자 또는 공동사업자가 연대하여 납부할 의무를 진다","l":"2018 서울시 9급"},{"n":"출자총액의 50% 이상이면서 그에 관한 권리를 실질적으로 행사하는 자들을 말한다","l":"2018 서울시 9급"},{"n":"납세의무가 성립된 지방세는 확정에 의하여 모두 승계되며, 한도 없이 전액 승계된다","l":"2018 서울시 9급"},{"n":"사업의 포괄적 양수인 경우 지방세 부족액 전액에 대하여 제2차 납세의무를 진다","l":"2018 서울시 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 세목별 성립시기 ① 취득·소비·거래","q":[{"answer":"X","text":"담배소비세의 납세의무는 소비자가 소매점에서 담배를 구입하는 때에 성립한다.","exp":"\"소비자가 소매점에서 구입하는 때\"가 틀렸다. 담배소비세는 담배를 제조장 또는 보세구역으로부터 반출하거나 국내로 반입하는 때, 즉 유통의 첫 출발점에서 성립한다. 소비 단계가 아니라 반출·반입이라는 유통 개시 시점이 기준이다.","src":"2018 지방직 9급"}],"tb":[],"wi":[]},{"p":"PART 3. 세목별 성립시기 ② 기준일·연동·가산세","q":[{"answer":"O","text":"원자력발전에 대한 지역자원시설세의 납세의무는 원자력발전소에서 발전하는 때에 성립한다.","exp":"원자력발전분은 특정자원분에 해당하므로 발전소가 가동되어 전기를 생산하는 때, 즉 발전하는 때 성립한다. 건축물·선박 등 특정부동산분이 과세기준일에 성립하는 것과 구별해야 하며, \"과세기준일에 성립\"으로 바꾼 변형이 대표적 함정이다.","src":"2018 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"각종 면허를 받는 때와 납기가 있는 달의 말일에 성립한다","l":"2018 지방직 9급"},{"n":"자동차 주행에 대한 자동차세의 납세의무는 납기가 있는 달의 1일에 성립한다","l":"2018 지방직 9급"},{"n":"그 부족한 금액에 대하여 한도 없이 제2차 납세의무를 진다","l":"2018 지방직 9급"},{"n":"사업의 양도·양수가 있는 경우 그 사업에 관하여 양도일 이전에 양도인의 납세의무가 확정된","l":"2018 지방직 9급"},{"n":"유한책임사원 또는 과점주주가 자신이 부담하여야 할 징수금에 대해 자신의 재산으로 충당하여도 부족한 경우","l":"2018 지방직 9급"},{"n":"유가증권시장에 상장된 법인의 과점주주라고 하더라도 해당 법인의 징수부족액이 발생하는 경우","l":"2018 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

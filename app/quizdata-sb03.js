@@ -837,5 +837,16 @@
     var TAGS = [{"n":"상속인 각자가 지분에 따라 재산세를 납부할 의무가 있다","l":"2018 서울시 9급"},{"n":"재산세는 관할 지방자치단체의 장이 세액을 산정하여 보통징수의 방법으로 부과·징수한다","l":"2018 서울시 9급"},{"n":"납세의무자의 신청을 받아 해당 지방자치단체의 관할구역에 있는 부동산에 대하여만 물납을 허가","l":"2018 서울시 9급"},{"n":"고지서 1장당 재산세로 징수할 세액이 2천원 미만인 경우에는 해당 재산세를 징수하지 아니한다","l":"2018 서울시 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 납세의무자","q":[{"answer":"X","text":"과세기준일 현재 공부상 개인 등의 명의로 등재되어 있는 사실상의 종중재산으로서 종중소유임을 신고하지 아니하였을 때에는 그 사실상의 소유자를 재산세 납세의무자로 본다.","exp":"종중소유임을 신고하지 아니하면 실질 소유자를 알더라도 공부상 소유자(개인)를 납세의무자로 본다. '사실상의 소유자를 납세의무자로 본다'가 틀렸다. 종중소유임을 신고한 경우에만 사실상 소유자인 종중이 납세의무자가 된다.","src":"2018 지방직 9급"},{"answer":"O","text":"과세기준일 현재 공부상 개인 등의 명의로 등재되어 있는 사실상의 종중재산으로서 종중소유임을 신고하였을 때에는 그 종중을 재산세 납세의무자로 본다.","exp":"옳다. 공부상 개인 명의의 종중재산이라도 종중소유임을 신고하면 실질 소유자인 종중이 납세의무자가 된다. 신고하지 아니하면 공부상 소유자(개인)가 납세의무자가 된다는 점과 짝지어 기억한다."}],"tb":[],"wi":["종중소유임을 신고하지 아니한 사실상의 종중재산 = 사실상 소유자(종중)에게 과세 ❌ → 공부상 소유자(개인)에게 과세 ⭕ (종중소유임을 신고해야 비로소 종중이 납세의무자)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"소재하는 토지·건축물·주택·선박·항공기를 과세대상으로 한다","l":"2018 지방직 9급"},{"n":"지분에 해당하는 부분에 대하여 지분권자를 각각 납세의무자로 보되","l":"2018 지방직 9급"},{"n":"소유권의 귀속이 분명하지 아니하여 사실상의 소유자를 확인할 수 없는 경우에는 그 사용자가","l":"2018 지방직 9급"},{"n":"납세의무자의 신청을 받아 해당 지방자치단체의 관할구역에 있는 부동산에 대하여만 물납을 허가","l":"2018 지방직 9급"},{"n":"고지서 1장당 재산세로 징수할 세액이 2천원 미만인 경우에는 해당 재산세를 징수하지 아니한다","l":"2018 지방직 9급"},{"n":"재산세는 관할 지방자치단체의 장이 세액을 산정하여 보통징수의 방법으로 부과·징수한다","l":"2018 지방직 9급"},{"n":"주택에 대한 재산세의 세부담 상한은 직전 연도의 해당 재산세액의 100분의 150에 해당하는 금액으로 한다","l":"2018 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
