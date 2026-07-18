@@ -476,5 +476,16 @@
     var TAGS = [{"n":"경륜 및 경정에 해당하는 사업을 하는 자는 레저세를 납부할 의무가 있다","l":"2020 서울시 7급"},{"n":"대통령령으로 정하는 바에 따라 납세의무자에게 징수사무의 보조를 명할 수 있다","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 5. 납세협력의무·가산세·교부금·부가세와 성립·확정","q":[{"answer":"X","text":"시장·군수·구청장은 레저세 납세의무자에게 그 징수·납부에 든 경비를 교부금으로 지급할 수 있고, 납세의무자가 징수에 관한 이행명령을 위반한 경우에도 그 교부금의 전부를 지급하여야 한다.","exp":"앞부분(교부금을 지급할 수 있다)은 옳지만 뒷부분이 틀렸다. 교부금은 재량이므로 납세의무자가 이행명령을 위반하면 그 전부 또는 일부를 지급하지 않을 수 있다. ‘위반해도 전부를 지급하여야 한다’가 아니라 감액·미지급이 가능하다."}],"tb":[],"wi":[]},{"p":"PART 4. 부과·징수와 세액 안분","q":[{"answer":"X","text":"경륜장 등이 신설된 경우에는 신설 후 5년간 장외발매소 발매 세액을 경륜장 소재지 관할 시장·군수·구청장에게 100분의 20, 장외발매소 소재지 관할 시장·군수·구청장에게 100분의 80으로 신고·납부한다.","exp":"신설 특례 5년간 비율이 서로 뒤바뀌어 틀렸다. 경륜장 소재지에 100분의 80, 장외발매소 소재지에 100분의 20이다. 신설 지역(경륜장 소재지)의 재정을 보전하려는 취지라 신설 소재지 쪽에 더 많은 80%가 배분된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"납세의무자가 이행명령을 위반하면 그 전부 또는 일부를 지급하지","l":"2019 서울시 7급"},{"n":"신설된 경우에는 신설 후 5년간 장외발매소 발매 세액을 경륜장 소재지 80%","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

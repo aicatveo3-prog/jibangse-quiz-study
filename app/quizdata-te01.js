@@ -539,5 +539,16 @@
     var TAGS = [{"n":"「조세특례제한법」 및 조약에 따르지 아니하고는 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 없다","l":"2020 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 1. 총칙 기초 — 목적·용어 정의·특례 법정주의","q":[{"answer":"X","text":"「지방세특례제한법」에 따르지 아니하고는 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 없다.","exp":"'「지방세특례제한법」에 따르지 아니하고는'으로 한정한 것이 틀렸다. 지방세 특례는 지방세 4법(기본법·징수법·지방세법·특례제한법)과 조세특례제한법, 조약 등 6가지에 따라 정할 수 있으므로 지특법 하나로 한정하면 안 된다.","src":"2019 서울시 7급"},{"answer":"O","text":"「지방세특례제한법」뿐만 아니라 「지방세기본법」, 「지방세징수법」, 「지방세법」, 「조세특례제한법」 및 조약에 따라서도 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 있다.","exp":"특례 법정주의의 근거는 지방세 4법 + 조세특례제한법 + 조약 6가지가 맞다. 지방세특례제한법은 그중 하나일 뿐이며, 이 6가지에 없는 개별 법률로는 지방세 특례를 정할 수 없다."}],"tb":[],"wi":["📝 \"「지방세특례제한법」에 따르지 아니하고는 지방세 특례를 정할 수 없다\" → ❌ 특례의 근거는 지방세 4법 + 조세특례제한법 + 조약 6가지다. 지특법 하나로만 한정하면 틀림"]},{"p":"PART 2. 조례 감면 — 사유·기간·방법과 한계","q":[{"answer":"X","text":"지방자치단체는 지방세의 감면을 하려면 반드시 조례로 정하여야 한다.","exp":"'반드시 조례로'가 틀렸다. 지방세 감면의 대부분은 지방세특례제한법 등 법률에 직접 규정되어 조례 없이 적용된다. 조례는 지자체가 자체적으로 감면(3년 이내 세율경감·세액감면·세액공제)을 할 때의 근거일 뿐, 모든 감면이 조례를 요건으로 하는 것은 아니다.","src":"2019 서울시 7급"},{"answer":"O","text":"지방세 감면의 대부분은 「지방세특례제한법」 등 법률에 직접 규정되어 있으므로, 지방자치단체가 반드시 조례로 정하여야만 지방세를 감면할 수 있는 것은 아니다.","exp":"법률에 규정된 감면은 조례 없이 적용되고, 조례는 지자체 자체 감면(지역 공익 목적, 3년·세율경감·세액감면·세액공제)의 근거로 쓰이는 것이 맞다. 이러한 자체 감면만 지방세심의위원회의 심의를 거쳐 조례로 정한다."}],"tb":[],"wi":["📝 \"지방세 감면을 하려면 반드시 조례로 정하여야 한다\" → ❌ 감면 대부분은 법률(지특법)에 직접 규정돼 조례 없이 적용된다. 조례는 지자체 자체 감면(3년·세율경감·세액감면·세액공제)의 근거일 뿐"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"해당 지역의 공익을 위하여 감면이 필요하다고 인정될 때에는 5년의 기간 이내에서 지방세 감면을 할 수 있다","l":"2019 서울시 7급"},{"n":"고급주택, 고급선박, 골프장 등 취득세 중과세 대상에 대하여는 적용되지 아니한다","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["te01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

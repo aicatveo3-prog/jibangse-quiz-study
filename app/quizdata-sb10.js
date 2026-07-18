@@ -576,5 +576,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 6. 화재위험건축물 중과세율 (2배·3배)","q":[{"answer":"X","text":"소방분 지역자원시설세는 화재위험건축물에 대하여 표준세율에 따라 산출한 금액의 100분의 300을, 대형 화재위험건축물에 대하여는 100분의 500을 세액으로 하는 중과세율을 적용한다.","exp":"'100분의 300·100분의 500'이 틀렸다. 화재위험건축물은 표준세율 산출액의 100분의 200(2배), 대형 화재위험건축물은 100분의 300(3배)이다. 앞부분 구조는 옳고 중과 배율 숫자만 각각 부풀려 놓은 함정이다.","src":"2019 서울시 7급"},{"answer":"O","text":"소방분 지역자원시설세는 화재위험건축물에 대하여 표준세율에 따라 산출한 금액의 100분의 200을, 대형 화재위험건축물에 대하여는 100분의 300을 세액으로 하는 중과세율을 적용한다.","exp":"화재위험건축물 100분의 200(2배)·대형 화재위험건축물 100분의 300(3배)이 맞다. '2배·3배'와 '100분의 200·100분의 300'은 같은 뜻이며, 100분의 300·500으로 부풀린 지문이 대표 함정이다."}],"tb":[],"wi":["📝 \"화재위험건축물 100분의 300, 대형 화재위험건축물 100분의 500\" → ❌ 실제는 100분의 200(2배)·100분의 300(3배)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"특정자원분 지역자원시설세는 보통징수의 방법으로 징수하나","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

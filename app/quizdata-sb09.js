@@ -652,5 +652,16 @@
     var TAGS = [{"n":"매수인 명의로 이전등록을 하지 아니한 자동차에 대하여는 매수인이 자동차세를 납부할 의무를 진다","l":"2020 지방직 9급"},{"n":"환자수송·청소·오물제거 또는 도로공사를 위하여 제공하는 자동차를 소유하는 자에 대하여는 자동차세를 부과하지 아니한다","l":"2020 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 5. 소유분 납기·징수·수시부과·체납처분","q":[{"answer":"O","text":"연세액을 한꺼번에 납부하려는 자가 1월 중에 납부하려는 경우에는 1월 16일부터 1월 31일까지 연세액의 100분의 10을 공제한 금액을 신고납부할 수 있다.","exp":"1월 연납은 1월 16일부터 31일까지 신고납부하며, 이때 연세액의 100분의 10을 공제한다. 미리 낼수록 공제 기간이 길어 1월 연납의 공제 폭이 가장 크다. 연납은 보통징수의 예외로 신고납부가 인정된다는 점도 함께 기억한다.","src":"2019 서울시 7급"},{"answer":"X","text":"연세액을 한꺼번에 납부하려는 자가 1월 중에 납부하려는 경우에는 1월 16일부터 1월 31일까지 연세액의 100분의 15를 공제한 금액을 신고납부할 수 있다.","exp":"'100분의 15'가 틀렸다. 1월 연납의 공제율은 연세액의 100분의 10이다. 신고납부 기간(1월 16일~31일)과 신고납부 방식은 옳다."}],"tb":[{"k":"note","v":"box","title":"연납(1월) 공제","t":"연세액을 한꺼번에 납부하는 연납은 보통징수의 예외로 신고납부한다. 1월에 납부하려는 경우 1월 16일부터 1월 31일까지 신고납부하며, 이때 연세액의 100분의 10을 공제한 금액을 낸다. 미리 낼수록 공제 기간이 길어 1월 연납의 공제 폭이 가장 크다."}],"wi":["1월 연납 공제율 = 연세액의 100분의 10 (100분의 15면 ❌)","1월 연납 신고납부 기간 = 1월 16일~1월 31일 (1월 1일~15일이면 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"지방자치단체 관할구역에 등록되어 있거나 신고되어 있는 자동차를 소유하는 자에게 부과한다","l":"2019 서울시 7급"},{"n":"이전등록을 하지 아니한 자동차에 대하여는 매수인이 자동차세를 납부할 의무를 진다","l":"2019 서울시 7급"},{"n":"소유분 자동차세를 체납한 경우에는 반드시 독촉절차를 거친 후에야 체납처분을 하여야 한다","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
