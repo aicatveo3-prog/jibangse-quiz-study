@@ -25,5 +25,5 @@ window.CHAPTER_LIST = [
   { id: "sb10", num: 10, title: "지방세법 제10장 (지역자원시설세)", file: "quizdata-sb10.js", count: 163 },
   { id: "sb11", num: 11, title: "지방세법 제11장 (지방교육세)", file: "quizdata-sb11.js", count: 140 },
   { id: "te01", num: 1, title: "지방세특례제한법 제1장 (총칙 및 보칙)", file: "quizdata-te01.js", count: 146 },
-  { id: "te02", num: 2, title: "지방세특례제한법 제2장 (감면)", file: "quizdata-te02.js", count: 166 }
+  { id: "te02", num: 2, title: "지방세특례제한법 제2장 (감면)", file: "quizdata-te02.js", count: 168 }
 ];
