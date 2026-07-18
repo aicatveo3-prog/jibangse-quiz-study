@@ -620,5 +620,16 @@
     var TAGS = [{"n":"일정한 기준에 따라 직접 경작할 목적으로 취득하는 농지에 대하여는 취득세의 100분의 50을 경감","l":"2020 지방직 9급"},{"n":"도로점용, 하천점용 및 공유수면점용의 면허에 대하여는 등록면허세를 면제한다","l":"2020 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 비영리법인·단체 감면 — 사회복지·종교·학교","q":[{"answer":"X","text":"종교단체가 종교행위를 목적으로 하는 사업에 직접 사용하기 위하여 취득한 부동산을 취득한 날부터 3년 이내에 수익사업에 사용하는 경우에만 면제된 취득세를 추징한다.","exp":"수익사업 사용에 따른 추징 기한이 틀렸다. 종교단체의 추징 구조도 '오삼이(5-3-2)'로 수익사업 사용은 취득일부터 5년 이내이면 추징한다. '3년'은 정당한 사유 없이 직접 사용하지 않는 미사용 추징 기한으로, 두 숫자를 바꿔 놓은 함정이다."},{"answer":"X","text":"종교단체가 종교행위를 목적으로 하는 사업에 직접 사용하기 위하여 취득한 부동산을 해당 용도로 직접 사용한 기간이 2년 이상인 상태에서 증여하는 경우에도 면제된 취득세를 추징한다.","exp":"직접 사용 기간이 2년 미만인 상태에서 증여할 때만 추징 대상이다('오삼이'의 2). 2년 이상 해당 용도로 직접 사용한 후 증여하면 추징하지 않으므로, '2년 이상인 상태에서 증여해도 추징한다'는 서술은 틀렸다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"직접 사용하더라도 그 부동산에 대한 재산세를 면제하는 경우는 없다","l":"2019 지방직 9급"},{"n":"취득한 부동산을 취득한 날부터 5년 이내에 수익사업에 사용하는 경우 면제된 취득세를 추징한다","l":"2019 지방직 9급"},{"n":"법인의 사업장 중 종교의식을 행하는 교회·성당·사찰·불당 등에 대해서는 주민세 사업소분을 면제한다","l":"2019 지방직 9급"},{"n":"해당 용도로 직접 사용한 기간이 2년 미만인 상태에서 증여하는 경우 면제된 취득세를 추징한다","l":"2019 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["te02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

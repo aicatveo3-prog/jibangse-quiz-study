@@ -635,5 +635,16 @@
     var TAGS = [{"n":"제조자의 담배소비세 납세지는 담배를 반출한 제조장 소재지로 한다","l":"2019 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 과세대상·과세표준·세율","q":[{"answer":"O","text":"냄새 맡는 담배는 담배소비세의 과세대상인 담배이다.","exp":"옳다. 냄새 맡는 담배는 피우는 담배가 아니어도 담배소비세 과세대상이다. 씹는 담배·머금는 담배·전자담배도 마찬가지이며 형태·사용 방법과 관계없이 과세된다. ‘피우는 담배가 아니라 제외’라고 하면 틀린다.","src":"2019 지방직 9급"},{"answer":"X","text":"냄새 맡는 담배는 담배소비세의 과세대상인 담배에 해당하지 아니한다.","exp":"틀리다. 씹는 담배·냄새 맡는 담배·물담배·머금는 담배 등도 담배소비세 과세대상인 담배에 포함된다. 궐련뿐 아니라 다양한 형태의 담배가 과세대상이라는 점을 기억한다.","src":""}],"tb":[],"wi":[]},{"p":"PART 4. 미납세반출·반출의제·과세면제·세액공제환급","q":[{"answer":"X","text":"담배가 보세구역에서 소비되는 경우에는 수입판매업자가 담배를 보세구역에서 반출한 것으로 보지 아니한다.","exp":"담배가 보세구역에서 소비되는 경우에는 수입판매업자가 그 담배를 보세구역에서 반출한 것으로 ‘본다’(반출의제·과세). ‘보지 아니한다’가 틀렸다 — 과세하지 않으면 보세구역 안에서 소비만으로 세금을 회피할 수 있다. 단 성분분석·연구활동 목적의 소비는 예외로 면제된다.","src":"2019 지방직 9급"},{"answer":"O","text":"담배가 보세구역에서 소비되는 경우에는 수입판매업자가 담배를 보세구역에서 반출한 것으로 본다.","exp":"옳다. 보세구역 내 자가소비도 실질적 소비이므로 수입판매업자가 반출한 것으로 보아 과세한다(반출의제). 제조장에서 제조자가 소비하는 경우와 구조가 같다. ‘보지 아니한다’로 뒤집으면 틀린다."}],"tb":[],"wi":["보세구역에서 소비 = 수입판매업자가 반출한 것으로 보지 아니한다 ❌ → 본다(반출의제·과세) ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"수입판매업자는 보세구역으로부터 반출한 담배에 대하여 담배소비세를 납부할 의무가 있다","l":"2019 지방직 9급"},{"n":"담배소비세의 과세표준은 담배의 개비 수, 중량 또는 니코틴 용액의 용량","l":"2019 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

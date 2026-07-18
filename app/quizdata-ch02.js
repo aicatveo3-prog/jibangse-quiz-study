@@ -3351,5 +3351,16 @@
     var TAGS = [{"n":"사업양수인은 양도일 이후에 양도인의 납세의무가 확정된 지방자치단체의 징수금을 양도인의 재산으로 충당","l":"2019 서울시 7급"},{"n":"납세의무가 성립한 지방자치단체의 징수금은 신회사가 연대하여 납부할 의무를 진다","l":"2019 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 세목별 성립시기 ② 기준일·연동·가산세","q":[{"answer":"O","text":"수시로 부과하여 징수하는 지방세의 납세의무는 수시부과할 사유가 발생하는 때에 성립한다.","exp":"수시부과는 정기 납기(6월·12월 등)를 기다리지 않고 사유가 생긴 그때 곧바로 성립한다. 재산을 빼돌리거나 도주할 우려가 있을 때 즉시 과세하기 위한 것으로, 특별징수 지방소득세(원천징수하는 때)와 함께 특례 성립시기로 묶어 기억한다.","src":"2019 지방직 9급"},{"answer":"X","text":"수시로 부과하여 징수하는 지방세의 납세의무는 과세관청이 그 수시부과 사유를 조사하여 부과를 결정하는 때에 성립한다.","exp":"\"부과를 결정하는 때\"가 틀렸다. 수시부과 지방세는 수시부과할 사유가 발생하는 때에 성립하며, 과세관청이 조사·결정·고지하는 것은 그 이후의 확정·징수 단계다. 성립 시점을 확정 시점으로 미루는 전형적인 함정이다."}],"tb":[],"wi":["📝 \"수시부과 지방세 — 과세관청이 부과를 결정·고지하는 때 성립\" → ❌ 수시부과할 사유가 발생하는 때. 결정·고지는 이후의 확정·징수 단계."]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"그 과세표준이 되는 소득에 대하여 소득세·법인세를 원천징수하는 때에 성립한다","l":"2019 지방직 9급"},{"n":"징수유예결정이 내려지면 지방세징수권의 소멸시효가 중단되고","l":"2019 지방직 9급"},{"n":"특별징수하는 지방소득세는 납세의무가 성립하는 때에 특별한 절차 없이 그 세액이 확정된다","l":"2019 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -508,5 +508,16 @@
     var TAGS = [{"n":"제64조제1항에 따라 담보 제공을 요구하는 경우에는 담배소비세분 지방교육세","l":"2019 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 5. 부과·징수 ① — 신고납부·부과고지·납세담보","q":[{"answer":"O","text":"부동산의 취득으로 취득세를 납부하는 경우에는 그 취득세에 부가되어 함께 납부하여야 하는 지방세로서 지방교육세를 함께 납부하여야 한다.","exp":"부동산 취득으로 취득세를 납부할 때 취득세에 부가되어 함께 납부하는 지방세는 지방교육세(취득세분)가 맞다. 취득세는 신고납부 세목이므로 그에 대한 지방교육세도 같은 신고서·납부서에 나란히 적어 함께 낸다. 등록면허세·주민세·지방소득세는 취득세에 부가되는 세목이 아니다.","src":"2019 지방직 9급"},{"answer":"X","text":"부동산의 취득으로 취득세를 납부하는 경우에는 그 취득세에 부가되어 함께 납부하여야 하는 지방세로서 등록면허세를 함께 납부하여야 한다.","exp":"'등록면허세'가 틀렸다. 부동산 취득으로 취득세를 납부할 때 취득세에 부가되어 함께 납부하는 지방세는 지방교육세다. 등록면허세는 등기·등록이라는 별개의 과세대상에 부과되는 독립된 본세이지 취득세에 부가되는 세목이 아니다."},{"answer":"X","text":"부동산의 취득으로 취득세를 납부하는 경우에는 그 취득세에 부가되어 함께 납부하여야 하는 지방세로서 주민세 및 지방소득세를 함께 납부하여야 한다.","exp":"'주민세 및 지방소득세'가 틀렸다. 취득세에 부가되어 함께 납부하는 지방세는 지방교육세뿐이다. 주민세는 사람·사업소를 기준으로, 지방소득세는 소득을 기준으로 과세하는 별개의 세목으로 취득세와 함께 납부하는 부가세가 아니다."}],"tb":[],"wi":["📝 \"부동산 취득으로 취득세를 납부할 때 함께 납부하는 지방세는 등록면허세이다\" → ❌ 취득세에 부가되어 함께 납부하는 것은 지방교육세(취득세분)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"주민세 재산분의 납세의무자는 지방교육세의 납세의무자에 해당한다","l":"2019 지방직 9급"},{"n":"선박의 취득에 대한 취득세의 납세의무자는 지방교육세의 납세의무자에 해당한다","l":"2019 지방직 9급"},{"n":"레저세의 납세의무자와 담배소비세의 납세의무자는 모두 지방교육세를 납부할 의무가 있다","l":"2019 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb11"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
