@@ -453,6 +453,17 @@
     var TAGS = [{"n":"경륜 및 경정에 해당하는 사업을 하는 자는 레저세를 납부할 의무가 있다","l":"2022 지방직 9급"},{"n":"그 징수·납부에 든 경비를 교부금으로 지급할 수 있다","l":"2022 지방직 9급"},{"n":"레저세의 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다","l":"2022 지방직 9급"},{"n":"레저세의 과세표준은 승자투표권·승마투표권 등의 발매금총액으로 한다","l":"2022 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"산출세액의 100분의 10에 해당하는 금액을 징수할 세액에 가산하여 보통징수의 방법으로 징수한다","l":"2021 지방직 9급"},{"n":"경륜장 등이 신설된 경우를 제외하고 경륜장 소재지에 100분의 80, 장외발매소 소재지에 100분의 20","l":"2021 지방직 9급"},{"n":"레저세의 과세표준은 투표 적중자에게 지급하는 환급금(당첨금) 총액으로 한다","l":"2021 지방직 9급"},{"n":"레저세의 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

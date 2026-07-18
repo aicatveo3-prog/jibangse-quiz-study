@@ -2678,6 +2678,17 @@
     var TAGS = [{"n":"세무조사 기간을 30일 이내로 하는 것을 원칙으로 한다","l":"2022 서울시 7급"},{"n":"납부하여야 하는 모든 지방세 세목을 통합하여 실시하는 것을 원칙으로 한다","l":"2022 서울시 7급"},{"n":"둘 이상의 사업연도와 관련하여 잘못이 있는 경우","l":"2022 서울시 7급"},{"n":"정기선정에 의한 조사 외에 납세자가 세무조사를 신청하는 경우에는 세무조사를 할 수 있다","l":"2022 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 6. 과세전적부심사 — 청구와 청구 배제","q":[{"answer":"X","text":"범칙사건조사를 하는 경우 과세예고통지를 받은 자는 과세전적부심사를 청구할 수 있다.","exp":"마지막의 \"청구할 수 있다\"가 틀렸다. 범칙사건조사(지방세범칙사건 조사)를 하는 경우는 과세전적부심사의 청구 배제 사유이므로 청구할 수 없다. 다만 청구만 배제될 뿐 권리헌장 교부·조력을 받을 권리 등 다른 권리 보호 규정은 그대로 적용된다.","src":"2021 지방직 9급"},{"answer":"O","text":"과세예고통지를 하는 날부터 지방세 부과 제척기간의 만료일까지의 기간이 3개월을 초과하는 경우에는 과세전적부심사를 청구할 수 있다.","exp":"청구가 제한되는 것은 제척기간 만료일까지의 기간이 3개월 이하인 경우이므로, 3개월을 초과하여 남아 있다면 과세전적부심사를 청구할 수 있다. \"3개월 이하\"와 \"3개월 초과\"의 부등호를 뒤집는 함정에 주의한다."},{"answer":"X","text":"과세예고통지를 하는 날부터 지방세 부과 제척기간 만료일까지의 기간이 3개월을 초과하는 경우 과세전적부심사를 청구할 수 없다.","exp":"\"3개월을 초과하는 경우 청구할 수 없다\"가 틀렸다. 청구할 수 없는 것은 제척기간 만료일까지의 기간이 3개월 이하인 경우이며, 3개월을 초과하여 남아 있으면 오히려 청구할 수 있다.","src":"2021 지방직 9급"},{"answer":"O","text":"세무조사결과에 대한 서면 통지를 받은 자가 과세전적부심사를 청구하려는 경우 통지받은 날부터 30일 이내에 하여야 한다.","exp":"과세전적부심사의 청구 기한은 통지받은 날부터 30일 이내로 옳은 지문이다. 사후 구제인 이의신청·심판청구의 청구 기한 90일과 바꿔치기하는 함정이 반복되므로 30일과 90일을 확실히 구별해 둔다.","src":"2021 지방직 9급"}],"tb":[],"wi":["📝 \"범칙사건조사를 하는 경우 과세예고통지를 받은 자는 과세전적부심사를 청구할 수 있다\" → ❌ 범칙사건 조사는 과세전적부심사 청구 배제 사유이므로 청구할 수 없다","제척기간 만료일까지의 기간이 3개월 초과 시 청구 불가 ❌ → 3개월 이하일 때 청구 불가 ⭕ (3개월 초과면 오히려 청구 가능)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"과세전적부심사의 청구에 대한 처분에 대해서는 이의신청 또는 심판청구를 할 수 있다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

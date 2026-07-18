@@ -761,6 +761,17 @@
     var TAGS = [];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 7. 부과·징수 절차","q":[{"answer":"X","text":"토지와 건축물에 대한 재산세의 납기는 매년 7월 16일부터 7월 31일까지이다.","exp":"토지의 납기는 9월 16일부터 9월 30일까지이므로 토지를 7월 납기에 묶은 것이 틀렸다. 7월 16일부터 7월 31일은 건축물·선박·항공기의 납기이고, 토지만 9월이라는 점이 핵심이다.","src":"2021 지방직 9급"},{"answer":"O","text":"지방자치단체의 장은 재산세의 납부할 세액이 950만원인 경우 475만원은 납부기한이 지난 날부터 2개월 이내 분납하게 할 수 있다.","exp":"옳다. 950만원은 500만원 초과 구간이므로 세액의 50%인 475만원까지 분납할 수 있고, 분납 기한은 납부기한이 지난 날부터 2개월 이내다. 500만원을 분납하겠다면 50%(475만원)를 초과해 불가하지만 475만원은 가능하다."},{"answer":"X","text":"지방자치단체의 장은 재산세의 납부할 세액이 950만원인 경우 500만원은 납부기한이 지난 날부터 2개월 이내 분납하게 할 수 있다.","exp":"950만원은 500만원 초과 구간이므로 세액의 50%인 475만원 이하만 분납할 수 있어 500만원은 50%를 초과하여 분납 대상이 될 수 없다. 분납 기한(2개월 이내)은 옳으나 '500만원 분납'이 틀렸다.","src":"2021 지방직 9급"},{"answer":"X","text":"토지와 건축물에 대한 재산세의 납기는 매년 9월 16일부터 9월 30일까지이다.","exp":"건축물의 납기는 7월 16일부터 7월 31일까지이므로 건축물을 9월 납기에 묶은 것이 틀렸다. 9월 16일부터 9월 30일은 토지와 주택 2기분의 납기이고, 건축물은 7월이다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"재산세의 과세기준일은 매년 6월 1일로 한다.","l":"2021 지방직 9급"},{"n":"고지된 부분에 대한 수탁자의 물적납세의무가 소멸한다","l":"2021 지방직 9급"},{"n":"행정안전부령으로 정하는 주된 상속자가 재산세를 납부할 의무가 있다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

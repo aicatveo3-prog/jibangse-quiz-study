@@ -620,6 +620,17 @@
     var TAGS = [{"n":"연장자, 「민법」상 상속지분이 가장 높은 자의 순서에 따라 자동차세를 납부할 의무를 진다","l":"2021 서울시 7급"},{"n":"다른 법률 중에 규정된 조세의 면제에 관한 규정은 자동차세에 관한 지방자치단체의 징수금에 대하여는 적용하지 아니한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 자동차의 정의·소유분 납세의무자 (공매·상속·매매)","q":[{"answer":"O","text":"자동차 소유에 대한 자동차세의 부과대상이 되는 '자동차'란 「자동차관리법」에 따라 등록되거나 신고된 차량과 「건설기계관리법」에 따라 등록된 덤프트럭과 콘크리트믹서트럭을 말한다.","exp":"자동차관리법상 등록·신고 차량과 함께 건설기계 중 덤프트럭·콘크리트믹서트럭도 자동차세 대상에 포함된다. 무한궤도식 굴삭기·불도저는 도로 주행이 안 되어 제외된다.","src":"2021 지방직 9급"},{"answer":"X","text":"자동차 소유에 대한 자동차세의 부과대상이 되는 '자동차'란 「자동차관리법」에 따라 등록되거나 신고된 차량과 「건설기계관리법」에 따라 등록된 굴삭기와 불도저를 말한다.","exp":"'굴삭기와 불도저'가 틀렸다. 건설기계 중 과세대상은 도로를 달리는 덤프트럭·콘크리트믹서트럭이며, 무한궤도식 굴삭기·불도저는 제외된다."},{"answer":"X","text":"자동차 소유에 대한 자동차세의 경우 과세기준일 현재 상속이 개시된 자동차로서 사실상의 소유자 명의로 이전등록을 하지 아니한 경우에는 사실상의 사용자, 연장자의 순서로 자동차세를 납부할 의무를 진다.","exp":"'사실상의 사용자, 연장자의 순서'가 틀렸다. 상속 미등록 자동차는 「민법」상 상속지분이 가장 높은 자가, 지분이 같으면 연장자가 납세의무를 진다.","src":"2021 지방직 9급"}],"tb":[],"wi":["📝 \"상속 미등록 자동차는 사실상의 사용자·연장자의 순서로 납세의무\" → ❌ 1순위는 「민법」상 상속지분이 가장 높은 자, 지분이 같을 때만 2순위 연장자"]},{"p":"PART 6. 주행분 자동차세","q":[{"answer":"X","text":"자동차 주행에 대한 자동차세의 세율은 교통·에너지·환경세율의 변동 등으로 조정이 필요하면 그 세율의 100분의 50의 범위에서 조례로 정하는 바에 따라 가감하여 조정할 수 있다.","exp":"'100분의 50의 범위에서 조례로'가 틀렸다. 주행분 세율은 대통령령으로 정하는 바에 따라 100분의 30의 범위에서 가감조정한다. 조례·50%는 소유분의 초과징수 요소를 섞은 함정이다.","src":"2021 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"매수인 명의로 이전등록을 하지 아니한 자동차에 대하여는 매도인이 자동차세를 납부할 의무를 진다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

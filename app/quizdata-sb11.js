@@ -474,6 +474,17 @@
     var TAGS = [{"n":"지방교육재정의 확충에 드는 재원을 확보하기 위하여 부과되는 목적세이다","l":"2021 서울시 7급"},{"n":"공무원이 지방교육세의 과세표준이 되는 세목별 세액의 환급의 예에 따라 환급한다","l":"2021 서울시 7급"},{"n":"등록에 대한 등록면허세, 주민세 사업소분, 레저세 또는 담배소비세를 신고하고 납부하는 때","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"제124조에 해당하는 자동차의 등록에 대한 등록면허세의 납세의무자는 지방교육세의 납세의무가 있다","l":"2021 지방직 9급"},{"n":"가산세가 가산되었을 때에는 그 가산세액은 지방교육세의 과세표준에 산입한다","l":"2021 지방직 9급"},{"n":"경우에도 「지방세기본법」에 따른 무신고가산세 및 과소신고가산세·초과환급신고가산세를 부과하지 아니한다","l":"2021 지방직 9급"},{"n":"지방교육세는 「지방세법」 및 지방세감면법령에 따라 납부하여야 할 담배소비세액의 100분의 40을 그 세액으로 한다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb11"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
