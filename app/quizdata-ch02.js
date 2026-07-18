@@ -3329,5 +3329,16 @@
     var TAGS = [{"n":"그 공동사업에 속하는 재산에 관계되는 지방자치단체의 징수금은 공유자 또는 공동사업자가 연대하여","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 9. 징수권의 소멸시효","q":[{"answer":"O","text":"지방세징수권의 소멸시효는 교부청구로 인하여 중단된다.","exp":"교부청구는 소멸시효의 중단 사유다. 중단되면 그때까지 진행된 시효가 0으로 리셋되어 처음부터 다시 진행된다. 다만 교부청구로 중단된 시효는 납부기간이 아니라 교부청구가 해제·취소된 때부터 새로 진행한다는 점을 함께 기억한다.","src":"2020 지방직 9급"},{"answer":"X","text":"지방세징수권의 소멸시효는 교부청구로 인하여 정지된다.","exp":"\"정지된다\"가 틀렸다. 교부청구는 정지가 아니라 중단 사유이므로, 그때까지 진행된 시효가 0으로 리셋되어 처음부터 다시 진행된다. 정지 사유는 징수유예·체납처분유예·연부연납·사해행위취소소송·채권자대위소송 등이다."},{"answer":"O","text":"지방자치단체의 장이 「민법」에 따라 사해행위 취소소송을 제기하여 그 소송이 진행 중인 기간에는 지방세징수권의 소멸시효는 진행되지 아니한다.","exp":"사해행위취소소송이 진행 중인 기간은 채권자대위소송과 마찬가지로 소멸시효의 정지 사유이므로 시효가 진행되지 않는다. 다만 그 소송이 각하·기각·취하되면 시효정지의 효력이 없어진다는 단서와 세트로 정리한다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"지방세의 과세표준 신고서를 제출하지 아니한 경우에 그 지방세 부과의 제척기간은 5년이다","l":"2020 지방직 9급"},{"n":"부정한 행위로 지방세를 포탈하거나 환급 또는 감면받은 경우에 그 지방세 부과의 제척기간은 7년이다","l":"2020 지방직 9급"},{"n":"상속재산에 대한 취득세의 경우로서 납세자가 취득세의 신고를 하지 아니한 경우의 제척기간은 7년으로 한다","l":"2020 지방직 9급"},{"n":"명의신탁약정으로 실권리자가 사실상 취득하는 경우로서 납세자가 법정신고기한까지 과세표준 신고서를 제출하지 아니한 경우에 그 지방세 부과의 제척기간은 10년이다","l":"2020 지방직 9급"},{"n":"납세고지에 의해 중단되며, 중단된 시효는 고지한 납부기간이 지난 때부터 새로 진행한다","l":"2020 지방직 9급"},{"n":"소멸시효는 「지방세징수법」에 따른 징수유예기간에도 진행한다","l":"2020 지방직 9급"},{"n":"「민법」 제404조에 따른 채권자대위소송을 제기하여 그 소송이 진행 중인 기간에는","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

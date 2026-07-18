@@ -565,5 +565,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 7. 부과·징수·불복·준용","q":[{"answer":"X","text":"지방소비세의 부과·징수 및 불복절차 등에 관하여는 국세의 예를 따르며, 이 경우 국세청장을 그 처분청으로 본다.","exp":"‘국세청장을 처분청으로 본다’가 틀렸다. 부과·징수·불복을 국세의 예로 따르는 것은 맞지만, 처분청은 국세청장이 아니라 실제로 부과·징수하는 특별징수의무자(세무서장·세관장)로 본다.","src":"2020 지방직 9급"},{"answer":"O","text":"지방소비세의 처분청은 국세청장이 아니라 실제로 부과·징수를 담당하는 세무서장 또는 세관장으로 본다.","exp":"옳다. 부과·징수·불복은 국세의 예를 따르되 처분청은 국세청장이 아니라 특별징수의무자인 세무서장·세관장이다. 국세청장이나 지방자치단체의 장을 처분청으로 하면 틀린다."}],"tb":[],"wi":["📝 \"국세청장을 그 처분청으로 본다\" → ❌ 처분청은 국세청장이 아니라 특별징수의무자(세무서장·세관장)다"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"재화의 공급, 용역의 공급 및 재화의 수입으로 하며, 이는 부가가치세의 과세대상과 동일","l":"2020 지방직 9급"},{"n":"지방소비세의 납세지를 관할하는 세무서장 또는 재화의 수입에 대한 부가가치세를 징수하는 세관장을 지방소비세의 특별징수의무자로","l":"2020 지방직 9급"},{"n":"납부세액에서 감면세액 및 공제세액을 빼고 가산세를 더하여 계산한 세액으로 한다","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb06"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

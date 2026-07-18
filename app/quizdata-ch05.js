@@ -1756,5 +1756,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 법정기일과 담보채권의 우선관계","q":[{"answer":"O","text":"가산금의 경우 그 가산금을 가산하는 고지세액의 납부기한이 지난 날이 법정기일이다.","exp":"가산금은 본세인 고지세액의 납부기한이 지나야 비로소 발생하므로 그 납부기한이 지난 날이 법정기일이다. 본세(부과고지)의 법정기일이 납세고지서의 발송일인 것과 구별해 두어야 한다.","src":"2020 지방직 9급"},{"answer":"X","text":"가산금의 경우 그 가산금을 가산하는 고지세액의 납세고지서 발송일이 법정기일이다.","exp":"\"납세고지서 발송일\"이 틀렸다. 가산금의 법정기일은 그 가산금을 가산하는 고지세액의 납부기한이 지난 날이다. 납세고지서의 발송일은 가산금이 아니라 그 고지세액(본세) 자체의 법정기일 기준이다."}],"tb":[{"k":"note","v":"box","title":"가산금의 법정기일","t":"가산금은 본세인 고지세액의 납부기한이 지나야 비로소 발생하는 세금이므로, 그 가산금의 법정기일은 \"그 가산금을 가산하는 고지세액의 납부기한이 지난 날\"이다. 부과고지 본세 자체의 법정기일이 납세고지서의 발송일인 것과 혼동하지 않아야 한다."}],"wi":["가산금의 법정기일 = 그 가산금을 가산하는 고지세액의 납부기한이 지난 날 (그 고지세액의 납세고지서 발송일이 아니다 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"신고한 해당 세액에 대해서는 그 신고일이 법정기일이다","l":"2020 지방직 9급"},{"n":"고지한 해당 세액에 대해서는 납세고지서의 도달일이 법정기일이다","l":"2020 지방직 9급"},{"n":"그 압류와 관련하여 확정된 세액에 대해서는 그 압류등기일 또는 등록일이 법정기일이다","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

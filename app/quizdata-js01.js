@@ -2034,5 +2034,16 @@
     var TAGS = [{"n":"체납처분을 회피할 우려가 있다고 인정되는 사유가 있는 경우에는 법무부장관에게 출국금지를 요청하여야 한다","l":"2020 서울시 7급"},{"n":"정당한 사유 없이 지방세를 3회 이상 체납한 경우로서 그 체납액이 30만원 이상일 때에는 대통령령으로 정하는 경우를 제외하고","l":"2020 서울시 7급"},{"n":"임대차계약을 하기 전 또는 임대차계약을 체결하고 임대차기간이 시작되는 날까지 임대인의 동의를 받아","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 납세증명서와 미납지방세 열람","q":[{"answer":"O","text":"국가·지방자치단체 또는 정부관리기관이 발주하는 건설공사를 수주한 자는 그 건설공사의 대금을 지급받을 때에 납세증명서를 제출하여야 한다.","exp":"납세증명서는 계약을 체결하는 때가 아니라 그 대금을 지급받을 때 제출한다. 건설공사를 수주하였더라도 증명서 제출 시점은 계약 체결 시가 아니라 돈이 오가는 대금 수령 시점이라는 점을 구별한다."},{"answer":"X","text":"주거용 건물 또는 상가건물을 임차하여 사용하려는 자는 임대차계약을 하기 전에 임대인의 동의를 받아 임대인이 납부하지 아니한 지방세의 열람을 임차인의 주소지를 관할하는 지방자치단체의 장에게 신청할 수 있다.","exp":"열람 신청 상대방이 틀렸다. 미납 지방세 열람은 임차인의 주소지가 아니라 임차하려는 건물의 소재지를 관할하는 지방자치단체의 장에게 신청한다. 세금은 물건 소재지에서 부과·관리되기 때문이다."}],"tb":[],"wi":["미납지방세 열람 신청 상대방 = 임차하려는 건물 소재지를 관할하는 지방자치단체의 장 (임차인 주소지 관할이면 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"물품의 납품계약 또는 공사계약을 체결하는 때에는 납세증명서를 제출하여야 한다","l":"2020 지방직 9급"},{"n":"허가등이 필요한 사업의 주무관청에 그 납세자에게 허가등을 하지 아니할 것을 요구할 수 있다","l":"2020 지방직 9급"},{"n":"임대인의 동의를 받아 임대인이 납부하지 아니한 지방세의 열람을 지방자치단체의 장에게 신청할 수 있다","l":"2020 지방직 9급"},{"n":"5만원 이상의 범위에서 대통령령으로 정하는 금액 이상인 외국인 체납자의 인적사항, 체납액에 관한 자료를 법무부장관에게 제공할 수 있다","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["js01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

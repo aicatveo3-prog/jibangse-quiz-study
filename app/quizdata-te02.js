@@ -609,5 +609,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 1. 농어촌 감면 — 자경농민·자영어민·농어촌주택개량","q":[{"answer":"O","text":"농업을 주업으로 하는 사람으로서 2년 이상 영농에 종사한 사람은 대통령령으로 정하는 자경농민에 해당한다.","exp":"옳다. 자경농민의 핵심 정의는 '농업을 주업으로 하면서 2년 이상 영농에 종사한 사람'이다. 영농 기간을 1년으로 낮추거나 주업을 부업으로 바꾸면 자경농민 요건에서 벗어난다.","src":"2020 지방직 9급"},{"answer":"X","text":"농업을 부업으로 하는 사람으로서 2년 이상 영농에 종사한 사람은 대통령령으로 정하는 자경농민에 해당한다.","exp":"틀리다. 자경농민은 농업을 '부업'이 아니라 '주업'으로 하는 사람이어야 한다. 2년 이상 영농에 종사했더라도 농업이 주된 직업이 아니면 자경농민에 해당하지 않는다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"일정한 기준에 따라 직접 경작할 목적으로 취득하는 농지에 대하여는 취득세의 100분의 50을 경감","l":"2020 지방직 9급"},{"n":"도로점용, 하천점용 및 공유수면점용의 면허에 대하여는 등록면허세를 면제한다","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["te02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

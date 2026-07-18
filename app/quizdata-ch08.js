@@ -1288,5 +1288,16 @@
     var TAGS = [{"n":"5억원 이상의 지방세를 포탈한 자는 3년 이하의 징역 또는 포탈세액의 3배 이하","l":"2020 서울시 7급"},{"n":"2년 이내에 수정신고를 하였을 때에는 형(刑)을 감경할 수 있다","l":"2020 서울시 7급"},{"n":"통고처분이 있는 때에는 그 공소시효의 진행이 중단된다","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 범칙사건의 조사","q":[{"answer":"X","text":"지방자치단체의 장이 범칙사건조사를 마치고 하는 범칙사건에 대한 처분의 종류에는 통고처분, 고발, 무혐의 및 압수가 있다.","exp":"처분의 종류는 통고처분·고발·무혐의 3가지뿐이고 압수는 여기에 들어가지 않는다. 압수는 조사 과정에서 증거물을 확보하는 조치일 뿐 조사 종료 후의 처분이 아니며, 몰수와 마찬가지로 처분의 종류에 끼워 넣으면 틀린 지문이 된다."},{"answer":"O","text":"조사 결과 범칙의 확증을 얻지 못한 경우 지방자치단체의 장이 하는 무혐의 통지도 범칙사건에 대한 처분의 종류의 하나에 해당한다.","exp":"무혐의 통지는 통고처분·고발과 함께 범칙사건 처분의 종류 3가지 중 하나다. 조사 결과 확증을 얻지 못하면 무혐의를 통지하고 압수물건이 있으면 압수를 해제하며, 세 처분 모두 지방자치단체의 장이 결정한다는 점을 함께 기억해야 한다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"범칙사건에 대한 처분의 종류는 통고처분, 고발, 무혐의의 세 가지이며","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch08"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

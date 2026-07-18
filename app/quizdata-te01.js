@@ -528,5 +528,16 @@
     var TAGS = [{"n":"그 면제규정에도 불구하고 100분의 85에 해당하는 감면율을 적용한다","l":"2020 서울시 7급"},{"n":"정당한 사유 없이 그 취득일부터 1년이 경과할 때까지 해당 용도로 직접 사용하지 아니하는 경우","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2020 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 1. 총칙 기초 — 목적·용어 정의·특례 법정주의","q":[{"answer":"X","text":"조약은 지방세 특례의 근거법원이 될 수 없다.","exp":"'될 수 없다'가 틀렸다. 조약도 지방세 4법·조세특례제한법과 함께 지방세 특례의 근거법원 6가지에 포함된다. 국가 간 조약으로 특정 대상의 지방세를 감면할 수 있으므로 근거법원에서 뺄 수 없다."},{"answer":"O","text":"조약도 지방세 4법 및 조세특례제한법과 함께 지방세 특례의 근거법원에 포함된다.","exp":"조약도 근거법원에 포함되는 것이 맞다. 특례 법정주의의 근거는 지방세 4법(특례제한법·기본법·징수법·지방세법)과 조세특례제한법, 조약의 6가지이며, 조약은 그중 유일하게 국내 '법률'이 아닌 근거라는 점이 특징이다."},{"answer":"X","text":"지방세징수법은 지방세의 징수 절차만을 정하는 법률이므로 지방세 특례의 근거법원에 포함되지 아니한다.","exp":"'포함되지 아니한다'가 틀렸다. 지방세징수법도 근거법원 6가지 중 하나다. 징수 절차를 정하는 법이라는 이유로 6가지 중 일부를 슬쩍 빼는 변형이므로, 지방세 4법이 모두 포함됨을 기억한다."},{"answer":"O","text":"일반과세에 대한 지방세 특례를 정할 수 있는 근거법원은 지방세특례제한법을 포함한 지방세 4법과 조세특례제한법 및 조약을 합쳐 모두 6가지이다.","exp":"근거법원 총수는 6가지가 맞다. 지방세 4법(특례제한법·기본법·징수법·지방세법)에 조세특례제한법과 조약을 더한 것이며, 여기에 조례를 넣어 7가지로 늘리거나 하나를 빼 5가지로 줄이는 변형에 주의한다."}],"tb":[],"wi":["📝 \"조약은 근거법원이 될 수 없다\" / \"지방세징수법은 근거법원에서 제외\" → ❌ 조약·지방세징수법 모두 근거법원 6가지에 포함 (지방세 4법 + 조세특례제한법 + 조약)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"「조세특례제한법」 및 조약에 따르지 아니하고는 「지방세법」에서 정한 일반과세에 대한 지방세 특례를 정할 수 없다","l":"2020 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["te01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
