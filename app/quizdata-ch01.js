@@ -965,5 +965,16 @@
     var TAGS = [{"n":"제2차 납세의무자 및 보증인을 포함한다)와 특별납세의무자를 말한다","l":"2019 지방직 9급"},{"n":"조례의 위임을 받은 지방자치단체장이 정하는 바에 따라 가감하여 적용하여야 할 세율","l":"2019 지방직 9급"},{"n":"지방세와 이에 관계되는 체납처분비를 제외한 것을 말한다","l":"2019 지방직 9급"},{"n":"고지세액에 가산하여 징수하는 금액과 행정처리에 드는 비용을 말한다","l":"2019 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"우편법령에 따른 우편날짜도장이 찍힌 날에 신고된 것으로 본다","l":"2018 서울시 9급"},{"n":"도장이 찍히지 아니하였을 때에는 그 신고서가 도달한 날에 신고된 것으로 본다","l":"2018 서울시 9급"},{"n":"근로자의 날일 때에는 그 다음 날을 기한으로 한다","l":"2018 서울시 9급"},{"n":"지방세통합정보통신망에 저장된 때에 신고된 것으로 본다","l":"2018 서울시 9급"},{"n":"지방세의 과세표준·세율·납부세액 등 지방세의 납부 또는 환급을 위하여 필요한 사항을 기재한 신고서를 말한다","l":"2018 서울시 9급"},{"n":"지방세를 특별징수하여 납부할 의무가 있는 자를 말한다","l":"2018 서울시 9급"},{"n":"부과란 지방자치단체의 장이 「지방세기본법」 또는 지방세관계법에 따라 납세의무자에게 지방세를 부담하게 하는 것을 말한다","l":"2018 서울시 9급"},{"n":"지방세관계법을 해석·적용할 때에는 과세의 형평과 해당 조항의 목적에 비추어 납세자의 재산권이 부당하게 침해되지 않도록 하여야 한다","l":"2018 서울시 9급"},{"n":"확정된 소득에 대해서는 그 확정 이후의 새로운 법에 따라 소급하여 과세할 수 있다","l":"2018 서울시 9급"},{"n":"그 해석 또는 관행에 따른 행위 또는 계산은 정당한 것으로 보며 새로운 해석 또는 관행에 따라 소급하여 과세되지 아니한다","l":"2018 서울시 9급"},{"n":"되풀이 해왔고 그동안 납세자가 이를 그대로 받아들여 왔다고 하여 위법한 과세처분이 적법한 것으로 될 수는 없다","l":"2018 서울시 9급"},{"n":"현행 지방세 중 목적세로는 지역자원시설세와 지방소득세가 있다","l":"2018 서울시 9급"},{"n":"도세에 해당하는 세목뿐만 아니라 시·군세에 해당하는 주민세도 광역시세로 한다","l":"2018 서울시 9급"},{"n":"특별자치시세의 세목은 담배소비세를 제외하고 광역시세의 세목과 구세의 세목을 모두 포함하고 있다","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

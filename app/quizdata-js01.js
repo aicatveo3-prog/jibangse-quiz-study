@@ -2045,5 +2045,16 @@
     var TAGS = [{"n":"물품의 납품계약 또는 공사계약을 체결하는 때에는 납세증명서를 제출하여야 한다","l":"2020 지방직 9급"},{"n":"허가등이 필요한 사업의 주무관청에 그 납세자에게 허가등을 하지 아니할 것을 요구할 수 있다","l":"2020 지방직 9급"},{"n":"임대인의 동의를 받아 임대인이 납부하지 아니한 지방세의 열람을 지방자치단체의 장에게 신청할 수 있다","l":"2020 지방직 9급"},{"n":"5만원 이상의 범위에서 대통령령으로 정하는 금액 이상인 외국인 체납자의 인적사항, 체납액에 관한 자료를 법무부장관에게 제공할 수 있다","l":"2020 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 4. 출국금지","q":[{"answer":"X","text":"지방자치단체의 장은 정당한 사유 없이 3천만원 이상의 지방세를 체납한 자에 대하여 법무부장관에게 출국금지를 요청하여야 한다.","exp":"금액 요건만으로 곧바로 의무 요청 대상이 된다고 하여 틀렸다. 3천만원 이상 체납이라는 공통 요건 외에, 압류·공매·담보로도 조세채권을 확보할 수 없고 체납처분을 회피할 우려가 있다고 인정되는 등 대통령령으로 정하는 개별 사유가 함께 있어야 요청 대상이 된다. 금액만으로는 대상이 아니다.","src":"2018 서울시 9급"},{"answer":"O","text":"정당한 사유 없이 3천만원 이상의 지방세를 체납하였더라도 체납처분을 회피할 우려가 있다고 인정되는 등 대통령령으로 정하는 사유가 없으면 법무부장관에 대한 출국금지 요청의 대상이 되지 아니한다.","exp":"출국금지 요청은 3천만원 이상 체납이라는 금액 요건과 체납처분 회피 우려 등 개별 사유를 모두 갖추어야 한다. 금액 요건만으로는 대상이 아니며, 두 요건을 모두 갖추면 요청은 재량이 아니라 의무('요청하여야 한다')가 된다는 점과 구별한다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"정당한 사유 없이 지방세를 체납한 경우에는 관허사업의 주무관청에 그 납세자에게 허가 등을 하지 아니할 것을 요구할 수 있다","l":"2018 서울시 9급"},{"n":"정당한 사유 없이 지방세를 3회 이상 체납한 경우로서 그 체납액이 30만원 이상일 때에는 대통령령으로 정하는 경우를 제외하고","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["js01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

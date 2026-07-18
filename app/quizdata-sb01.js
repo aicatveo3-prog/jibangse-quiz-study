@@ -3010,5 +3010,16 @@
     var TAGS = [{"n":"이를 취득한 것으로 보고 그 사실상 취득자를 취득자로 한다","l":"2018 서울시 7급"},{"n":"선박, 차량과 기계장비의 종류를 변경하거나 토지의 지목을 사실상 변경","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 11. 과점주주 간주취득","q":[{"answer":"X","text":"과점주주였다가 주식의 양도로 과점주주에 해당하지 아니하게 된 자가 해당 법인의 주식을 다시 취득하여 과점주주가 된 경우에는, 다시 과점주주가 된 당시의 주식비율이 그 이전에 과점주주가 된 당시의 주식비율보다 증가되었는지와 관계없이 그 증가분을 취득으로 보아 취득세를 부과한다.","exp":"'증가 여부와 관계없이' 과세한다는 부분이 틀렸다. 다시 과점주주가 된 당시의 비율이 그 이전에 과점주주가 된 당시의 비율보다 증가된 경우에만 그 증가분을 취득으로 보아 과세한다. 이전 비율을 넘지 않으면 증가분이 없어 취득세를 부과하지 않는다.","src":"2018 서울시 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"부담부증여의 경우에는 그 채무액에 상당하는 부분은 부동산 등을 유상으로 취득하는 것으로 본다","l":"2018 서울시 9급"},{"n":"지목이 사실상 변경된 날과 공부상 변경된 날 중 빠른 날을 취득일로 보지만, 지목변경일 이전에 사용하는 부분","l":"2018 서울시 9급"},{"n":"등기를 하지 아니하면 사실상 취득하더라도 해당 취득물건의 명의인을 취득자로 한다","l":"2018 서울시 9급"},{"n":"부동산 등에 대한 과세표준은 그 부동산 등의 총가액을 그 법인의 주식 또는 출자의 총수로 나눈 가액","l":"2018 서울시 9급"},{"n":"조작 설비 등 부대설비로서 주체구조부와 하나가 되어 건축물로서의 효용가치를 이루는 것은 주체구조부 취득자 외의 자가 가설한 경우에도","l":"2018 서울시 9급"},{"n":"취득한 후 10년 이내에 해당 토지나 건축물이 「지방세법」상 중과세가 적용되는 골프장, 고급주택 또는 고급오락장에 해당하게 된 경우","l":"2018 서울시 9급"},{"n":"발견하였을 때에는 대통령령으로 정하는 바에 따라 납세의무자의 거주지를 관할하는 지방자치단체의 장에게 통보","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -657,5 +657,16 @@
     var TAGS = [{"n":"제조자는 제조장으로부터 반출한 담배에 대하여 담배소비세를 납부할 의무가 있다","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"우편으로 반입하는 담배에 대해서는 그 수취인이 담배소비세를 납부할 의무가 있다","l":"2018 서울시 9급"},{"n":"수입판매업자는 보세구역으로부터 반출한 담배에 대하여 담배소비세를 납부할 의무가 있다","l":"2018 서울시 9급"},{"n":"수출 상담을 위한 견본용 담배를 제공하는 경우에는 그 제조자가 담배소비세를 납부할 의무가 있다","l":"2018 서울시 9급"},{"n":"판매·소비 등의 처분을 한 경우에는 그 처분을 한 자가 담배소비세를 납부할 의무가 있다","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
