@@ -569,5 +569,16 @@
     var TAGS = [{"n":"세무조사의 결과 통지에 의하여 다른 것으로 확인된 경우는 후발적 사유로 인한 경정 등의 청구 대상이 된다","l":"2019 지방직 9급"},{"n":"관청의 허가나 그 밖의 처분이 취소된 경우 과세표준신고서를 법정신고기한까지 제출한 자는 그 사유가 발생한 것을 안 날부터 90일","l":"2019 지방직 9급"},{"n":"계약이 해당 계약의 성립 후 발생한 부득이한 사유로 해제되거나 취소된 경우는 후발적 사유","l":"2019 지방직 9급"},{"n":"장부 및 증명서류의 압수, 그 밖의 부득이한 사유로 과세표준 및 세액을 계산할 수 없었으나","l":"2019 지방직 9급"},{"n":"세목으로 하며, 지방세를 감면하는 경우에 가산세는 그 감면대상에 포함하지 아니한다","l":"2019 지방직 9급"},{"n":"사기나 그 밖의 부정한 행위로 법정신고기한까지 과세표준 신고를 하지 아니한 경우에는 무신고납부세액의 100분의 20","l":"2019 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 경정 등의 청구","q":[{"answer":"X","text":"지방자치단체의 장이 과세표준과 세액을 결정 또는 경정하여 통지한 경우에도 그 통지를 받은 자는 법정신고기한이 지난 후 5년 이내라면 언제든지 경정청구를 할 수 있고, 그 결정·경정이 있음을 안 날부터 90일이라는 별도의 청구기한은 적용되지 아니한다.","exp":"\"안 날부터 90일이라는 별도의 청구기한은 적용되지 아니한다\"가 틀렸다. 결정 또는 경정이 있는 경우에는 그 결정·경정이 있음을 안 날부터 90일 이내에 경정청구를 하여야 하며, 이 90일 기한은 법정신고기한이 지난 후 5년 이내로 한정될 뿐 없어지는 것이 아니다. 일반 경정청구의 5년 기한과 별개로 결정·경정을 안 날부터 90일이라는 기한이 적용된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"있음을 안 날부터 90일 이내에 경정청구를 하여야 한다","l":"2018 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

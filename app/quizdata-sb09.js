@@ -663,5 +663,16 @@
     var TAGS = [{"n":"지방자치단체 관할구역에 등록되어 있거나 신고되어 있는 자동차를 소유하는 자에게 부과한다","l":"2019 서울시 7급"},{"n":"이전등록을 하지 아니한 자동차에 대하여는 매수인이 자동차세를 납부할 의무를 진다","l":"2019 서울시 7급"},{"n":"소유분 자동차세를 체납한 경우에는 반드시 독촉절차를 거친 후에야 체납처분을 하여야 한다","l":"2019 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 5. 소유분 납기·징수·수시부과·체납처분","q":[{"answer":"O","text":"지방자치단체의 장은 자동차를 승계취득한 자에 대하여 소유기간에 따라 일할계산하여 자동차세를 부과·징수하는 경우에는 제1기분과 제2기분의 정기 납기에도 불구하고 납기 전에 수시로 부과할 수 있다.","exp":"승계취득자에 대한 일할계산 부과는 정기분 납기와 상관없이 납기 전에도 수시로 부과할 수 있다. 신규·말소등록에 따른 일할계산 부과도 같은 방식이며, '할 수 있다'는 재량이라는 점을 함께 기억한다.","src":"2018 서울시 7급"},{"answer":"X","text":"지방자치단체의 장은 자동차를 승계취득한 자에 대하여 소유기간에 따라 일할계산하여 자동차세를 부과·징수하는 경우에는 제1기분과 제2기분의 정기 납기가 도래할 때까지 기다려 그 납기에만 부과하여야 한다.","exp":"'정기 납기까지 기다려 그 납기에만 부과'가 틀렸다. 일할계산하여 부과·징수하는 경우에는 정기분 납기에도 불구하고 납기 전에 수시로 부과할 수 있다. 신규·말소등록 일할계산 부과도 마찬가지다."}],"tb":[],"wi":["승계취득 일할계산 부과 = 정기 납기까지 기다려 부과 ❌ → 정기 납기에도 불구하고 납기 전 수시부과 가능(재량) ⭕"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"연장자, 「민법」상 상속지분이 가장 높은 자의 순서에 따라 자동차세를 납부할 의무를 진다","l":"2018 서울시 7급"},{"n":"매수인 명의로 이전등록을 하지 아니한 자동차에 대하여는 매수인이 자동차세를 납부할 의무를 진다","l":"2018 서울시 7급"},{"n":"소유분 자동차세의 세율을 표준세율의 100분의 50까지 초과하여 정할 수 있다","l":"2018 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb09"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
