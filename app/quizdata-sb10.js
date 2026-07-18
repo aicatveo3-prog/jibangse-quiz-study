@@ -620,5 +620,16 @@
     var TAGS = [{"n":"화력발전에 대한 지역자원시설세의 표준세율은 발전량 킬로와트시(kWh)당 3원이다","l":"2018 서울시 9급"},{"n":"원자력발전에 대한 지역자원시설세의 과세표준은 발전량이며, 표준세율은 킬로와트시(kWh)당 1원이다","l":"2018 서울시 9급"},{"n":"먹는 물로 판매하기 위하여 채수된 물은 세제곱미터당 200원","l":"2018 서울시 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 1. 기본 성격 — 목적세·도세·3유형 분류","q":[{"answer":"X","text":"소방시설 등 공공시설로 이익을 받는 자의 건축물은 소방분 지역자원시설세의 과세대상이 아니다.","exp":"'과세대상이 아니다'가 틀렸다. 소방시설로 이익을 받는 자의 건축물은 소방분 지역자원시설세의 과세대상에 해당한다. 소방분 과세대상은 건축물과 선박 2가지이며, 재산세 과세대상 중 토지·항공기만 빠진다.","src":"2018 지방직 9급"},{"answer":"O","text":"소방시설로 인하여 이익을 받는 자의 건축물은 소방분 지역자원시설세의 과세대상에 해당한다.","exp":"건축물은 소방분 과세대상이 맞다. 소방분 과세대상은 건축물·선박 2가지뿐이고, 토지는 불에 타지 않아, 항공기는 소방시설의 직접 보호 대상이 아니어서 제외된다."}],"tb":[],"wi":[]},{"p":"PART 3. 납세의무자와 비과세","q":[{"answer":"X","text":"국가, 지방자치단체 및 지방자치단체조합이 직접 개발하여 이용하는 원자력발전 및 화력발전에 대해서는 특정시설분 지역자원시설세를 부과한다.","exp":"'부과한다'가 틀렸다. 국가·지방자치단체·지방자치단체조합이 직접 개발하여 이용하는 경우에는 특정자원분·특정시설분 지역자원시설세를 부과하지 아니하며, 특정시설분인 원자력·화력발전도 마찬가지로 비과세된다.","src":"2018 지방직 9급"},{"answer":"O","text":"국가, 지방자치단체 또는 지방자치단체조합이 직접 개발하여 이용하는 원자력발전 및 화력발전에 대해서는 특정시설분 지역자원시설세를 부과하지 아니한다.","exp":"직접 개발·이용 비과세가 맞다. 이 비과세에는 용도 제한이 없어 수익 목적이라도 국가 등이 직접 개발·이용하면 특정자원분·특정시설분을 부과하지 아니한다."},{"answer":"O","text":"컨테이너를 취급하는 부두를 이용하여 화물을 싣지 아니한 컨테이너를 입항·출항시키는 자는 컨테이너에 대한 지역자원시설세의 납세의무자가 아니다.","exp":"빈 컨테이너는 과세대상에서 제외되므로 이를 입출항시키는 자도 납세의무자가 아닌 것이 맞다. 환적 컨테이너·연안수송 컨테이너와 함께 컨테이너 3대 제외 항목이며, 화물을 실은 국제무역 컨테이너만 과세된다.","src":"2018 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"농어촌용수 중 행정안전부령으로 정하는 생활용수 및 공업용수로 이용하기 위하여 퍼 올린 지하수","l":"2018 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

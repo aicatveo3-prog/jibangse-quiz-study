@@ -3021,5 +3021,16 @@
     var TAGS = [{"n":"부담부증여의 경우에는 그 채무액에 상당하는 부분은 부동산 등을 유상으로 취득하는 것으로 본다","l":"2018 서울시 9급"},{"n":"지목이 사실상 변경된 날과 공부상 변경된 날 중 빠른 날을 취득일로 보지만, 지목변경일 이전에 사용하는 부분","l":"2018 서울시 9급"},{"n":"등기를 하지 아니하면 사실상 취득하더라도 해당 취득물건의 명의인을 취득자로 한다","l":"2018 서울시 9급"},{"n":"부동산 등에 대한 과세표준은 그 부동산 등의 총가액을 그 법인의 주식 또는 출자의 총수로 나눈 가액","l":"2018 서울시 9급"},{"n":"조작 설비 등 부대설비로서 주체구조부와 하나가 되어 건축물로서의 효용가치를 이루는 것은 주체구조부 취득자 외의 자가 가설한 경우에도","l":"2018 서울시 9급"},{"n":"취득한 후 10년 이내에 해당 토지나 건축물이 「지방세법」상 중과세가 적용되는 골프장, 고급주택 또는 고급오락장에 해당하게 된 경우","l":"2018 서울시 9급"},{"n":"발견하였을 때에는 대통령령으로 정하는 바에 따라 납세의무자의 거주지를 관할하는 지방자치단체의 장에게 통보","l":"2018 서울시 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 4. 납세의무자와 취득 의제","q":[{"answer":"X","text":"권리의 이전이나 행사에 등기 또는 등록이 필요한 부동산 등을 배우자 간에 서로 교환한 경우의 취득에 대하여는 취득세를 과세하지 아니한다.","exp":"교환을 비과세라 한 부분이 틀렸다. 교환은 서로 재산을 주고받는 대가성 거래여서 배우자 간이라도 유상취득에 해당해 취득세가 과세된다. 배우자 간 이전을 원칙적으로 증여로 추정하는 것과 달리 교환·공매·판결·파산은 그 추정을 깨는 유상 예외다.","src":"2018 지방직 9급"},{"answer":"O","text":"권리의 이전이나 행사에 등기 또는 등록이 필요한 부동산 등을 배우자 간에 서로 교환하여 취득한 경우에는 유상취득에 해당하여 취득세가 과세된다.","exp":"교환은 제3자·직계존비속·배우자 누구 사이든 대가성이 있어 항상 유상취득이며 과세된다. 배우자·직계존비속 간 부동산 이전을 원칙적으로 증여(무상)로 추정하는 것과 달리 교환은 그 추정을 깨는 예외라는 점이 핵심이다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"채권자대위권의 행사에 의하여 공동상속인들의 법정상속분대로 등기 등이 된 상속재산","l":"2018 지방직 9급"},{"n":"취득 당시의 가액은 연부금액(매회 사실상 지급되는 금액을 말하며, 취득금액에 포함되는 계약보증금을 포함한다)으로 한다","l":"2018 지방직 9급"},{"n":"외국으로부터의 수입에 의한 유상승계취득의 경우에는 사실상 취득가격을 취득세의 과세표준으로 한다","l":"2018 지방직 9급"},{"n":"재판상 화해에 따른 화해조서에 의하여 취득가격이 입증되는 유상승계취득의 경우에는 사실상 취득가격을","l":"2018 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
