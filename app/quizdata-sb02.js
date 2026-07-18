@@ -3545,5 +3545,16 @@
     var TAGS = [{"n":"변경면허를 받는 자는 그 면허의 종류마다 등록면허세를 납부하여야 한다","l":"2018 서울시 7급"},{"n":"채권의 목적이 된 것의 가액 또는 처분의 제한의 목적이 된 금액을 그 채권금액으로 본다","l":"2018 서울시 7급"},{"n":"지방세환급금의 처리절차에 따라 신고납부한 등록면허세를 환급하여야 한다","l":"2018 서울시 7급"},{"n":"면허의 효력이 소멸한 경우에는 지방자치단체의 장은 이미 납부한 등록면허세를 환급하여야 한다","l":"2018 서울시 7급"},{"n":"1년을 초과하는 면허에 대하여는 매년 1월 1일에 그 면허를 갱신하는 신청을 하여야 한다","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 등록분 비과세 — 취득세 비과세와의 교차","q":[{"answer":"X","text":"법인의 자본금 또는 출자금의 납입, 증자 및 출자전환에 따른 등기·등록에 대하여는 등록면허세를 부과하지 아니한다.","exp":"법인의 자본금·출자금 납입, 증자, 출자전환에 따른 등기·등록은 비과세 대상이 아니라 과세대상이다. 자본이 실제로 늘어 새로운 출자금이라는 경제적 가치가 발생하는 등기이므로 증가액을 과세표준으로 하는 종가세로 등록면허세가 부과된다. 국가·지자체 등록, 회생·파산 등기, 경정등기, 묘지 토지 등기가 비과세인 것과 구별해야 한다.","src":"2018 서울시 9급"},{"answer":"O","text":"법인의 자본금 또는 출자금의 납입, 증자 및 출자전환에 따른 등기·등록은 새로운 출자금이라는 경제적 가치가 발생하는 등기이므로 등록면허세 비과세 대상에 해당하지 아니한다.","exp":"옳다. 이들 등기는 자본이 실제로 증가하는 등기여서 비과세가 아니라 과세대상이며, 증가한 금액을 과세표준으로 하는 종가세가 적용된다. 본점 이전(주소만 변경)·지점 설치처럼 자본 변동이 없는 등기가 건당 정액의 종량세로 과세되는 것과 대비된다."}],"tb":[],"wi":["📝 \"법인의 자본금·출자금 납입·증자·출자전환에 따른 등기는 등록면허세 비과세대상이다\" → ❌ 비과세가 아니라 과세대상(자본 증가액 기준 종가세)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"등기 담당 공무원의 착오로 인한 지번의 오기에 대한 경정등기","l":"2018 서울시 9급"},{"n":"묘지는 공익적 성격이 강하고 수익을 목적으로 하는 재산이 아니므로","l":"2018 서울시 9급"},{"n":"면허의 소재지 변경이나 상호 변경에 따라 변경면허를 받는 경우에는","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

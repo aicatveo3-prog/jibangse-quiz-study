@@ -3373,5 +3373,16 @@
     var TAGS = [{"n":"출자자의 제2차 납세의무를 부담하는 과점주주는 비상장법인의 과점주주에 한하며","l":"2018 서울시 7급"},{"n":"출자총액의 50%를 초과하면서 그에 관한 권리를 실질적으로 행사하는 자들을 말한다","l":"2018 서울시 7급"},{"n":"과점주주 또한 지분율과 관계없이 징수부족액 전액을 한도로 제2차 납세의무를 부담한다","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 세목별 성립시기 ① 취득·소비·거래","q":[{"answer":"X","text":"레저세의 납세의무는 승마장에 입장하는 때에 성립한다.","exp":"\"승마장에 입장하는 때\"가 틀렸다. 레저세는 승자투표권·승마투표권 등을 발매하는 때에 성립한다. 관람객의 입장 여부나 경기 결과와 무관하게 투표권 발매 금액 자체에 부과되므로, 입장 시점은 성립과 무관하다.","src":"2018 서울시 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"취득세의 납세의무는 취득세 과세물건을 취득하는 때에 성립한다","l":"2018 서울시 9급"},{"n":"담배를 제조장 또는 보세구역으로부터 반출하거나 국내로 반입하는 때에 성립한다","l":"2018 서울시 9급"},{"n":"컨테이너를 취급하는 부두를 이용하기 위하여 컨테이너를 입항·출항하는 때에 성립한다","l":"2018 서울시 9급"},{"n":"공동주택의 공유물은 제외한다), 공동사업 또는 그 공동사업에 속하는 재산에 관계되는 지방자치단체의 징수금은 공유자 또는 공동사업자가 연대하여 납부할 의무를 진다","l":"2018 서울시 9급"},{"n":"출자총액의 50% 이상이면서 그에 관한 권리를 실질적으로 행사하는 자들을 말한다","l":"2018 서울시 9급"},{"n":"납세의무가 성립된 지방세는 확정에 의하여 모두 승계되며, 한도 없이 전액 승계된다","l":"2018 서울시 9급"},{"n":"사업의 포괄적 양수인 경우 지방세 부족액 전액에 대하여 제2차 납세의무를 진다","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

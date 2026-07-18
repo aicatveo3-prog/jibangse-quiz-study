@@ -594,5 +594,16 @@
     var ADDS = [{"p":"PART 5. 종업원분 — 납세의무자·과세표준·종업원·세율","q":[{"answer":"X","text":"종업원분 주민세의 표준세율은 종업원 급여에 부과되는 소득세의 100분의 10으로 한다.","exp":"종업원분의 과세표준은 소득세가 아니라 종업원에게 지급한 급여총액이고, 표준세율은 그 급여총액의 1천분의 5(0.5%)다. 과세표준을 ‘소득세’로, 세율을 ‘100분의 10’으로 바꾼 두 부분이 모두 틀렸다.","src":"2018 서울시 7급"},{"answer":"O","text":"종업원분 주민세의 표준세율은 종업원 급여에 부과되는 소득세가 아니라 종업원에게 지급한 급여총액을 과세표준으로 하여 그 1천분의 5로 한다.","exp":"옳다. 종업원분의 과세표준은 급여총액(소득세 아님)이고 표준세율은 1천분의 5(0.5%)다. ‘급여에 부과되는 소득세의 100분의 10’처럼 과세표준과 세율을 함께 바꾸는 함정에 주의한다."}],"tb":[{"k":"note","v":"box","title":"💡 종업원분 세율의 과세표준은 급여총액(소득세 아님)","t":"종업원분 표준세율은 종업원 ‘급여에 부과되는 소득세’가 아니라 종업원에게 지급한 급여총액에 적용한다. 세율은 급여총액의 1천분의 5(0.5%)이며, ‘급여에 부과되는 소득세의 100분의 10’ 같은 표현은 과세표준(급여총액→소득세)과 세율(0.5%→10%)을 모두 바꾼 함정이다."}],"wi":["종업원분 표준세율 = 급여에 부과되는 소득세의 100분의 10 ❌ → 급여총액의 1천분의 5(0.5%) ⭕"]}];
     for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"건축물의 소유자에게 사업소분 주민세의 제2차 납세의무를 지울 수 있다","l":"2018 서울시 9급"},{"n":"이미 부과된 사업소분을 사업주의 재산으로 징수해도 부족액이 있는 경우로 한정","l":"2018 서울시 9급"},{"n":"건축물 소유자로부터 사업소분 주민세를 징수하는 데 필요한 사항은 지방세징수법을 준용","l":"2018 서울시 9급"},{"n":"주민세 비과세대상자인 경우에는 그에게 사업소분 주민세의 제2차 납세의무를 지울 수 없다","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

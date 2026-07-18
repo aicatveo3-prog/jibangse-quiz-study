@@ -580,5 +580,16 @@
     var TAGS = [{"n":"있음을 안 날부터 90일 이내에 경정청구를 하여야 한다","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 경정 등의 청구","q":[{"answer":"X","text":"경정청구를 받은 지방자치단체의 장은 그 청구를 받은 날부터 1개월 이내에 과세표준 및 세액을 경정하거나 경정하여야 할 이유가 없다는 것을 그 청구를 한 자에게 통지하여야 한다.","exp":"\"1개월 이내\"가 틀렸다. 경정청구를 받은 지방자치단체의 장은 청구받은 날부터 2개월 이내에 경정 여부를 통지하여야 한다. 기한후신고에 대한 결정 기한(신고일부터 3개월)과도 구별한다.","src":"2018 서울시 9급"}],"tb":[],"wi":[]},{"p":"PART 1. 수정신고","q":[{"answer":"O","text":"납세자가 법정신고기한이 지난 후 3개월 초과 6개월 이내에 수정신고를 한 경우에는 과소신고가산세와 초과환급신고가산세의 50%를 감면한다.","exp":"3개월 초과 6개월 이내 구간의 수정신고 감면율은 50%다. 감면 대상은 과소신고가산세와 초과환급신고가산세에 한하고 납부지연가산세는 제외되며, 같은 6개월 안이라도 1개월 이내면 90%로 더 높다는 점과 대비한다."},{"answer":"X","text":"납세자가 법정신고기한이 지난 후 3개월 초과 6개월 이내에 수정신고를 한 경우에는 과소신고가산세와 초과환급신고가산세의 30%를 감면한다.","exp":"\"30%\"가 틀렸다. 3개월 초과 6개월 이내 수정신고의 감면율은 50%이고, 30%는 6개월 초과 1년 이내(예: 8개월) 구간에 적용된다. 수정신고가 늦어질수록 감면율이 단계적으로 낮아진다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"결정 또는 경정하여 통지하기 전까지는 과세표준수정신고서를 제출할 수 있다","l":"2018 서울시 9급"},{"n":"부정한 행위로 법정신고기한까지 과세표준 신고를 하지 아니한 경우에는 무신고납부세액의 100분의 40","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

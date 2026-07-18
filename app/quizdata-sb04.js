@@ -498,5 +498,16 @@
     var TAGS = [{"n":"투표권을 발매하지 않으므로 레저세 과세대상이 아니다","l":"2018 서울시 7급"},{"n":"산출세액의 100분의 10에 해당하는 금액을 징수할 세액에 가산하여 보통징수의 방법으로 징수한다","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2018 서울시 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 과세표준과 세율","q":[{"answer":"O","text":"레저세의 과세표준은 승자투표권·승마투표권 등의 발매금총액으로 하며, 세율은 100분의 10으로 한다.","exp":"옳다. 레저세 과세표준은 환급금을 빼지 않은 발매금총액 전체이고, 세율은 100분의 10(단일비례세율)이다. 과세표준을 순수익(환급금 공제 후)으로 보거나 세율을 100분의 20으로 바꾸면 틀린다.","src":"2018 서울시 9급"},{"answer":"X","text":"레저세의 과세표준은 승자투표권·승마투표권 등의 발매금총액으로 하며, 세율은 100분의 15로 한다.","exp":"과세표준(발매금총액)은 옳지만 세율이 틀렸다. 레저세 세율은 100분의 15가 아니라 100분의 10이며, 발매금총액에 10%를 곱해 산출세액을 계산한다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"레저세의 과세대상은 「경륜·경정법」에 따른 경륜 및 경정","l":"2018 서울시 9급"},{"n":"레저세의 납세의무자는 승자투표권 등을 매입하는 자","l":"2018 서울시 9급"},{"n":"발매일이 속하는 달의 다음 달 10일까지 산출세액을 신고·납부하여야","l":"2018 서울시 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
