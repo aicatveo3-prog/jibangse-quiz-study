@@ -465,5 +465,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 4. 부과·징수와 세액 안분","q":[{"answer":"X","text":"장외발매소에서 발매한 승자투표권·승마투표권 등에 대한 세액은 그 경륜장 등 소재지를 관할하는 시장·군수·구청장에게 모두 신고납부한다.","exp":"장외발매소 발매분은 경륜장 소재지에 모두 내는 것이 아니라 경륜장 등 소재지 관할 시장·군수·구청장과 장외발매소 소재지 관할 시장·군수·구청장에게 각각 100분의 50씩 안분하여 신고납부한다. ‘모두 신고납부’가 틀렸다. 100% 납부는 사업장에서 직접 발매한 경우다.","src":"2020 서울시 7급"},{"answer":"O","text":"과세대상 사업장에서 직접 발매한 승자투표권·승마투표권 등에 대한 세액은 그 경륜장 등 소재지를 관할하는 시장·군수·구청장에게 모두 신고납부한다.","exp":"옳다. 사업장(경륜장 등)에서 직접 발매한 세액은 나눌 상대가 없어 그 소재지에 100% 신고납부한다. 반면 장외발매소 발매분은 경륜장 소재지와 장외발매소 소재지에 각각 50%씩 안분한다는 점과 구별한다."}],"tb":[],"wi":[]},{"p":"PART 3. 과세표준과 세율","q":[{"answer":"O","text":"레저세의 과세표준은 발매금 총액이며, 세율은 100분의 10이다.","exp":"옳다. 과세표준은 환급금을 빼지 않은 발매금총액 전체이고, 세율은 100분의 10(10%) 단일세율이다. 과세표준을 순수익·환급금으로, 세율을 100분의 20으로 바꾸면 틀린다.","src":"2020 서울시 7급"},{"answer":"X","text":"레저세의 과세표준은 발매금 총액이며, 세율은 100분의 20이다.","exp":"과세표준(발매금총액)은 옳지만 세율이 틀렸다. 레저세 세율은 100분의 20이 아니라 100분의 10(10%)이다. 20%로 두 배 부풀린 함정이다."}],"tb":[],"wi":[]},{"p":"PART 2. 과세대상과 납세의무자","q":[{"answer":"X","text":"「경륜·경정법」에 따른 경륜 및 경정에 해당하는 사업을 하는 자가 아니라, 그 사업의 투표권을 구입하는 자가 레저세를 납부할 의무가 있다.","exp":"레저세 납세의무자는 경륜·경정 사업을 하는 자이고, 투표권을 구입하는 자는 소비자(담세자)일 뿐이다. 납세의무의 주체를 구입자로 바꿔 틀렸다. 간접세라 파는 쪽(사업자)이 납세의무자다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"경륜 및 경정에 해당하는 사업을 하는 자는 레저세를 납부할 의무가 있다","l":"2020 서울시 7급"},{"n":"대통령령으로 정하는 바에 따라 납세의무자에게 징수사무의 보조를 명할 수 있다","l":"2020 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
