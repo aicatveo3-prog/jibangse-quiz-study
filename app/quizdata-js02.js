@@ -2412,5 +2412,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 1. 납세고지와 납부기한","q":[{"answer":"X","text":"지방자치단체의 장은 지방자치단체의 징수금의 납부기한을 납세 또는 납부의 고지를 하는 날부터 14일 이내로 지정하여야 한다.","exp":"틀리다. 납부기한은 고지하는 날부터 '14일'이 아니라 '30일 이내'로 지정한다. 14일은 고지서가 도달한 날부터 7일 이내에 납부기한이 도래할 때 도달일부터 14일이 지난 날로 연장하는 규정의 숫자로, 지정 기한과 혼동시키는 함정이다.","src":"2019 서울시 7급"}],"tb":[],"wi":["납부기한 지정 = 고지일부터 30일 이내. 📝 \"14일 이내로 지정하여야 한다\" → ❌ 30일 이내 (14일은 도달 후 7일 이내 도래 시 연장 규정의 숫자)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"제3자가 납부(납세자의 명의로 납부하는 것으로 한정한다)할 수 있다","l":"2019 서울시 7급"},{"n":"납세자의 명의로 납부한 제3자는 지방자치단체에 대하여 그 반환을 청구할 수 있다","l":"2019 서울시 7급"},{"n":"법률에 따로 규정이 있는 것을 제외하고는 상계할 수 있다","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["js02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

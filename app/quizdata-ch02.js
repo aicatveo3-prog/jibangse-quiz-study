@@ -3340,5 +3340,16 @@
     var TAGS = [{"n":"지방세의 과세표준 신고서를 제출하지 아니한 경우에 그 지방세 부과의 제척기간은 5년이다","l":"2020 지방직 9급"},{"n":"부정한 행위로 지방세를 포탈하거나 환급 또는 감면받은 경우에 그 지방세 부과의 제척기간은 7년이다","l":"2020 지방직 9급"},{"n":"상속재산에 대한 취득세의 경우로서 납세자가 취득세의 신고를 하지 아니한 경우의 제척기간은 7년으로 한다","l":"2020 지방직 9급"},{"n":"명의신탁약정으로 실권리자가 사실상 취득하는 경우로서 납세자가 법정신고기한까지 과세표준 신고서를 제출하지 아니한 경우에 그 지방세 부과의 제척기간은 10년이다","l":"2020 지방직 9급"},{"n":"납세고지에 의해 중단되며, 중단된 시효는 고지한 납부기간이 지난 때부터 새로 진행한다","l":"2020 지방직 9급"},{"n":"소멸시효는 「지방세징수법」에 따른 징수유예기간에도 진행한다","l":"2020 지방직 9급"},{"n":"「민법」 제404조에 따른 채권자대위소송을 제기하여 그 소송이 진행 중인 기간에는","l":"2020 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 11. 납세의무의 승계·연대납세의무","q":[{"answer":"X","text":"법인이 분할 또는 분할합병으로 해산하는 경우 해산하는 법인에 부과되거나 그 법인이 납부할 지방자치단체의 징수금은 해산하는 법인과 분할로 설립되는 법인이 연대하여 납부할 의무를 진다.","exp":"\"해산하는 법인\"을 연대주체에 넣은 것이 틀렸다. 해산하는 법인은 소멸하므로 연대납세의무의 주체가 될 수 없고, 분할로 설립되는 법인과 존속하는 분할합병의 상대방 법인이 연대하여 납부한다. 해산하지 않는 단순 분할에서는 분할되는 법인 자신도 연대주체에 포함되는 것과 구별한다.","src":"2019 서울시 7급"},{"answer":"X","text":"공유물(공동주택의 공유물을 포함한다), 공동사업 또는 그 공동사업에 속하는 재산에 관계되는 지방자치단체의 징수금은 공유자 또는 공동사업자가 연대하여 납부할 의무를 진다.","exp":"괄호 속 \"공동주택의 공유물을 포함한다\"가 틀렸다. 공동주택의 공유물은 연대납세의무 대상에서 제외되며, 공용부분도 지분이 확정되어 각 소유자가 지분만큼 개별납세의무를 진다. 일반 공유물·공동사업만 공유자·공동사업자가 연대하여 납부한다.","src":"2019 서울시 7급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"사업양수인은 양도일 이후에 양도인의 납세의무가 확정된 지방자치단체의 징수금을 양도인의 재산으로 충당","l":"2019 서울시 7급"},{"n":"납세의무가 성립한 지방자치단체의 징수금은 신회사가 연대하여 납부할 의무를 진다","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

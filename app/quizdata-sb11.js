@@ -497,5 +497,16 @@
     var TAGS = [{"n":"레저세의 납세의무자와 담배소비세의 납세의무자는 모두 지방교육세를 납부할 의무가 있다","l":"2020 지방직 9급"},{"n":"선박의 취득에 대한 취득세의 납세의무자는 지방교육세의 납세의무자에 해당한다","l":"2020 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 5. 부과·징수 ① — 신고납부·부과고지·납세담보","q":[{"answer":"X","text":"담배소비세의 소매인에 대하여도 그 주사무소 소재지를 관할하는 지방자치단체의 장이 담배소비세분 지방교육세에 대한 담보 제공을 요구할 수 있다.","exp":"'소매인'이 틀렸다. 담배소비세분 지방교육세의 담보 제공을 요구할 수 있는 상대방은 담배소비세 납세의무자 중 제조자 또는 수입판매업자에 한정된다. 소매인은 담배소비세 납세의무자가 아니어서 담보 요구 대상이 아니다."}],"tb":[],"wi":[]},{"p":"PART 6. 부과·징수 ② — 특별징수·가산세·환급","q":[{"answer":"X","text":"지방교육세를 신고하고 납부하여야 하는 자가 신고·납부의무를 다하지 아니한 경우에는 「지방세기본법」에 따른 신고불성실가산세와 납부불성실가산세를 부과하지 아니한다.","exp":"신고불성실가산세와 납부불성실가산세를 '모두' 부과하지 아니한다는 진술이 틀렸다. 지방교육세는 신고불성실가산세(무신고·과소신고)는 부과하지 아니하지만, 납부의무를 다하지 아니한 경우 납부불성실(납부지연)가산세는 부과한다. 신고는 배제, 납부는 적용으로 취급이 정반대다.","src":"2019 서울시 7급"},{"answer":"O","text":"지방교육세를 신고하고 납부하여야 하는 자가 신고의무를 다하지 아니하면 신고불성실가산세는 부과하지 아니하나, 납부의무를 다하지 아니하면 「지방세기본법」에 따른 납부지연가산세를 부과한다.","exp":"신고불성실가산세 배제 + 납부지연가산세 적용이 맞다. 지방교육세는 본세를 신고하면 계산이 따라 나오므로 신고 해태는 제재하지 않지만, 미납·부족세액에는 1일 10만분의 22의 납부지연가산세가 붙는다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"제64조제1항에 따라 담보 제공을 요구하는 경우에는 담배소비세분 지방교육세","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb11"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

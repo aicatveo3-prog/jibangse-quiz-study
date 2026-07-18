@@ -574,5 +574,16 @@
     var TAGS = [{"n":"주민세 비과세대상자인 경우에는 그에게 사업소분 주민세의 제2차 납세의무를 지울 수 없다","l":"2020 서울시 7급"},{"n":"종업원분 주민세의 납세의무자는 종업원에게 급여를 지급하는 사업주로 한다","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"건축물의 소유자에게 사업소분 주민세의 제2차 납세의무를 지울 수 있다","l":"2019 서울시 7급"},{"n":"종업원분 주민세의 과세표준은 종업원에게 지급한 그 달의 급여총액으로 한다","l":"2019 서울시 7급"},{"n":"종업원 수가 50명을 초과하는 중소기업의 사업주가 종업원을 추가로 고용한 경우","l":"2019 서울시 7급"},{"n":"외국인등록을 한 날부터 3년이 경과되지 아니한 외국인은 개인분의 납세의무자에서 제외","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

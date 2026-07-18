@@ -943,5 +943,16 @@
     var TAGS = [{"n":"부과·징수에 필요한 사항을 정할 때에는 지방세기본법 또는 지방세관계법이 정하는 범위에서 조례로 정하여야 한다","l":"2020 서울시 7급"},{"n":"제2차 납세의무자 및 보증인을 포함한다)와 특별징수의무자를 말한다","l":"2020 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 10. 서류의 송달","q":[{"answer":"X","text":"서류의 송달을 받아야 할 자의 주소 또는 영업소가 국외에 있어 그 송달이 곤란한 경우에는 서류의 주요 내용을 공고한 날이 속하는 달의 말일부터 14일이 지나면 서류의 송달이 된 것으로 본다.","exp":"\"공고한 날이 속하는 달의 말일부터\"가 틀렸다. 공시송달의 효력은 공고한 날부터 14일이 지나면 발생하며, 기산점은 공고일 그 자체이지 그 달의 말일이 아니다. 국외 소재 + 송달 곤란이 공시송달 사유라는 앞부분은 옳다.","src":"2019 서울시 7급"}],"tb":[],"wi":["공시송달 효력 = 공고한 날부터 14일 (공고일이 속하는 달의 말일부터 14일 ❌ → 공고한 날부터 14일 ⭕, 공고한 날에 즉시 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"고지와 독촉에 관한 서류를 송달하려면 그 대표자를 명의인으로 하며","l":"2019 서울시 7급"},{"n":"납기전징수에 따라 발급된 납세고지서가 도달한 날부터 7일 이내에 납부기한이 도래하는","l":"2019 서울시 7급"},{"n":"교부송달은 송달할 장소에서 그 송달을 받아야 할 자에게 서류를 건네줌으로써 이루어진다","l":"2019 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
