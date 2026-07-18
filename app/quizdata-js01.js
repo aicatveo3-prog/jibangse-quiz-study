@@ -2023,5 +2023,16 @@
     for (var t = 0; t < TAGS.length; t++) tagSrc(TAGS[t][0], TAGS[t][1]);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 1. 통칙","q":[{"answer":"X","text":"지방자치단체 징수금의 징수 순위는 체납처분비, 가산금, 지방세의 순서로 한다.","exp":"가산금을 지방세(본세)보다 앞에 두어 틀렸다. 올바른 순위는 체납처분비 → 지방세(본세) → 가산금으로, 체납처분비가 항상 1순위이고 제재·부담 성격의 가산금은 본세 뒤로 밀린다. 현행법은 가산금이 납부지연가산세로 통합되어 체납처분비 → 지방세(가산세 제외) → 가산세 순이다.","src":"2020 서울시 7급"},{"answer":"O","text":"지방자치단체 징수금의 징수 순위는 체납처분비, 지방세, 가산금의 순서로 한다.","exp":"체납처분비가 1순위, 지방세 본세가 2순위, 가산금이 3순위다. 체납처분비를 먼저 회수해야 다음 징수가 가능하고 가산금은 부수적 부담이므로 맨 뒤에 온다. 가산금과 지방세의 순서를 뒤바꾸는 함정에 주의한다."}],"tb":[{"k":"note","v":"box","title":"가산금과 가산세 (2020년 이전 vs 현행)","t":"2020년 이전에는 납부기한이 지나면 '가산금'이 별도로 붙었고, 당시 징수 순위는 체납처분비 → 지방세(본세) → 가산금이었다. 이후 가산금이 납부지연가산세로 통합되어 현행 순위는 체납처분비 → 지방세(가산세 제외) → 가산세가 되었다. 어느 경우든 체납처분비가 1순위이고, 제재·부담 성격의 항목(가산금·가산세)이 본세보다 뒤에 온다는 구조는 동일하다."}],"wi":["징수 순위 = 체납처분비 → 지방세(본세) → 가산금(현행 가산세) (가산금·가산세를 본세 앞에 두면 ❌, 체납처분비를 1순위에서 빼면 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"체납처분을 회피할 우려가 있다고 인정되는 사유가 있는 경우에는 법무부장관에게 출국금지를 요청하여야 한다","l":"2020 서울시 7급"},{"n":"정당한 사유 없이 지방세를 3회 이상 체납한 경우로서 그 체납액이 30만원 이상일 때에는 대통령령으로 정하는 경우를 제외하고","l":"2020 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["js01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

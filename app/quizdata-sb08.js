@@ -2184,5 +2184,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 4. 납세지(관할)","q":[{"answer":"X","text":"「국민건강보험법」에 따른 국민건강보험공단이 지급하는 사업소득에 대한 개인지방소득세의 납세지는 그 소득을 지급받는 사람의 주소지로 한다.","exp":"건보공단이 지급하는 사업소득의 납세지는 소득을 지급받는 사람의 주소지가 아니라 그 사람의 사업장(병원·약국 등) 소재지다. 사업이 실제 이루어지는 곳을 기준으로 하며, 주소지나 지급 주체인 공단 소재지가 기준이 아니다.","src":"2020 서울시 7급"}],"tb":[],"wi":["📝 \"국민건강보험공단 사업소득 → 지급받는 사람의 주소지\" → ❌ 납세지는 사업장(병원·약국 등) 소재지 — 주소지·공단 소재지 아님"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"원천징수사무를 본점에서 일괄처리하는 경우 그 소득에 대한 지방소득세의 납세지는 그 소득의 지급지로 한다","l":"2020 서울시 7급"},{"n":"연금소득에 대하여 특별징수하는 지방소득세의 납세지는 그 소득을 지급받는 사람의 주소지로 한다","l":"2020 서울시 7급"},{"n":"복권의 당첨금을 본점에서 한꺼번에 지급하는 경우 그 당첨금 소득에 대한 지방소득세의 납세지는 해당 복권의 판매지로 한다","l":"2020 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb08"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

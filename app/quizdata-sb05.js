@@ -602,5 +602,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 4. 미납세반출·반출의제·과세면제·세액공제환급","q":[{"answer":"O","text":"수입판매업자가 담배를 보세구역으로부터 반출하는 경우에는 담배소비세를 징수한다.","exp":"옳다. 수입판매업자가 담배를 보세구역으로부터 시중으로 반출하면 그때 납세의무가 성립하여 징수 대상이 된다. 보세구역에서 다른 보세구역으로 반출하는 미납세반출(미징수)과 구별해야 한다.","src":"2020 서울시 7급"},{"answer":"X","text":"수입판매업자가 담배를 보세구역으로부터 다른 보세구역으로 반출하는 경우에는 담배소비세를 징수한다.","exp":"보세구역에서 다른 보세구역으로의 반출은 미납세반출이라 징수하지 아니한다. ‘다른 보세구역으로 반출’인데 ‘징수한다’고 하면 틀린다 — 시중 반출과 혼동을 노린 함정이다."},{"answer":"O","text":"담배 공급의 편의를 위하여 보세구역에서 반출할 때 담배소비세의 납세의무가 성립된 담배를 다른 보세구역에서 반출하는 경우에는 담배소비세를 징수하지 아니한다.","exp":"옳다. 보세구역에서 다른 보세구역으로의 반출은 판매가 아닌 물류 이동이라 미납세반출로 징수하지 아니한다. 시중으로 반출하는 경우와 반드시 구별해야 한다.","src":"2020 서울시 7급"},{"answer":"X","text":"담배 공급의 편의를 위하여 보세구역에서 반출할 때 담배소비세의 납세의무가 성립된 담배를 다른 보세구역에서 반출하는 경우에는 담배소비세를 징수한다.","exp":"보세구역 간 반출은 미납세반출에 해당하여 징수하지 아니한다. ‘징수한다’가 틀렸다 — 최종 소비 전 단계의 물류 이동이기 때문이다."},{"answer":"X","text":"담배 공급의 편의를 위하여 과세면제 담배를 제조장에서 다른 제조장으로 반출하는 경우에는 담배소비세를 징수한다.","exp":"과세면제 담배라도 제조장 간 이동은 미납세반출 규정이 그대로 적용되어 징수하지 아니한다. ‘징수한다’가 틀렸다 — 판매가 아닌 공장 간 이동이기 때문이다."}],"tb":[],"wi":["보세구역 → 다른 보세구역 반출 = 미납세반출(징수 안 함) / 수입판매업자가 보세구역으로부터 시중 반출 = 징수(납세의무 성립)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"과세면제 담배를 제조장에서 다른 제조장으로 반출하는 경우에는 담배소비세를 징수하지 아니한다","l":"2020 서울시 7급"},{"n":"다른 담배의 원료로 사용하기 위하여 반출하는 것은 미납세반출에 해당하여","l":"2020 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb05"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -517,5 +517,16 @@
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
+  // ==== 2020 서울시 7급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 천재지변 감면과 감면 신청 절차","q":[{"answer":"O","text":"지방세의 감면을 받으려는 자는 대통령령으로 정하는 바에 따라 지방세 감면 신청을 하여야 한다.","exp":"신청주의 원칙 그대로다. 지방세 감면은 대통령령으로 정하는 바에 따라 감면 신청을 하는 것이 원칙이다. 다만 지방자치단체의 장이 감면대상을 알 수 있을 때에는 신청이 없어도 직권으로 감면할 수 있다는 예외가 짝을 이룬다.","src":"2020 서울시 7급"},{"answer":"X","text":"지방세의 감면을 받으려는 자는 행정안전부령으로 정하는 바에 따라 지방세 감면 신청을 하여야 한다.","exp":"'행정안전부령'이 틀렸다. 지방세 감면 신청의 절차는 대통령령으로 정하는 바에 따른다. 위임 형식을 행정안전부령·조례 등으로 슬쩍 바꿔치기하는 변형에 주의한다."}],"tb":[],"wi":[]},{"p":"PART 6. 감면의 제한 — 추징·최소납부세제·중복 감면 배제","q":[{"answer":"X","text":"동일한 과세대상에 대하여 지방세를 감면할 때 둘 이상의 감면 규정이 적용되는 경우에는 그 중 감면율이 낮은 것 하나만을 적용한다.","exp":"'감면율이 낮은 것'이 틀렸다. 둘 이상의 감면규정이 적용되면 그 중 감면율이 높은 것(감면되는 세액이 큰 것) 하나만 적용하는 것이 원칙이다. 납세자에게 유리한 큰 감면을 주며, '낮은 것'으로 뒤집는 것이 이 선지의 함정이다.","src":"2020 서울시 7급"},{"answer":"O","text":"동일한 과세대상에 대하여 지방세를 감면할 때 둘 이상의 감면규정이 적용되는 경우에는 그 중 감면율이 높은 것 하나만을 적용하는 것이 원칙이다.","exp":"감면율이 높은 것(감면되는 세액이 큰 것) 하나만 적용이 원칙이 맞다. '원칙'이라고 한 이유는 중복 적용이 허용되는 예외가 따로 있기 때문이다. 신청 순서나 낮은 것 기준이 아니라는 점이 핵심이다."}],"tb":[],"wi":["📝 \"둘 이상의 감면규정이 적용되면 감면율이 낮은 것 하나만 적용\" → ❌ 감면되는 세액이 큰(감면율이 높은) 것 하나만 적용이 원칙"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"그 면제규정에도 불구하고 100분의 85에 해당하는 감면율을 적용한다","l":"2020 서울시 7급"},{"n":"정당한 사유 없이 그 취득일부터 1년이 경과할 때까지 해당 용도로 직접 사용하지 아니하는 경우","l":"2020 서울시 7급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["te01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
