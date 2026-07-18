@@ -534,6 +534,17 @@
     var TAGS = [{"n":"담보로 제공한다는 뜻을 등록하고 그 등록확인증을 지방자치단체의 장에게 제출","l":"2021 서울시 7급"},{"n":"국채나 지방채 등 유가증권인 경우 담보로 제공하는 날의 전날을 평가기준일로","l":"2021 서울시 7급"},{"n":"등기완료통지서 또는 등록확인증을 지방자치단체의 장에게 제시하여야 하며, 지방자치단체의 장은 이에 따라 저당권 설정","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 환급·양도·소멸시효","q":[{"answer":"O","text":"납세자가 지방세환급금에 관한 권리를 타인에게 양도하려는 경우에는 양도인과 양수인이 연명으로 서명하거나 날인한 문서를 지방자치단체의 장에게 제출하여야 한다.","exp":"환급금 권리의 양도는 양도인과 양수인이 '연명으로' 서명·날인한 문서를 지방자치단체의 장에게 제출하는 방식으로 한다. 양수인이 단독으로 제출한다고 바꾼 지문은 틀린 것이니 주의한다."},{"answer":"X","text":"환급가산금을 포함한 지방세환급금에 관한 납세자의 권리는 타인에게 양도할 수 없다.","exp":"\"양도할 수 없다\"가 틀렸다. 지방세환급금은 환급가산금을 포함하여 재산적 가치가 있는 권리이므로 타인에게 '양도할 수 있다'. 양도하려면 양도인과 양수인이 연명으로 서명·날인한 문서를 지방자치단체의 장에게 제출하여야 한다.","src":"2021 지방직 9급"},{"answer":"O","text":"지방세환급금의 소멸시효는 지방자치단체의 장이 납세자의 지방세 환급청구를 촉구하기 위하여 납세자에게 하는 지방세환급청구의 안내·통지 등으로 인하여 중단되지 아니한다.","exp":"지자체장이 하는 환급청구 안내·통지는 소멸시효를 중단시키지 못한다. 반면 납세자 본인의 환급청구나 행정소송의 청구는 시효를 중단시키므로, 누가 한 행위인지로 구별해야 한다.","src":"2021 지방직 9급"},{"answer":"X","text":"지방세환급금의 소멸시효는 지방자치단체의 장이 하는 환급청구의 안내·통지뿐만 아니라 납세자 본인이 하는 지방세 환급청구로 인하여도 중단되지 아니한다.","exp":"\"납세자 본인의 환급청구로 인하여도 중단되지 아니한다\"가 틀렸다. 지자체장의 안내·통지는 시효를 중단시키지 못하지만, 납세자 본인의 환급청구나 행정소송의 청구는 소멸시효를 중단시킨다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"매각된 경우가 아니면 그 물납재산으로 환급하여야 한다","l":"2021 지방직 9급"},{"n":"납세보증서 또는 납세보증보험증권을 납세담보로 제공하려는 자는 그 보증서나 보험증권","l":"2021 지방직 9급"},{"n":"금전으로 담보한 지방세를 납부할 수 있지만","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch04"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

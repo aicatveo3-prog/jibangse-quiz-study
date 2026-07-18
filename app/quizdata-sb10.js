@@ -564,6 +564,17 @@
     var TAGS = [{"n":"필요한 재원과 소방사무에 소요되는 제반 비용을 충당하기 위하여 부과하는 목적세","l":"2021 서울시 7급"},{"n":"특정시설분 지역자원시설세 및 소방분 지역자원시설세로 구분한다","l":"2021 서울시 7급"},{"n":"2천원 미만인 경우에는 그 지역자원시설세를 징수하지 아니한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 납세의무자와 비과세","q":[{"answer":"X","text":"흐르는 물을 이용하여 직접 수력발전(양수발전을 포함한다)을 하는 자는 특정자원분 지역자원시설세의 납세의무자에 해당한다.","exp":"'양수발전을 포함한다'가 틀렸다. 법은 직접 수력발전 중 양수발전은 제외하므로, 양수발전을 하는 자는 과세대상 제외로 납세의무자가 아니다. 괄호 안 포함↔제외 한 단어 바꿔치기 함정이다.","src":"2021 지방직 9급"},{"answer":"O","text":"흐르는 물을 이용하여 직접 수력발전(양수발전은 제외한다)을 하는 자는 특정자원분 지역자원시설세의 납세의무자에 해당한다.","exp":"직접 수력발전(양수발전 제외)을 하는 자가 납세의무자가 맞다. 괄호가 '포함한다'로 바뀌면 즉시 틀린 지문이 되므로 괄호 안 표현을 반드시 확인해야 한다."}],"tb":[],"wi":["📝 \"수력발전(양수발전을 포함한다)을 하는 자는 특정자원분 지역자원시설세의 납세의무자에 해당한다\" → ❌ 양수발전은 과세대상 제외라 그 자는 납세의무자가 아님"]},{"p":"PART 7. 부과·징수 — 신고납부·보통징수·납기·소액면제","q":[{"answer":"X","text":"지하수에 대한 지역자원시설세와 소방분 지역자원시설세는 신고납부의 방법으로 징수한다.","exp":"'소방분도 신고납부'가 틀렸다. 지하수는 신고납부가 원칙이지만 소방분은 재산세 규정을 준용하여 관할 지자체장이 세액을 산정, 보통징수로 부과·징수한다. 하나만 틀려도 지문 전체가 틀린다.","src":"2021 지방직 9급"},{"answer":"O","text":"지하수에 대한 지역자원시설세는 신고납부의 방법으로, 소방분 지역자원시설세는 보통징수의 방법으로 징수한다.","exp":"지하수 = 신고납부(원칙), 소방분 = 보통징수(재산세 준용)로 연결이 정확하다. 지하수는 조례로 정하는 바에 따라 보통징수를 선택할 수도 있다는 점을 덧붙여 둔다."}],"tb":[],"wi":["📝 \"지하수와 소방분 지역자원시설세는 신고납부의 방법으로 징수한다\" → ❌ 지하수는 신고납부가 맞지만 소방분은 보통징수(재산세 준용)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"토지의 소재지이며, 광업권이 등록된 토지가 둘 이상의 지방자치단체에 걸쳐 있는 경우에는 토지의 면적에 따라 안분한다","l":"2021 지방직 9급"},{"n":"재산세가 비과세되더라도 해당 건축물에 대한 소방분 지역자원시설세는 부과한다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -505,6 +505,17 @@
     var TAGS = [{"n":"해당 지방자치단체의 직권으로 지방세 감면을 할 수 있다","l":"2021 서울시 7급"},{"n":"위임에 따른 감면은 제외한다)을 하려면 「지방세기본법」에 따른 지방세심의위원회의 심의를 거쳐","l":"2021 서울시 7급"},{"n":"정비 결과를 행정안전부장관에게 제출하여야 한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 2. 조례 감면 — 사유·기간·방법과 한계","q":[{"answer":"O","text":"지방자치단체는 「지방세법」 제13조(과밀억제권역 안 취득 등 중과) 및 제28조제2항에 따른 중과세의 배제를 통한 지방세 감면에 해당하는 지방세 감면을 할 수 없다.","exp":"중과세 배제를 통한 감면은 조례로 할 수 없는 것이 맞다. 중과세 배제는 재산세 과세대상 구분전환·행안부장관 고시 사항과 함께 조례 감면에서 배제되는 '중재행'에 해당한다. 특례의 정의(6가지 포함)에는 들어가지만 조례로 할 수 있는 방법(세세세)에는 해당하지 않는다는 점을 구별한다.","src":"2021 지방직 9급"},{"answer":"X","text":"지방자치단체는 「지방세법」 제13조 및 제28조제2항에 따른 중과세의 배제를 통한 지방세 감면에 해당하는 지방세 감면도 조례로 정하는 바에 따라 할 수 있다.","exp":"'할 수 있다'가 틀렸다. 중과세 배제를 통한 감면은 조례로 할 수 없다. 조례로 가능한 방법은 세율경감·세액감면·세액공제 3가지뿐이고, 중과세 배제·재산세 구분전환·행안부장관 고시 사항은 조례 감면에서 배제된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"인정되는 자에 대해서는 해당 지방의회의 의결을 얻어 지방세 감면을 할 수 있다","l":"2021 지방직 9급"},{"n":"위임에 따른 지방세 감면을 하려면 「지방세기본법」 제147조에 따른 지방세심의위원회의 심의","l":"2021 지방직 9급"},{"n":"그 정비 결과를 행정안전부장관에게 제출하여야 한다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["te01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

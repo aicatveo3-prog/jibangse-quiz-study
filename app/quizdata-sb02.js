@@ -3489,6 +3489,17 @@
     var TAGS = [{"n":"부족하게 납부한 경우 특별징수 납부지연가산세를 적용한다","l":"2021 서울시 7급"},{"n":"가액 비율로 나눈 금액을 각각 토지와 건축물의 과세표준으로 한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 3. 등록분 비과세 — 취득세 비과세와의 교차","q":[{"answer":"O","text":"회사의 정리 또는 특별청산에 관하여 법원의 촉탁으로 인한 등기 또는 등록에 대하여는 등록면허세를 부과하지 아니하나, 법인의 자본금 또는 출자금의 납입, 증자 및 출자전환에 따른 등기 또는 등록은 제외한다.","exp":"옳다. 회사의 정리·특별청산에 관한 법원의 촉탁 등기·등록은 강제적·비자발적 성격이어서 등록면허세를 부과하지 아니하나, 법인의 자본금·출자금 납입, 증자, 출자전환에 따른 등기·등록은 이 비과세에서 제외되어 등록면허세가 부과된다. 자본이 늘어 새로운 출자금이라는 경제적 가치가 발생하는 종가세 과세대상이기 때문이다.","src":"2021 지방직 9급"},{"answer":"X","text":"회사의 정리 또는 특별청산에 관하여 법원의 촉탁으로 인한 등기 또는 등록에 대하여는 등록면허세를 부과하지 아니하며, 법인의 자본금 또는 출자금의 납입, 증자 및 출자전환에 따른 등기 또는 등록에 대하여도 등록면허세를 부과하지 아니한다.","exp":"회사 정리·특별청산 촉탁 등기·등록이 비과세라는 앞부분은 옳지만, 법인의 자본금·출자금 납입·증자·출자전환에 따른 등기·등록은 이 비과세에서 제외되어 등록면허세를 부과하므로 마지막이 틀렸다. 자본 증가로 경제적 가치가 발생하는 종가세 과세대상이기 때문이다."}],"tb":[{"k":"note","v":"tip","title":"📎 심화·참고 — 회사 정리·특별청산 비과세의 제외단서","t":"회사의 정리·특별청산에 관한 법원의 촉탁 등기·등록은 비과세이지만, 법인의 자본금·출자금 납입, 증자, 출자전환에 따른 등기·등록은 이 비과세에서 제외되어 등록면허세가 부과된다. 자본이 늘어 새로운 출자금이라는 경제적 가치가 발생하는 종가세 과세대상이기 때문이며, 상세 세율은 PART 6 참고."}],"wi":["📝 \"회사 정리·특별청산 촉탁 등기는 비과세이고 법인 자본금·출자금 납입·증자·출자전환 등기도 부과하지 아니한다\" → ❌ 자본 관련 등기는 비과세에서 제외되어 과세된다"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"부동산 등록에 대한 등록면허세의 과세표준은 조례로 정하는 바에 따라 등록자의 신고에 따르나, 신고가 없거나 신고가액이 「지방세법」 제4조에 따른 시가표준액보다 적은 경우","l":"2021 지방직 9급"},{"n":"면허의 효력이 소멸한 경우에는 이미 납부한 등록면허세를 환급하지 아니한다","l":"2021 지방직 9급"},{"n":"「지방세기본법」 제38조에 따른 취득세 부과제척기간이 경과한 물건의 등기 또는 등록은 포함하지 아니한다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

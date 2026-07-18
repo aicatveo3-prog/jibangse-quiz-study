@@ -3306,6 +3306,17 @@
     var TAGS = [{"n":"그 과세표준이 되는 소득에 대하여 소득세·법인세를 원천징수하는 때에 성립한다","l":"2022 지방직 9급"},{"n":"면허에 대한 등록면허세의 납세의무는 각종 면허를 받는 때와 납기가 있는 달의 1일에 성립한다","l":"2022 지방직 9급"},{"n":"특별징수하는 지방소득세는 납세의무가 성립하는 때에 특별한 절차 없이 그 세액이 확정된다","l":"2022 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 11. 납세의무의 승계·연대납세의무","q":[{"answer":"O","text":"상속이 개시된 경우에 상속인(상속인이 1인인 경우로 한정함)은 피상속인에 대한 지방자치단체의 징수금을 상속으로 얻은 재산의 한도 내에서 납부할 의무를 진다.","exp":"상속인은 상속으로 얻은 재산을 한도로 피상속인의 징수금을 승계한다. 상속인 의사와 무관하게 개시되므로 받은 만큼만 책임지며, 한도 없이 전액 승계되는 법인 합병과 대비된다.","src":"2021 지방직 9급"},{"answer":"X","text":"상속이 개시된 경우에 상속인(상속인이 1인인 경우로 한정함)은 피상속인에 대한 지방자치단체의 징수금을 상속으로 얻은 재산과 관계없이 그 전액에 대하여 납부할 의무를 진다.","exp":"\"상속으로 얻은 재산과 관계없이 전액\"이 틀렸다. 상속인은 상속으로 얻은 재산가액을 한도로만 승계한다. 한도 없이 전액 승계되는 것은 개인 상속이 아니라 법인 합병이다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"합병 후 존속하는 법인은 합병으로 인하여 소멸된 법인에 부과된 지방자치단체의 징수금에 대하여는 납부할 의무를 지지 않는다","l":"2021 지방직 9급"},{"n":"공유물(공동주택의 공유물은 제외한다), 공동사업 또는 그 공동사업에 속하는 재산에 관계되는 지방자치단체의 징수금은 공유자 또는 공동사업자가 연대하여 납부할 의무를 진다","l":"2021 지방직 9급"},{"n":"체납처분을 집행하더라도 징수할 금액이 부족한 경우 청산인은 부족한 금액 전부에 대하여 연대하여 납부할 의무를 진다","l":"2021 지방직 9급"},{"n":"사업양수인은 양도일 이후에 양도인의 납세의무가 확정된 지방자치단체의 징수금을 양도인의 재산으로 충당하여도 부족할 때에는","l":"2021 지방직 9급"},{"n":"상속재산에 대한 취득세의 경우로서 납세자가 취득세의 신고를 하지 아니한 경우의 제척기간은 7년으로 한다","l":"2021 지방직 9급"},{"n":"지방세징수권의 시효는 납세고지에 의해 중단되며, 중단된 시효는 고지한 납부기간이 지난 때부터 새로 진행한다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

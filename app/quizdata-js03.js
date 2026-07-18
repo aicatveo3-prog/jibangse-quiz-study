@@ -3012,6 +3012,17 @@
     var TAGS = [{"n":"당초 압류한 재산의 압류를 즉시 해제하여야 한다","l":"2021 서울시 7급"},{"n":"소유권주장이 상당한 이유가 있다고 인정되는 때에는 압류를 즉시 해제하여야 한다","l":"2021 서울시 7급"},{"n":"승소판결을 받고 그 사실을 증명한 때에는 압류를 즉시 해제하여야 한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 7. 매각결정·재공매·수의계약·공매대행","q":[{"answer":"O","text":"체납자의 배우자는 공매재산이 압류한 부부공유의 동산에 해당하는 경우 배분요구의 종기까지 매각대금 중 공유지분에 상응하는 대금을 지급하여 줄 것을 지방자치단체의 장에게 요구할 수 있다.","exp":"옳다. 부부공유 동산·유가증권이 공매되면 체납자의 배우자는 배분요구의 종기까지 매각대금 중 공유지분에 상응하는 대금 지급을 지방자치단체의 장에게 요구할 수 있다. 배우자가 자기 공유지분만큼 몫을 돌려받도록 보호하는 장치이며, 요구 기한이 '배분요구의 종기'라는 점이 핵심이다.","src":"2021 지방직 9급"},{"answer":"X","text":"체납자의 배우자는 공매재산이 압류한 부부공유의 동산에 해당하는 경우 배분요구의 종기가 지난 후에도 매각대금 중 공유지분에 상응하는 대금을 지급하여 줄 것을 지방자치단체의 장에게 요구할 수 있다.","exp":"틀렸다. 배우자의 공유지분 상응 대금 지급 요구는 '배분요구의 종기까지' 하여야 하며, 종기가 지난 후에는 요구할 수 없다. 앞부분은 옳으나 요구 기한을 '종기가 지난 후에도'로 늘린 것이 오답이다."},{"answer":"X","text":"우선매수 신고를 한 공유자에게 우선매각결정을 한 후에 그 매수인이 매각대금을 납부하지 아니하면 공매를 집행하는 공무원은 재공매를 하여야 한다.","exp":"틀렸다. 우선매수인이 매각대금을 납부하지 아니하면 재공매를 하는 것이 아니라 최고액 입찰자에게 다시 매각결정을 할 수 있다. 이미 유효한 입찰이 있었으므로 곧바로 재공매 절차로 넘기지 않는다.","src":"2021 지방직 9급"},{"answer":"O","text":"우선매수 신고를 한 공유자에게 우선매각결정을 한 후에 그 매수인이 매각대금을 납부하지 아니하면 공매를 집행하는 공무원은 최고액 입찰자에게 다시 매각결정을 할 수 있다.","exp":"옳다. 우선매수인이 대금을 납부하지 않으면 재공매가 아니라 최고액 입찰자에게 다시 매각결정을 할 수 있다. 차순위 매수신고자가 있으면 그에게 매각결정을 할 수 있는 것과 같은 취지로, 절차 지연을 막는다."}],"tb":[],"wi":["📝 \"우선매수인이 대금을 납부하지 아니하면 공매집행 공무원은 재공매를 하여야 한다.\" → ❌ 재공매가 아니라 최고액 입찰자에게 다시 매각결정 가능","배우자의 공유지분 상응 대금 지급 요구 기한 = 배분요구의 종기까지 (종기 지난 후 요구 ❌)"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"매각결정 기일이 지날 때까지 공매보증금의 제공은 필요하지 않다","l":"2021 지방직 9급"},{"n":"부부공유의 유가증권인 경우에는 체납자의 배우자는 우선매수권을 가지는 자에 해당하지 않는다","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["js03"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

@@ -920,6 +920,17 @@
     var TAGS = [{"n":"지방세관계법을 해석·적용할 때에는 과세의 형평","l":"2021 서울시 7급"},{"n":"특별한 규정이 있는 경우에는 그 규정에 따른다","l":"2021 서울시 7급"},{"n":"따로 있을 때에는 사실상 귀속되는 자를 납세의무자로 하여 적용한다","l":"2021 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2021 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { if (DATA[i].text.indexOf(needle) >= 0) { var s = DATA[i].src; if (!s) DATA[i].src = label; else if (typeof s === "string") { if (s !== label) DATA[i].src = [s, label]; } else if (s.indexOf(label) < 0) s.push(label); return; } } }
+    var ADDS = [{"p":"PART 10. 서류의 송달","q":[{"answer":"X","text":"연대납세의무자에게 대표자가 없으면 납세의 고지와 독촉에 관한 서류는 연대납세의무자 중 지방세를 징수하기 유리한 자에게만 송달하여야 한다.","exp":"\"고지·독촉 서류를 유리한 자에게만\" 송달한다는 부분이 틀렸다. 납세의 고지와 독촉에 관한 서류는 연대납세의무자 모두에게 각각 송달하여야 한다. 대표자(없으면 징수에 유리한 자)를 명의인으로 하는 것은 그 밖의 일반 서류에 대한 규정이다.","src":"2021 지방직 9급"},{"answer":"O","text":"연대납세의무자에게 대표자가 없으면 납세의 고지와 독촉 외의 그 밖의 서류는 연대납세의무자 중 지방세를 징수하기 유리한 자에게 송달할 수 있다.","exp":"그 밖의 일반 서류는 대표자를 명의인으로 하되 대표자가 없으면 징수에 유리한 자에게 송달할 수 있다. 반면 고지·독촉 서류는 이와 달리 연대납세의무자 모두에게 각각 송달해야 한다는 점에서 구별된다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"수령인이 서명 또는 날인을 거부하면 그 사실을 송달서에 적어야","l":"2021 지방직 9급"},{"n":"사전에 명시적으로 반대의 의사를 표시한 경우가 아니면 과세관청이 그 방식으로","l":"2021 지방직 9급"},{"n":"주소, 거소, 사무소 및 영업소 외의 다른 장소를 송달받을 장소로 요청","l":"2021 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS = window.QUIZ_CHAPTERS || {};
   window.QUIZ_CHAPTERS["ch01"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
