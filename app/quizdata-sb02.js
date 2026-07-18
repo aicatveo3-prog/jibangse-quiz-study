@@ -3523,5 +3523,16 @@
     var TAGS = [{"n":"자산재평가 또는 감가상각 등의 사유로 그 가액이 달라진 경우에는 변경된 가액을 과세표준으로 한다","l":"2019 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2019 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 4. 등록분 납세의무자·납세지","q":[{"answer":"X","text":"부동산 등기에 대한 등록면허세의 납세지는 부동산 소유자의 주소지로 한다.","exp":"부동산 등기의 납세지는 소유자의 주소지가 아니라 해당 부동산의 소재지다(지방세법 제25조 제1호). 부동산은 움직이지 않는 재산이므로 물건이 있는 지자체가 세수를 가져가도록 소재지를 기준으로 하며, 소유자 주소지로 한 부분이 틀렸다.","src":"2019 지방직 9급"},{"answer":"O","text":"서울에 주소를 둔 사람이 부산에 있는 부동산에 소유권 등기를 하는 경우, 그 등기에 대한 등록면허세의 납세지는 부동산 소재지인 부산이다.","exp":"옳다. 부동산 등기의 납세지는 물건 기준인 소재지이므로 소유자가 어디에 살든 부동산이 있는 부산이 납세지다. 소유자 주소지인 서울을 기준으로 하면 부동산이 있는 지자체가 세수를 얻지 못하는 불합리가 생긴다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"신고를 하고 납부한 것으로 본다. 다만, 신고불성실가산세가 부과된다","l":"2019 지방직 9급"},{"n":"상속으로 인한 부동산 소유권 이전 등기에 대한 등록면허세의 세율은 부동산 가액의 1천분의 15","l":"2019 지방직 9급"},{"n":"일정한 채권금액이 없을 때에는 채권의 목적이 된 것의 가액 또는 처분의 제한의 목적이 된 금액","l":"2019 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
