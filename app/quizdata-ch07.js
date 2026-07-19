@@ -2220,5 +2220,16 @@
     var TAGS = [{"n":"이의신청에 대한 결정 통지를 받은 날부터 30일 이내에 하여야 한다","l":"2019 지방직 9급"},{"n":"과세전적부심사를 청구하지 아니하고 그 통지를 한 지방자치단체의 장에게 통지받은 내용의 전부 또는 일부","l":"2019 지방직 9급"},{"n":"통고처분을 받은 자는 그 처분으로 인하여 권리 또는 이익을 침해당한 경우에도","l":"2019 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2017 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 6. 심리와 결정","q":[{"answer":"O","text":"이의신청 기간이 지난 후에 제기된 이의신청을 각하하는 경우에는 지방세심의위원회의 의결을 거치지 아니하고 각하 결정을 할 수 있다.","exp":"각하 사유에 해당하는 청구는 형식적 요건을 갖추지 못한 것이어서 내용 심사 없이 배척하므로 지방세심의위원회의 의결을 거치지 않아도 된다. 신청기간 경과·보정 불이행이 대표적인 각하 사유이다. 반면 적법하게 제기된 이의신청은 90일 이내에 위원회 의결에 따라 결정한다는 점과 구별한다."},{"answer":"X","text":"이의신청 기간이 지난 후에 제기된 이의신청을 각하하는 결정을 할 때에는 지방세심의위원회의 의결을 거쳐야 한다.","exp":"각하 사유(신청기간 경과, 보정 불이행 등)에 해당하는 이의신청은 지방세심의위원회의 의결을 거치지 아니하고 각하할 수 있으므로 '의결을 거쳐야 한다'는 부분이 틀렸다. 형식적 요건을 갖추지 못한 청구는 본안 심리 없이 각하하기 때문이다. 기간 내에 적법하게 제기된 이의신청만 위원회 의결에 따라 결정한다.","src":"2017 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"그 통지를 받은 날)부터 90일 이내에 불복의 사유를 구비하여","l":"2017 지방직 9급"},{"n":"결정의 통지를 받기 전이라도 그 결정기간이 경과한 날부터 심판청구를 할 수 있다","l":"2017 지방직 9급"},{"n":"바로 심판청구를 하는 경우에는 그 처분이 있음을 안 날부터 90일 이내에 조세심판원장","l":"2017 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["ch07"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

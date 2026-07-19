@@ -2434,5 +2434,16 @@
     var TAGS = [{"n":"고지유예, 분할고지 또는 징수유예를 받으려는 때에는 지방자치단체의 장에게 신청할 수 있다","l":"2019 지방직 9급"},{"n":"그 유예한 지방세 또는 체납액에 대하여 교부청구를 할 수 없다","l":"2019 지방직 9급"},{"n":"징수유예등을 결정할 때에는 그 유예에 관계되는 금액에 상당하는 납세담보의 제공을 요구할 수 있다","l":"2019 지방직 9급"},{"n":"취소하고 그에 관계되는 지방세 또는 체납액을 한꺼번에 징수","l":"2019 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2017 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 제3자 납부·상계금지·징수순위·납부방법","q":[{"answer":"O","text":"담배소비세는 「여신전문금융업법」에 따른 신용카드 또는 직불카드로 납부할 수 있으나, 자동차 주행에 대한 자동차세(주행분)는 신용카드 또는 직불카드로 납부할 수 없다.","exp":"옳다. 현행법상 카드 납부에서 제외되는 것은 자동차 주행에 대한 자동차세(주행분) 하나뿐이므로 담배소비세는 신용카드로 납부할 수 있다. 주행분 자동차세는 유류 가격에 포함되어 특별징수되기 때문에 카드 납부 대상에서 빠진다. 소유분 자동차세는 카드 납부가 가능한 점과 구분한다."},{"answer":"X","text":"납세의무자는 담배소비세 및 자동차 주행에 대한 자동차세를 제외한 모든 지방자치단체의 징수금을 지방세수납대행기관을 통하여 신용카드 또는 직불카드로 납부할 수 있다.","exp":"틀리다. 현행법상 신용카드·직불카드·통신과금서비스에 의한 납부에서 제외되는 것은 자동차 주행에 대한 자동차세(주행분)뿐이다. 담배소비세는 제외 대상이 아니어서 카드로 납부할 수 있으므로 '담배소비세를 제외한'이라고 한 부분이 틀렸다. 주행분 자동차세만 유류 가격에 포함되어 특별징수되므로 카드 납부에서 빠진다."}],"tb":[{"k":"note","v":"box","title":"💡 담배소비세는 카드 납부 가능 (현행)","t":"신용카드·직불카드·통신과금서비스에 의한 납부에서 제외되는 것은 '자동차 주행에 대한 자동차세(주행분)' 하나뿐입니다(지방세징수법 제23조 및 시행령). 담배소비세는 제외 대상이 아니므로 신용카드로 납부할 수 있습니다. 과거에는 담배소비세도 함께 제외한다는 서술이 쓰였으나, 현행 기준으로는 '담배소비세를 제외한'이라고 하면 틀린 것입니다."}],"wi":["📝 \"담배소비세와 주행분 자동차세를 제외한 모든 지방세를 카드로 납부할 수 있다\" → ❌ 현행 카드납부 제외 대상은 주행분 자동차세뿐, 담배소비세는 카드 납부 가능"]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"법률에 따로 규정이 있는 것을 제외하고는 상계할 수 있다","l":"2017 지방직 9급"},{"n":"구체적으로 밝힌 문서(전자문서를 포함한다)로 고지하여야 한다","l":"2017 지방직 9급"},{"n":"납부기한이 일정한 지방세의 납세고지서 발급시기는 해당 납기개시 5일 전까지로 한다","l":"2017 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["js02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

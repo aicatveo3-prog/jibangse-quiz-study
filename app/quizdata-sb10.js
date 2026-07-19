@@ -631,5 +631,16 @@
     var TAGS = [{"n":"농어촌용수 중 행정안전부령으로 정하는 생활용수 및 공업용수로 이용하기 위하여 퍼 올린 지하수","l":"2018 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2017 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 7. 부과·징수 — 신고납부·보통징수·납기·소액면제","q":[{"answer":"X","text":"원자력발전에 대한 지역자원시설세는 관할 지방자치단체의 장이 세액을 산정하여 보통징수의 방법으로 징수한다.","exp":"'보통징수'가 틀렸다. 원자력발전은 특정시설분이므로 납세의무자가 산출세액을 신고·납부하는 신고납부의 방법으로 징수한다. 지자체장이 세액을 산정해 보통징수하는 것은 소방분이며, 특정시설분에는 그런 특례가 없다."},{"answer":"O","text":"원자력발전에 대한 지역자원시설세는 신고납부의 방법으로 징수한다.","exp":"원자력발전은 특정시설분이므로 신고납부가 맞다. 특정자원분·특정시설분은 신고납부가 원칙이고, 조례로 보통징수를 선택할 수 있는 특례는 지하수뿐이며, 지자체장이 세액을 산정해 보통징수하는 것은 소방분이다.","src":"2017 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"특정자원분 지역자원시설세의 납세지는 채수공(採水孔)의 소재지이다","l":"2017 지방직 9급"},{"n":"그 발전의 방식이 양수발전이라 하더라도 발전용수에 대한 지역자원시설세의 과세대상에 포함된다","l":"2017 지방직 9급"},{"n":"국가, 지방자치단체 및 지방자치단체조합이 직접 개발하여 이용하는 경우에는","l":"2017 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb10"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();

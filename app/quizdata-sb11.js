@@ -541,5 +541,16 @@
     var TAGS = [{"n":"신고된 차량의 등록에 대한 등록면허세의 납세의무자는 지방교육세의 납세의무자에 해당한다","l":"2018 지방직 9급"},{"n":"필요한 경우에는 해당 지방자치단체의 조례로 정하는 바에 따라 지방교육세의 세율을 표준세율의 100분의 50의 범위에서 가감할 수 있다","l":"2018 지방직 9급"},{"n":"주민세 개인분, 재산세 및 자동차세를 부과·징수하는 때에는 그에 대한 지방교육세를 함께 부과·징수한다","l":"2018 지방직 9급"},{"n":"제60조제6항에 따라 담배소비세를 부과·징수하는 때에는 그에 대한 지방교육세를 함께 부과·징수한다","l":"2018 지방직 9급"},{"n":"가산된 경우에도 그 가산세액은 지방교육세의 과세표준에 산입하지 아니한다","l":"2018 지방직 9급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2017 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 2. 납세의무자 — 7가지 본세와 제외 대상","q":[{"answer":"O","text":"레저세의 납세의무자, 부동산 취득에 대한 취득세의 납세의무자 및 재산세(재산세 도시지역분은 제외한다)의 납세의무자는 모두 지방교육세의 납세의무자에 해당한다.","exp":"세 납세의무자 모두 지방교육세 납세의무자가 맞다. 재산세분은 도시지역분(종전 도시계획세분)을 과세표준에서 제외한다는 단서가 붙고, 부동산 취득세는 차량 취득세와 달리 제외 사유가 없다. 함께 묶여도 종업원분처럼 빠지는 항목이 하나도 없어 전부 ⭕다.","src":"2017 지방직 9급"},{"answer":"X","text":"레저세의 납세의무자, 부동산 취득에 대한 취득세의 납세의무자 및 주민세 종업원분의 납세의무자는 모두 지방교육세의 납세의무자에 해당한다.","exp":"'주민세 종업원분'이 틀렸다. 주민세 중 지방교육세의 과세표준이 되는 것은 개인분과 사업소분(기본세율 적용분)뿐이고 종업원분은 제외된다. 앞의 레저세·부동산 취득세 납세의무자는 모두 해당한다."},{"answer":"O","text":"주민세 종업원분의 납세의무자는 지방교육세의 납세의무자에 해당하지 아니한다.","exp":"종업원분 제외가 맞다. 지방교육세의 과세표준이 되는 주민세는 개인분과 사업소분(기본세율 적용분)에 한정되며 종업원분은 처음부터 대상이 아니다. 개인분·사업소분은 ⭕, 종업원분은 ❌로 갈린다."}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"주민세 종업원분의 납세의무자는 지방교육세의 납세의무자에 해당한다","l":"2017 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["sb11"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
