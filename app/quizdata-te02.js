@@ -642,5 +642,16 @@
     var TAGS = [{"n":"2년이 경과할 때까지 농지를 직접 경작하지 아니하거나 농지 조성을 시작","l":"2018 서울시 7급"}];
     for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
   })();
+  // ==== 2017 지방직 9급 기출 보강 (선지 분산 자동 삽입) ====
+  (function () {
+    var partSeq = []; for (var i = 0; i < DATA.length; i++) if (partSeq.indexOf(DATA[i].part) < 0) partSeq.push(DATA[i].part);
+    function insQ(p, items) { var last = -1; for (var i = 0; i < DATA.length; i++) if (DATA[i].part === p) last = i; for (var k = 0; k < items.length; k++) items[k].part = p; if (last < 0) { Array.prototype.push.apply(DATA, items); return; } DATA.splice.apply(DATA, [last + 1, 0].concat(items)); }
+    function insT(p, blocks, warnItems) { var ti = partSeq.indexOf(p); if (ti < 0 || !THEORY[ti] || !THEORY[ti].blocks) return; var bl = THEORY[ti].blocks; if (blocks && blocks.length) { var wi = -1; for (var i = 0; i < bl.length; i++) if (bl[i].k === "note" && bl[i].v === "warn") wi = i; bl.splice.apply(bl, [(wi < 0 ? bl.length : wi), 0].concat(blocks)); } if (warnItems && warnItems.length) { var w = null; for (var j2 = 0; j2 < bl.length; j2++) if (bl[j2].k === "note" && bl[j2].v === "warn") w = bl[j2]; if (w && w.list) Array.prototype.push.apply(w.list, warnItems); } }
+    function tagSrc(needle, label) { for (var i = 0; i < DATA.length; i++) { var it = DATA[i]; if (!it.text || it.text.indexOf(needle) < 0) continue; var s = it.src; if (!s) it.src = label; else if (Array.isArray(s)) { if (s.indexOf(label) < 0) s.push(label); } else if (s !== label) it.src = [s, label]; } }
+    var ADDS = [{"p":"PART 3. 비영리법인·단체 감면 — 사회복지·종교·학교","q":[{"answer":"O","text":"어린이집을 설치·운영하기 위하여 취득하는 부동산에 대하여는 취득세를 면제한다.","exp":"옳다. 어린이집을 설치·운영하기 위하여 취득하는 부동산은 취득세가 면제된다. 사회복지법인·노동조합·종교단체와 마찬가지로 비영리 주체가 고유목적사업에 직접 사용하는 부동산에 한해 면제된다는 공통 원칙이 적용되며, 수익사업용으로 쓰면 면제되지 않는다.","src":"2017 지방직 9급"},{"answer":"X","text":"어린이집을 설치·운영하기 위하여 취득하는 부동산에 대하여는 취득세의 100분의 50을 경감한다.","exp":"틀리다. 어린이집 설치·운영용 부동산은 50% 경감이 아니라 취득세를 면제한다. 비영리 주체가 고유목적사업에 직접 사용하는 부동산은 대부분 경감이 아닌 면제 대상이라는 점을 기억한다."}],"tb":[],"wi":[]},{"p":"PART 2. 자동차 관련 감면 — 장애인·다자녀·경차","q":[{"answer":"X","text":"18세 이하의 자녀 3명 이상을 양육하는 자가 양육을 목적으로 취득하여 등록하는 승차정원 5명인 승용자동차로서 먼저 감면 신청하는 1대에 대하여는 취득세를 면제하되, 취득세가 140만원을 초과하는 경우에는 그 초과분을 경감한다.","exp":"틀리다. 두 군데가 현행과 다르다. 자녀 연령 기준은 18세 이하가 아니라 18세 미만이어서 만 18세 자녀는 수에 포함되지 않는다. 또한 승차정원 6명 이하 승용자동차는 취득세가 140만원 이하이면 면제하고 초과 시 '140만원'을 공제하는 정액공제 방식이며, 초과분을 경감해 140만원만 남기는 것이 아니다.","src":"2017 지방직 9급"}],"tb":[],"wi":[]}];
+    for (var ai = 0; ai < ADDS.length; ai++) { insQ(ADDS[ai].p, ADDS[ai].q); insT(ADDS[ai].p, ADDS[ai].tb, ADDS[ai].wi); }
+    var TAGS = [{"n":"노동조합이 그 고유업무에 직접 사용하기 위하여 취득하는","l":"2017 지방직 9급"},{"n":"면제받은 부동산을 그 취득한 날부터 5년 이내에 수익사업에 사용","l":"2017 지방직 9급"}];
+    for (var ti2 = 0; ti2 < TAGS.length; ti2++) tagSrc(TAGS[ti2].n, TAGS[ti2].l);
+  })();
   window.QUIZ_CHAPTERS["te02"] = { data: DATA, theory: THEORY, checklist: CHECKLIST };
 })();
